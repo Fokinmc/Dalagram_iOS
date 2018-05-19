@@ -1,0 +1,904 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		09BA7DD4123C9DEB5E65E75F /* Pods_Dalagram.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E96545F8CFE5C3D83EE550A0 /* Pods_Dalagram.framework */; };
+		2B0589BF20AEE33900B57ACF /* Auth.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B0589BE20AEE33900B57ACF /* Auth.storyboard */; };
+		2B0589C120AEE4B100B57ACF /* SingInController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0589C020AEE4B100B57ACF /* SingInController.swift */; };
+		2B0589C320AEEBF800B57ACF /* ConfirmController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0589C220AEEBF800B57ACF /* ConfirmController.swift */; };
+		2B0589C520AEEC5D00B57ACF /* Template.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0589C420AEEC5D00B57ACF /* Template.swift */; };
+		2B0F122720B030A700F5EF7F /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F122620B030A700F5EF7F /* TabBarController.swift */; };
+		2B0F122920B033D200F5EF7F /* ContactsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F122820B033D200F5EF7F /* ContactsController.swift */; };
+		2B0F122B20B0443600F5EF7F /* ChatsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F122A20B0443600F5EF7F /* ChatsController.swift */; };
+		2B2F967A20B04665003DE273 /* UIColor+Extention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2F967920B04665003DE273 /* UIColor+Extention.swift */; };
+		2B2F967F20B0500E003DE273 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2F967D20B0500E003DE273 /* ContactCell.swift */; };
+		2B2F968020B0500E003DE273 /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B2F967E20B0500E003DE273 /* ContactCell.xib */; };
+		2B73B7FC20AEBA42009D51F8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B73B7FB20AEBA42009D51F8 /* AppDelegate.swift */; };
+		2B73B80120AEBA42009D51F8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B73B7FF20AEBA42009D51F8 /* Main.storyboard */; };
+		2B73B80320AEBA42009D51F8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B73B80220AEBA42009D51F8 /* Assets.xcassets */; };
+		2B73B80620AEBA42009D51F8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B73B80420AEBA42009D51F8 /* LaunchScreen.storyboard */; };
+		2B73B81120AEBA43009D51F8 /* DalagramTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B73B81020AEBA43009D51F8 /* DalagramTests.swift */; };
+		2B73B81C20AEBA43009D51F8 /* DalagramUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B73B81B20AEBA43009D51F8 /* DalagramUITests.swift */; };
+		2B9AB1F020B019C4004CB2A7 /* ViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9AB1EF20B019C4004CB2A7 /* ViewController+Extension.swift */; };
+		497B01042330843B6AFA3CAE /* Pods_DalagramTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A05F11C66272DFBEF26F73EF /* Pods_DalagramTests.framework */; };
+		AD67A8385C29C33386340651 /* Pods_DalagramUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEFA6663B80A56F0186D62EA /* Pods_DalagramUITests.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2B73B80D20AEBA43009D51F8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2B73B7F020AEBA42009D51F8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2B73B7F720AEBA42009D51F8;
+			remoteInfo = Dalagram;
+		};
+		2B73B81820AEBA43009D51F8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2B73B7F020AEBA42009D51F8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2B73B7F720AEBA42009D51F8;
+			remoteInfo = Dalagram;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		231E1016462EA81B0F7EF758 /* Pods-Dalagram.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Dalagram.release.xcconfig"; path = "Pods/Target Support Files/Pods-Dalagram/Pods-Dalagram.release.xcconfig"; sourceTree = "<group>"; };
+		2B0589BE20AEE33900B57ACF /* Auth.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Auth.storyboard; sourceTree = "<group>"; };
+		2B0589C020AEE4B100B57ACF /* SingInController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingInController.swift; sourceTree = "<group>"; };
+		2B0589C220AEEBF800B57ACF /* ConfirmController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmController.swift; sourceTree = "<group>"; };
+		2B0589C420AEEC5D00B57ACF /* Template.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Template.swift; sourceTree = "<group>"; };
+		2B0F122620B030A700F5EF7F /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		2B0F122820B033D200F5EF7F /* ContactsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsController.swift; sourceTree = "<group>"; };
+		2B0F122A20B0443600F5EF7F /* ChatsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatsController.swift; sourceTree = "<group>"; };
+		2B2F967920B04665003DE273 /* UIColor+Extention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extention.swift"; sourceTree = "<group>"; };
+		2B2F967D20B0500E003DE273 /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
+		2B2F967E20B0500E003DE273 /* ContactCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactCell.xib; sourceTree = "<group>"; };
+		2B73B7F820AEBA42009D51F8 /* Dalagram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dalagram.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B73B7FB20AEBA42009D51F8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		2B73B80020AEBA42009D51F8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		2B73B80220AEBA42009D51F8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2B73B80520AEBA42009D51F8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		2B73B80720AEBA42009D51F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2B73B80C20AEBA43009D51F8 /* DalagramTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DalagramTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B73B81020AEBA43009D51F8 /* DalagramTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DalagramTests.swift; sourceTree = "<group>"; };
+		2B73B81220AEBA43009D51F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2B73B81720AEBA43009D51F8 /* DalagramUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DalagramUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B73B81B20AEBA43009D51F8 /* DalagramUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DalagramUITests.swift; sourceTree = "<group>"; };
+		2B73B81D20AEBA43009D51F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2B9AB1EF20B019C4004CB2A7 /* ViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+Extension.swift"; sourceTree = "<group>"; };
+		4A8CD69A4A1D204C2FEF5B66 /* Pods-DalagramTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DalagramTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DalagramTests/Pods-DalagramTests.release.xcconfig"; sourceTree = "<group>"; };
+		8EFA16CD04120900729091FF /* Pods-DalagramTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DalagramTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DalagramTests/Pods-DalagramTests.debug.xcconfig"; sourceTree = "<group>"; };
+		959EF5792CBBAE40F6683BEA /* Pods-Dalagram.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Dalagram.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Dalagram/Pods-Dalagram.debug.xcconfig"; sourceTree = "<group>"; };
+		A05F11C66272DFBEF26F73EF /* Pods_DalagramTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DalagramTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A33131E8BD52ED87361C5C30 /* Pods-DalagramUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DalagramUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DalagramUITests/Pods-DalagramUITests.release.xcconfig"; sourceTree = "<group>"; };
+		B7D1F695C7DC0B0EE6B6727D /* Pods-DalagramUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DalagramUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DalagramUITests/Pods-DalagramUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		BEFA6663B80A56F0186D62EA /* Pods_DalagramUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DalagramUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E96545F8CFE5C3D83EE550A0 /* Pods_Dalagram.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Dalagram.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2B73B7F520AEBA42009D51F8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				09BA7DD4123C9DEB5E65E75F /* Pods_Dalagram.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2B73B80920AEBA43009D51F8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				497B01042330843B6AFA3CAE /* Pods_DalagramTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2B73B81420AEBA43009D51F8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AD67A8385C29C33386340651 /* Pods_DalagramUITests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2B0F122520B0307500F5EF7F /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				2B0589C020AEE4B100B57ACF /* SingInController.swift */,
+				2B0589C220AEEBF800B57ACF /* ConfirmController.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		2B2F968120B05412003DE273 /* Xib */ = {
+			isa = PBXGroup;
+			children = (
+				2B2F967D20B0500E003DE273 /* ContactCell.swift */,
+				2B2F967E20B0500E003DE273 /* ContactCell.xib */,
+			);
+			path = Xib;
+			sourceTree = "<group>";
+		};
+		2B73B7EF20AEBA42009D51F8 = {
+			isa = PBXGroup;
+			children = (
+				2B73B7FA20AEBA42009D51F8 /* Dalagram */,
+				2B73B80F20AEBA43009D51F8 /* DalagramTests */,
+				2B73B81A20AEBA43009D51F8 /* DalagramUITests */,
+				2B73B7F920AEBA42009D51F8 /* Products */,
+				3F9CB6CAB8148E69047EC5F0 /* Pods */,
+				36607E897CA1A05752F7168F /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		2B73B7F920AEBA42009D51F8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2B73B7F820AEBA42009D51F8 /* Dalagram.app */,
+				2B73B80C20AEBA43009D51F8 /* DalagramTests.xctest */,
+				2B73B81720AEBA43009D51F8 /* DalagramUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2B73B7FA20AEBA42009D51F8 /* Dalagram */ = {
+			isa = PBXGroup;
+			children = (
+				2B73B83020AEBAAF009D51F8 /* Network */,
+				2B73B82C20AEBA78009D51F8 /* Extensions */,
+				2B73B82B20AEBA74009D51F8 /* Model */,
+				2B73B82A20AEBA6F009D51F8 /* View */,
+				2B73B82D20AEBA7D009D51F8 /* ViewModel */,
+				2B73B82E20AEBA83009D51F8 /* Controller */,
+				2B73B82F20AEBA96009D51F8 /* Storyboards */,
+				2B73B82920AEBA5B009D51F8 /* Supporting */,
+				2B73B80720AEBA42009D51F8 /* Info.plist */,
+			);
+			path = Dalagram;
+			sourceTree = "<group>";
+		};
+		2B73B80F20AEBA43009D51F8 /* DalagramTests */ = {
+			isa = PBXGroup;
+			children = (
+				2B73B81020AEBA43009D51F8 /* DalagramTests.swift */,
+				2B73B81220AEBA43009D51F8 /* Info.plist */,
+			);
+			path = DalagramTests;
+			sourceTree = "<group>";
+		};
+		2B73B81A20AEBA43009D51F8 /* DalagramUITests */ = {
+			isa = PBXGroup;
+			children = (
+				2B73B81B20AEBA43009D51F8 /* DalagramUITests.swift */,
+				2B73B81D20AEBA43009D51F8 /* Info.plist */,
+			);
+			path = DalagramUITests;
+			sourceTree = "<group>";
+		};
+		2B73B82920AEBA5B009D51F8 /* Supporting */ = {
+			isa = PBXGroup;
+			children = (
+				2B73B80420AEBA42009D51F8 /* LaunchScreen.storyboard */,
+				2B73B7FB20AEBA42009D51F8 /* AppDelegate.swift */,
+				2B73B80220AEBA42009D51F8 /* Assets.xcassets */,
+			);
+			path = Supporting;
+			sourceTree = "<group>";
+		};
+		2B73B82A20AEBA6F009D51F8 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				2B2F968120B05412003DE273 /* Xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		2B73B82B20AEBA74009D51F8 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		2B73B82C20AEBA78009D51F8 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				2B9AB1EF20B019C4004CB2A7 /* ViewController+Extension.swift */,
+				2B2F967920B04665003DE273 /* UIColor+Extention.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		2B73B82D20AEBA7D009D51F8 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		2B73B82E20AEBA83009D51F8 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				2B0F122520B0307500F5EF7F /* Auth */,
+				2B0589C420AEEC5D00B57ACF /* Template.swift */,
+				2B0F122620B030A700F5EF7F /* TabBarController.swift */,
+				2B0F122820B033D200F5EF7F /* ContactsController.swift */,
+				2B0F122A20B0443600F5EF7F /* ChatsController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		2B73B82F20AEBA96009D51F8 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				2B73B7FF20AEBA42009D51F8 /* Main.storyboard */,
+				2B0589BE20AEE33900B57ACF /* Auth.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		2B73B83020AEBAAF009D51F8 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		36607E897CA1A05752F7168F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E96545F8CFE5C3D83EE550A0 /* Pods_Dalagram.framework */,
+				A05F11C66272DFBEF26F73EF /* Pods_DalagramTests.framework */,
+				BEFA6663B80A56F0186D62EA /* Pods_DalagramUITests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3F9CB6CAB8148E69047EC5F0 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				959EF5792CBBAE40F6683BEA /* Pods-Dalagram.debug.xcconfig */,
+				231E1016462EA81B0F7EF758 /* Pods-Dalagram.release.xcconfig */,
+				8EFA16CD04120900729091FF /* Pods-DalagramTests.debug.xcconfig */,
+				4A8CD69A4A1D204C2FEF5B66 /* Pods-DalagramTests.release.xcconfig */,
+				B7D1F695C7DC0B0EE6B6727D /* Pods-DalagramUITests.debug.xcconfig */,
+				A33131E8BD52ED87361C5C30 /* Pods-DalagramUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2B73B7F720AEBA42009D51F8 /* Dalagram */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2B73B82020AEBA43009D51F8 /* Build configuration list for PBXNativeTarget "Dalagram" */;
+			buildPhases = (
+				9B76BF9D506F70157E04EFE3 /* [CP] Check Pods Manifest.lock */,
+				2B73B7F420AEBA42009D51F8 /* Sources */,
+				2B73B7F520AEBA42009D51F8 /* Frameworks */,
+				2B73B7F620AEBA42009D51F8 /* Resources */,
+				92A906C12BEAEAA51077D6F0 /* [CP] Embed Pods Frameworks */,
+				6D6D40651A9455687B3FBB9A /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Dalagram;
+			productName = Dalagram;
+			productReference = 2B73B7F820AEBA42009D51F8 /* Dalagram.app */;
+			productType = "com.apple.product-type.application";
+		};
+		2B73B80B20AEBA43009D51F8 /* DalagramTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2B73B82320AEBA43009D51F8 /* Build configuration list for PBXNativeTarget "DalagramTests" */;
+			buildPhases = (
+				04777B921095417CDA5B8572 /* [CP] Check Pods Manifest.lock */,
+				2B73B80820AEBA43009D51F8 /* Sources */,
+				2B73B80920AEBA43009D51F8 /* Frameworks */,
+				2B73B80A20AEBA43009D51F8 /* Resources */,
+				2EA6B2CEA2E48068123D790F /* [CP] Embed Pods Frameworks */,
+				69E3165BF9E081E885CDFCC3 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2B73B80E20AEBA43009D51F8 /* PBXTargetDependency */,
+			);
+			name = DalagramTests;
+			productName = DalagramTests;
+			productReference = 2B73B80C20AEBA43009D51F8 /* DalagramTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		2B73B81620AEBA43009D51F8 /* DalagramUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2B73B82620AEBA43009D51F8 /* Build configuration list for PBXNativeTarget "DalagramUITests" */;
+			buildPhases = (
+				E1149B4E0239557278DFD262 /* [CP] Check Pods Manifest.lock */,
+				2B73B81320AEBA43009D51F8 /* Sources */,
+				2B73B81420AEBA43009D51F8 /* Frameworks */,
+				2B73B81520AEBA43009D51F8 /* Resources */,
+				EAC23CC0935B2CF2FF0DC3F5 /* [CP] Embed Pods Frameworks */,
+				001D0142D7BF8039BB8130FB /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2B73B81920AEBA43009D51F8 /* PBXTargetDependency */,
+			);
+			name = DalagramUITests;
+			productName = DalagramUITests;
+			productReference = 2B73B81720AEBA43009D51F8 /* DalagramUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2B73B7F020AEBA42009D51F8 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0920;
+				LastUpgradeCheck = 0920;
+				ORGANIZATIONNAME = BuginGroup;
+				TargetAttributes = {
+					2B73B7F720AEBA42009D51F8 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+					2B73B80B20AEBA43009D51F8 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 2B73B7F720AEBA42009D51F8;
+					};
+					2B73B81620AEBA43009D51F8 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 2B73B7F720AEBA42009D51F8;
+					};
+				};
+			};
+			buildConfigurationList = 2B73B7F320AEBA42009D51F8 /* Build configuration list for PBXProject "Dalagram" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 2B73B7EF20AEBA42009D51F8;
+			productRefGroup = 2B73B7F920AEBA42009D51F8 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2B73B7F720AEBA42009D51F8 /* Dalagram */,
+				2B73B80B20AEBA43009D51F8 /* DalagramTests */,
+				2B73B81620AEBA43009D51F8 /* DalagramUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2B73B7F620AEBA42009D51F8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B0589BF20AEE33900B57ACF /* Auth.storyboard in Resources */,
+				2B73B80620AEBA42009D51F8 /* LaunchScreen.storyboard in Resources */,
+				2B73B80320AEBA42009D51F8 /* Assets.xcassets in Resources */,
+				2B2F968020B0500E003DE273 /* ContactCell.xib in Resources */,
+				2B73B80120AEBA42009D51F8 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2B73B80A20AEBA43009D51F8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2B73B81520AEBA43009D51F8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		001D0142D7BF8039BB8130FB /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DalagramUITests/Pods-DalagramUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		04777B921095417CDA5B8572 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DalagramTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2EA6B2CEA2E48068123D790F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DalagramTests/Pods-DalagramTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		69E3165BF9E081E885CDFCC3 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DalagramTests/Pods-DalagramTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6D6D40651A9455687B3FBB9A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Dalagram/Pods-Dalagram-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		92A906C12BEAEAA51077D6F0 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Dalagram/Pods-Dalagram-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/ChameleonFramework/ChameleonFramework.framework",
+				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/InputMask/InputMask.framework",
+				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
+				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/ReachabilitySwift.framework",
+				"${BUILT_PRODUCTS_DIR}/SkyFloatingLabelTextField/SkyFloatingLabelTextField.framework",
+				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
+				"${BUILT_PRODUCTS_DIR}/Whisper/Whisper.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ChameleonFramework.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InputMask.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReachabilitySwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SkyFloatingLabelTextField.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Whisper.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Dalagram/Pods-Dalagram-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9B76BF9D506F70157E04EFE3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Dalagram-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E1149B4E0239557278DFD262 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DalagramUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EAC23CC0935B2CF2FF0DC3F5 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DalagramUITests/Pods-DalagramUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2B73B7F420AEBA42009D51F8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B2F967F20B0500E003DE273 /* ContactCell.swift in Sources */,
+				2B0F122920B033D200F5EF7F /* ContactsController.swift in Sources */,
+				2B0589C120AEE4B100B57ACF /* SingInController.swift in Sources */,
+				2B0589C320AEEBF800B57ACF /* ConfirmController.swift in Sources */,
+				2B2F967A20B04665003DE273 /* UIColor+Extention.swift in Sources */,
+				2B0589C520AEEC5D00B57ACF /* Template.swift in Sources */,
+				2B0F122720B030A700F5EF7F /* TabBarController.swift in Sources */,
+				2B9AB1F020B019C4004CB2A7 /* ViewController+Extension.swift in Sources */,
+				2B73B7FC20AEBA42009D51F8 /* AppDelegate.swift in Sources */,
+				2B0F122B20B0443600F5EF7F /* ChatsController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2B73B80820AEBA43009D51F8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B73B81120AEBA43009D51F8 /* DalagramTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2B73B81320AEBA43009D51F8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B73B81C20AEBA43009D51F8 /* DalagramUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2B73B80E20AEBA43009D51F8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2B73B7F720AEBA42009D51F8 /* Dalagram */;
+			targetProxy = 2B73B80D20AEBA43009D51F8 /* PBXContainerItemProxy */;
+		};
+		2B73B81920AEBA43009D51F8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2B73B7F720AEBA42009D51F8 /* Dalagram */;
+			targetProxy = 2B73B81820AEBA43009D51F8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		2B73B7FF20AEBA42009D51F8 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2B73B80020AEBA42009D51F8 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		2B73B80420AEBA42009D51F8 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2B73B80520AEBA42009D51F8 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		2B73B81E20AEBA43009D51F8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		2B73B81F20AEBA43009D51F8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2B73B82120AEBA43009D51F8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 959EF5792CBBAE40F6683BEA /* Pods-Dalagram.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6W6XXZ7M8W;
+				INFOPLIST_FILE = Dalagram/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.Dalagram;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		2B73B82220AEBA43009D51F8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 231E1016462EA81B0F7EF758 /* Pods-Dalagram.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6W6XXZ7M8W;
+				INFOPLIST_FILE = Dalagram/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.Dalagram;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		2B73B82420AEBA43009D51F8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8EFA16CD04120900729091FF /* Pods-DalagramTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6W6XXZ7M8W;
+				INFOPLIST_FILE = DalagramTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.DalagramTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Dalagram.app/Dalagram";
+			};
+			name = Debug;
+		};
+		2B73B82520AEBA43009D51F8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4A8CD69A4A1D204C2FEF5B66 /* Pods-DalagramTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6W6XXZ7M8W;
+				INFOPLIST_FILE = DalagramTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.DalagramTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Dalagram.app/Dalagram";
+			};
+			name = Release;
+		};
+		2B73B82720AEBA43009D51F8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B7D1F695C7DC0B0EE6B6727D /* Pods-DalagramUITests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6W6XXZ7M8W;
+				INFOPLIST_FILE = DalagramUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.DalagramUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Dalagram;
+			};
+			name = Debug;
+		};
+		2B73B82820AEBA43009D51F8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A33131E8BD52ED87361C5C30 /* Pods-DalagramUITests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6W6XXZ7M8W;
+				INFOPLIST_FILE = DalagramUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.DalagramUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Dalagram;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2B73B7F320AEBA42009D51F8 /* Build configuration list for PBXProject "Dalagram" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2B73B81E20AEBA43009D51F8 /* Debug */,
+				2B73B81F20AEBA43009D51F8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2B73B82020AEBA43009D51F8 /* Build configuration list for PBXNativeTarget "Dalagram" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2B73B82120AEBA43009D51F8 /* Debug */,
+				2B73B82220AEBA43009D51F8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2B73B82320AEBA43009D51F8 /* Build configuration list for PBXNativeTarget "DalagramTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2B73B82420AEBA43009D51F8 /* Debug */,
+				2B73B82520AEBA43009D51F8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2B73B82620AEBA43009D51F8 /* Build configuration list for PBXNativeTarget "DalagramUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2B73B82720AEBA43009D51F8 /* Debug */,
+				2B73B82820AEBA43009D51F8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2B73B7F020AEBA42009D51F8 /* Project object */;
+}

@@ -1,0 +1,6 @@
+framework module Pods_DalagramUITests {
+  umbrella header "Pods-DalagramUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

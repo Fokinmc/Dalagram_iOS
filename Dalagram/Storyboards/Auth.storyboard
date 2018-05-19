@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="SCg-im-DvB">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Sign In Controller-->
+        <scene sceneID="1W3-R7-hPf">
+            <objects>
+                <viewController storyboardIdentifier="SignInController" id="SCg-im-DvB" customClass="SignInController" customModule="Dalagram" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="3Gi-vy-c6k">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Kazakhstan" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="PiW-ON-V1o">
+                                <rect key="frame" x="30" y="60" width="315" height="32"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="+7 700 000 00 00" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ImB-za-tvb">
+                                <rect key="frame" x="30" y="121" width="315" height="29"/>
+                                <color key="textColor" red="0.067895772960018891" green="0.030895900898752143" blue="0.38575513925729443" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no"/>
+                            </textField>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WYQ-X4-wFj">
+                                <rect key="frame" x="30" y="100" width="315" height="1"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.053776840490797548" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="ate-o7-XbN"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6nz-bF-1D3">
+                                <rect key="frame" x="30" y="158" width="315" height="1"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.053776840489999998" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="Kcd-rz-Kct"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="WYQ-X4-wFj" firstAttribute="top" secondItem="PiW-ON-V1o" secondAttribute="bottom" constant="8" id="EQP-pp-h7c"/>
+                            <constraint firstItem="ImB-za-tvb" firstAttribute="leading" secondItem="PiW-ON-V1o" secondAttribute="leading" id="EjP-hZ-oNb"/>
+                            <constraint firstItem="PiW-ON-V1o" firstAttribute="top" secondItem="QuO-VX-MWd" secondAttribute="top" constant="40" id="J2E-27-swC"/>
+                            <constraint firstItem="PiW-ON-V1o" firstAttribute="leading" secondItem="QuO-VX-MWd" secondAttribute="leading" constant="30" id="UuQ-41-yFz"/>
+                            <constraint firstItem="ImB-za-tvb" firstAttribute="trailing" secondItem="PiW-ON-V1o" secondAttribute="trailing" id="Znm-dE-U3C"/>
+                            <constraint firstItem="6nz-bF-1D3" firstAttribute="leading" secondItem="ImB-za-tvb" secondAttribute="leading" id="i7C-eD-5U6"/>
+                            <constraint firstItem="WYQ-X4-wFj" firstAttribute="trailing" secondItem="PiW-ON-V1o" secondAttribute="trailing" id="l6O-jC-AME"/>
+                            <constraint firstItem="QuO-VX-MWd" firstAttribute="trailing" secondItem="PiW-ON-V1o" secondAttribute="trailing" constant="30" id="mAq-Qd-lqg"/>
+                            <constraint firstItem="WYQ-X4-wFj" firstAttribute="leading" secondItem="PiW-ON-V1o" secondAttribute="leading" id="qCC-yt-YOn"/>
+                            <constraint firstItem="6nz-bF-1D3" firstAttribute="trailing" secondItem="ImB-za-tvb" secondAttribute="trailing" id="v92-gr-Qb5"/>
+                            <constraint firstItem="6nz-bF-1D3" firstAttribute="top" secondItem="ImB-za-tvb" secondAttribute="bottom" constant="8" id="wgm-Dg-OvJ"/>
+                            <constraint firstItem="ImB-za-tvb" firstAttribute="top" secondItem="WYQ-X4-wFj" secondAttribute="bottom" constant="20" id="yeL-hq-DNx"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="QuO-VX-MWd"/>
+                    </view>
+                    <connections>
+                        <outlet property="countryField" destination="PiW-ON-V1o" id="57u-pG-awY"/>
+                        <outlet property="phoneField" destination="ImB-za-tvb" id="Qd5-be-9sj"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XPo-HC-M64" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-279" y="367"/>
+        </scene>
+        <!--Confirm Controller-->
+        <scene sceneID="S2J-yA-ved">
+            <objects>
+                <viewController storyboardIdentifier="ConfirmController" id="Vx7-Sc-jNp" customClass="ConfirmController" customModule="Dalagram" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="sQz-6v-abz">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0000" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aAp-GC-17B">
+                                <rect key="frame" x="30" y="60" width="315" height="32"/>
+                                <color key="textColor" red="0.74501616380000002" green="0.74501616380000002" blue="0.74501616380000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no"/>
+                            </textField>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5ie-Mo-IwD">
+                                <rect key="frame" x="30" y="100" width="315" height="1"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.053776840489999998" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="aT2-a5-mk6"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b5C-xA-Z0k">
+                                <rect key="frame" x="30" y="117" width="243.5" height="50.5"/>
+                                <string key="text">Код доставлен на номер
+8 705 22 33 123. Повторно можно
+будет оправить через:</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="displayP3"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aqs-Pa-pLw">
+                                <rect key="frame" x="289.5" y="130.5" width="55.5" height="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="5ie-Mo-IwD" firstAttribute="leading" secondItem="aAp-GC-17B" secondAttribute="leading" id="0zX-WM-H7S"/>
+                            <constraint firstItem="2Uf-GV-9ZZ" firstAttribute="trailing" secondItem="aAp-GC-17B" secondAttribute="trailing" constant="30" id="D4S-iv-Wv2"/>
+                            <constraint firstItem="aAp-GC-17B" firstAttribute="top" secondItem="2Uf-GV-9ZZ" secondAttribute="top" constant="40" id="FwD-hl-a1Q"/>
+                            <constraint firstItem="aqs-Pa-pLw" firstAttribute="centerY" secondItem="b5C-xA-Z0k" secondAttribute="centerY" id="PFe-ob-4Nf"/>
+                            <constraint firstItem="5ie-Mo-IwD" firstAttribute="top" secondItem="aAp-GC-17B" secondAttribute="bottom" constant="8" id="Qpv-Dk-HES"/>
+                            <constraint firstItem="5ie-Mo-IwD" firstAttribute="trailing" secondItem="aAp-GC-17B" secondAttribute="trailing" id="bQu-5r-SGG"/>
+                            <constraint firstItem="b5C-xA-Z0k" firstAttribute="top" secondItem="5ie-Mo-IwD" secondAttribute="bottom" constant="16" id="dzs-uF-t2e"/>
+                            <constraint firstItem="aqs-Pa-pLw" firstAttribute="leading" secondItem="b5C-xA-Z0k" secondAttribute="trailing" constant="16" id="j8S-bC-TBB"/>
+                            <constraint firstItem="aqs-Pa-pLw" firstAttribute="trailing" secondItem="aAp-GC-17B" secondAttribute="trailing" id="jLJ-a7-uUN"/>
+                            <constraint firstItem="aAp-GC-17B" firstAttribute="leading" secondItem="2Uf-GV-9ZZ" secondAttribute="leading" constant="30" id="s0M-jB-tKe"/>
+                            <constraint firstItem="b5C-xA-Z0k" firstAttribute="leading" secondItem="aAp-GC-17B" secondAttribute="leading" id="vqx-eo-pPW"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="2Uf-GV-9ZZ"/>
+                    </view>
+                    <connections>
+                        <outlet property="codeField" destination="aAp-GC-17B" id="pZ0-Sm-3QG"/>
+                        <outlet property="messageLabel" destination="b5C-xA-Z0k" id="wVY-A2-RZO"/>
+                        <outlet property="timeLabel" destination="aqs-Pa-pLw" id="wIF-2k-Kk1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fe8-2A-7Ax" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="413.60000000000002" y="366.56671664167919"/>
+        </scene>
+    </scenes>
+</document>
