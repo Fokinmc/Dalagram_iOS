@@ -27,15 +27,16 @@ class TabBarController : UITabBarController {
         vc1.title = "Контакты"
         let nc1 = UINavigationController.init(rootViewController: vc1)
 
-        let vc2 = ChatsController.instantiate()
+        let vc2 = ChatsController()
         vc2.title = "Чаты"
         let nc2 = UINavigationController.init(rootViewController: vc2)
         
         let vc3 = UIViewController()
         vc3.title = "Новости"
+        vc3.view.backgroundColor = UIColor.white
         let nc3 = UINavigationController.init(rootViewController: vc3)
         
-        let vc4 = UIViewController()
+        let vc4 = SettingsController.fromStoryboard()
         vc4.title = "Настройки"
         let nc4 = UINavigationController.init(rootViewController: vc4)
     
@@ -57,7 +58,7 @@ class TabBarController : UITabBarController {
         
         let tabBarItem2 = self.tabBar.items?[2]
         tabBarItem2?.image = UIImage.init(named: "icon_news")?.withRenderingMode(.alwaysOriginal)
-        tabBarItem2?.selectedImage = UIImage.init(named: "icon_news")?.withRenderingMode(.alwaysOriginal)
+        tabBarItem2?.selectedImage = UIImage.init(named: "icon_news_ac")?.withRenderingMode(.alwaysOriginal)
         
         let tabBarItem3 = self.tabBar.items?[3]
         tabBarItem3?.image = UIImage.init(named: "icon_settings")?.withRenderingMode(.alwaysOriginal)

@@ -29,7 +29,7 @@ extension UIViewController {
     
     func setBlueNavBar() {
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        self.navigationController?.navigationBar.barTintColor = UIColor.customBlueColor
+        self.navigationController?.navigationBar.barTintColor = UIColor.darkBlueNavColor
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font : UIFont.systemFont(ofSize: 18.0, weight: UIFont.Weight.init(0.01))]
     }

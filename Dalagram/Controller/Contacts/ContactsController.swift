@@ -12,14 +12,10 @@ class ContactsController: UITableViewController {
 
     // MARK: - IBOutlets
     fileprivate var searchBar: UISearchBar = UISearchBar()
+    fileprivate let inviteCellIndetifier = InviteFriendCell.defaultReuseIdentifier
     
     // MARK: - Variables
-    
-    // MARK: - Initializer
-    
-    static func instantiate() -> ContactsController {
-        return UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ID") as! ContactsController
-    }
+    let aplhabet: [String] = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
     
     // MARK: - Life cycle
     
@@ -32,34 +28,54 @@ class ContactsController: UITableViewController {
     // MARK: - Configuring UI
     
     func configureUI() {
-        
+       
         view.backgroundColor = UIColor.white
         
-        // SearchBar
+        //MARK: SearchBar
         searchBar.searchBarStyle = .minimal
         searchBar.placeholder = " Поиск"
         searchBar.sizeToFit()
         tableView.tableHeaderView = searchBar
         
-        // TableView
-        tableView.register(UINib.init(nibName: "ContactCell", bundle: nil), forCellReuseIdentifier: "ContactCell")
+        //MARK: TableView
+        tableView.register(InviteFriendCell.self)
+        tableView.registerNib(ContactCell.self)
         
+        // MARK: UIBarButtonItem
+        let plusButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: nil)
+        plusButton.tintColor = UIColor.white
+        self.navigationItem.rightBarButtonItem = plusButton
+        
+        // MARK:
         
     }
 }
 extension ContactsController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 6
+        return aplhabet.count + 1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return 3
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ContactCell", for: indexPath)
-        return cell
+        if indexPath.row == 0 && indexPath.section == 0 {
+            let cell: InviteFriendCell = tableView.dequeReusableCell(for: indexPath)
+            return cell
+        } else {
+            let cell: ContactCell = tableView.dequeReusableCell(for: indexPath)
+            return cell
+        }
+    }
+    
+    override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        return self.aplhabet
+    }
+    
+    override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+        return index + 1
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -67,7 +83,7 @@ extension ContactsController {
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return section != 0 ? "A" : ""
+        return section != 0 ? self.aplhabet[section - 1] : ""
     }
     
 

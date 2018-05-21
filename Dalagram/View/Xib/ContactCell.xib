@@ -58,7 +58,7 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
-            <inset key="separatorInset" minX="70" minY="0.0" maxX="0.0" maxY="0.0"/>
+            <inset key="separatorInset" minX="76" minY="0.0" maxX="0.0" maxY="0.0"/>
             <point key="canvasLocation" x="-15" y="77"/>
         </tableViewCell>
     </objects>
