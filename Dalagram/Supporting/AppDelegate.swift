@@ -19,7 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
         configureRootController()
         configureNavBar()
-        configureKeyboard()
         configureTabBar()
   
         return true

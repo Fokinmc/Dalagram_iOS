@@ -22,11 +22,14 @@ class ChatsController: UITableViewController {
         super.viewDidLoad()
         configureUI()
         setBlueNavBar()
+        setEmptyBackTitle()
     }
     
     // MARK: - Configuring UI
     
     func configureUI() {
+        
+        // MARK: View
         view.backgroundColor = UIColor.white
         tableView.registerNib(ChatCell.self)
         
@@ -60,6 +63,12 @@ extension ChatsController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: ChatCell = tableView.dequeReusableCell(for: indexPath)
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = ChatDetailController()
+        vc.hidesBottomBarWhenPushed = true
+        self.show(vc, sender: nil)
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

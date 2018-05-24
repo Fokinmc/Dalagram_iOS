@@ -4,6 +4,7 @@
 target 'Dalagram' do
  
   use_frameworks!
+  pod 'SwiftLint'
   pod 'IQKeyboardManagerSwift'
   pod 'ChameleonFramework/Swift', :git => 'https://github.com/ViccAlexander/Chameleon.git', :branch => 'master'
   pod 'SnapKit'
@@ -12,7 +13,8 @@ target 'Dalagram' do
   pod 'InputMask'
   pod 'Whisper'
   pod 'SkyFloatingLabelTextField', '~> 3.0'
-
+  pod 'MessageKit'
+  
   target 'DalagramTests' do
     inherit! :search_paths
     # Pods for testing

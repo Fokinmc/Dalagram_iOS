@@ -25,12 +25,17 @@
 		2B73B80620AEBA42009D51F8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B73B80420AEBA42009D51F8 /* LaunchScreen.storyboard */; };
 		2B73B81120AEBA43009D51F8 /* DalagramTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B73B81020AEBA43009D51F8 /* DalagramTests.swift */; };
 		2B73B81C20AEBA43009D51F8 /* DalagramUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B73B81B20AEBA43009D51F8 /* DalagramUITests.swift */; };
+		2B7BFFAA20B7336600FA7507 /* UserNavigationTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7BFFA920B7336600FA7507 /* UserNavigationTitleView.swift */; };
+		2B7BFFAC20B7477700FA7507 /* MessageInputBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7BFFAB20B7477700FA7507 /* MessageInputBarView.swift */; };
 		2B9AB1F020B019C4004CB2A7 /* ViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9AB1EF20B019C4004CB2A7 /* ViewController+Extension.swift */; };
 		2BC1593A20B2BB3E00514397 /* ChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC1593820B2BB3E00514397 /* ChatCell.swift */; };
 		2BC1593B20B2BB3E00514397 /* ChatCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2BC1593920B2BB3E00514397 /* ChatCell.xib */; };
 		2BC1593D20B2CA0000514397 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC1593C20B2CA0000514397 /* SettingsController.swift */; };
 		2BC1594220B2D13E00514397 /* UiStoryboardProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC1594120B2D13E00514397 /* UiStoryboardProtocol.swift */; };
 		2BE6B86420B2AB4D00E45260 /* ReusableCellProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE6B86320B2AB4D00E45260 /* ReusableCellProtocol.swift */; };
+		2BE85F0E20B433E0000FF3BE /* ChatDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE85F0D20B433E0000FF3BE /* ChatDetailController.swift */; };
+		2BE85F1020B43594000FF3BE /* TextMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE85F0F20B43594000FF3BE /* TextMessageCell.swift */; };
+		2BE85F1220B43683000FF3BE /* BaseCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE85F1120B43683000FF3BE /* BaseCollectionCell.swift */; };
 		497B01042330843B6AFA3CAE /* Pods_DalagramTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A05F11C66272DFBEF26F73EF /* Pods_DalagramTests.framework */; };
 		AD67A8385C29C33386340651 /* Pods_DalagramUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEFA6663B80A56F0186D62EA /* Pods_DalagramUITests.framework */; };
 /* End PBXBuildFile section */
@@ -77,12 +82,17 @@
 		2B73B81720AEBA43009D51F8 /* DalagramUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DalagramUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B73B81B20AEBA43009D51F8 /* DalagramUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DalagramUITests.swift; sourceTree = "<group>"; };
 		2B73B81D20AEBA43009D51F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2B7BFFA920B7336600FA7507 /* UserNavigationTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNavigationTitleView.swift; sourceTree = "<group>"; };
+		2B7BFFAB20B7477700FA7507 /* MessageInputBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageInputBarView.swift; sourceTree = "<group>"; };
 		2B9AB1EF20B019C4004CB2A7 /* ViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+Extension.swift"; sourceTree = "<group>"; };
 		2BC1593820B2BB3E00514397 /* ChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCell.swift; sourceTree = "<group>"; };
 		2BC1593920B2BB3E00514397 /* ChatCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatCell.xib; sourceTree = "<group>"; };
 		2BC1593C20B2CA0000514397 /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		2BC1594120B2D13E00514397 /* UiStoryboardProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UiStoryboardProtocol.swift; sourceTree = "<group>"; };
 		2BE6B86320B2AB4D00E45260 /* ReusableCellProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableCellProtocol.swift; sourceTree = "<group>"; };
+		2BE85F0D20B433E0000FF3BE /* ChatDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatDetailController.swift; sourceTree = "<group>"; };
+		2BE85F0F20B43594000FF3BE /* TextMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextMessageCell.swift; sourceTree = "<group>"; };
+		2BE85F1120B43683000FF3BE /* BaseCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionCell.swift; sourceTree = "<group>"; };
 		4A8CD69A4A1D204C2FEF5B66 /* Pods-DalagramTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DalagramTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DalagramTests/Pods-DalagramTests.release.xcconfig"; sourceTree = "<group>"; };
 		8EFA16CD04120900729091FF /* Pods-DalagramTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DalagramTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DalagramTests/Pods-DalagramTests.debug.xcconfig"; sourceTree = "<group>"; };
 		959EF5792CBBAE40F6683BEA /* Pods-Dalagram.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Dalagram.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Dalagram/Pods-Dalagram.debug.xcconfig"; sourceTree = "<group>"; };
@@ -167,6 +177,7 @@
 		2B73B7FA20AEBA42009D51F8 /* Dalagram */ = {
 			isa = PBXGroup;
 			children = (
+				2B7BFFA820B7335A00FA7507 /* Components */,
 				2B73B83020AEBAAF009D51F8 /* Network */,
 				2B73B82C20AEBA78009D51F8 /* Extensions */,
 				2B73B82B20AEBA74009D51F8 /* Model */,
@@ -270,10 +281,21 @@
 			path = Network;
 			sourceTree = "<group>";
 		};
+		2B7BFFA820B7335A00FA7507 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				2BE85F1120B43683000FF3BE /* BaseCollectionCell.swift */,
+				2B7BFFA920B7336600FA7507 /* UserNavigationTitleView.swift */,
+				2B7BFFAB20B7477700FA7507 /* MessageInputBarView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		2BC1593720B2BA5400514397 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
 				2B1EEE4320B15B3C00CDE800 /* InviteFriendCell.swift */,
+				2BE85F0F20B43594000FF3BE /* TextMessageCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -290,6 +312,7 @@
 			isa = PBXGroup;
 			children = (
 				2B0F122A20B0443600F5EF7F /* ChatsController.swift */,
+				2BE85F0D20B433E0000FF3BE /* ChatDetailController.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -556,6 +579,7 @@
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/InputMask/InputMask.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
+				"${BUILT_PRODUCTS_DIR}/MessageKit/MessageKit.framework",
 				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/ReachabilitySwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SkyFloatingLabelTextField/SkyFloatingLabelTextField.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
@@ -567,6 +591,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InputMask.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MessageKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReachabilitySwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SkyFloatingLabelTextField.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
@@ -636,6 +661,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B2F967F20B0500E003DE273 /* ContactCell.swift in Sources */,
+				2B7BFFAC20B7477700FA7507 /* MessageInputBarView.swift in Sources */,
 				2BE6B86420B2AB4D00E45260 /* ReusableCellProtocol.swift in Sources */,
 				2B0F122920B033D200F5EF7F /* ContactsController.swift in Sources */,
 				2B0589C120AEE4B100B57ACF /* SingInController.swift in Sources */,
@@ -646,9 +672,13 @@
 				2B0589C520AEEC5D00B57ACF /* Template.swift in Sources */,
 				2B0F122720B030A700F5EF7F /* TabBarController.swift in Sources */,
 				2B9AB1F020B019C4004CB2A7 /* ViewController+Extension.swift in Sources */,
+				2BE85F1220B43683000FF3BE /* BaseCollectionCell.swift in Sources */,
 				2BC1593D20B2CA0000514397 /* SettingsController.swift in Sources */,
+				2BE85F0E20B433E0000FF3BE /* ChatDetailController.swift in Sources */,
+				2BE85F1020B43594000FF3BE /* TextMessageCell.swift in Sources */,
 				2BC1593A20B2BB3E00514397 /* ChatCell.swift in Sources */,
 				2B73B7FC20AEBA42009D51F8 /* AppDelegate.swift in Sources */,
+				2B7BFFAA20B7336600FA7507 /* UserNavigationTitleView.swift in Sources */,
 				2B0F122B20B0443600F5EF7F /* ChatsController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

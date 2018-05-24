@@ -40,7 +40,7 @@ class TabBarController : UITabBarController {
         vc4.title = "Настройки"
         let nc4 = UINavigationController.init(rootViewController: vc4)
     
-        self.viewControllers = [nc1, nc2, nc3, nc4]
+        self.viewControllers = [nc2, nc1, nc3, nc4]
         
     }
     
