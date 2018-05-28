@@ -7,13 +7,18 @@
 //
 
 import UIKit
-import MessageKit
+
 
 class ChatDetailController: UIViewController {
 
     var collectionView: UICollectionView!
     lazy var titleView = UserNavigationTitleView()
-    lazy var inputBar = MessageInputBarView()
+    
+    lazy var inputBarView: MessageInputBarView = {
+        let inputBarView = MessageInputBarView()
+        inputBarView.chatDetailVC = self
+        return inputBarView
+    }()
     
     // MARK: Variables
     var messages = ["Test running, or pest concluding",
@@ -51,23 +56,18 @@ class ChatDetailController: UIViewController {
         collectionView.backgroundColor = UIColor.white
         view.addSubview(collectionView)
         
+        let bgView = UIImageView(image: UIImage(named: "image_chatbg"))
+        bgView.contentMode = .scaleAspectFill
+        
+        collectionView.backgroundView = bgView
+        
     }
     
     // MARK: Setup InputBar Components
     
     func setupInputBar() {
-        view.addSubview(inputBar)
-        inputBar.snp.makeConstraints { (make) in
-            make.left.equalToSuperview()
-            make.right.equalToSuperview()
-            make.height.equalTo(44.0)
-            if #available(iOS 11.0, *) {
-                make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottomMargin)
-            } else {
-                make.bottom.equalToSuperview()
-            }
-        }
-
+        view.addSubview(inputBarView)
+        inputBarView.setupConstraints()
     }
     
     // MARK: - Navigation Back Button Action
@@ -75,6 +75,11 @@ class ChatDetailController: UIViewController {
     @objc func backItemPressed() {
         self.navigationController?.popViewController(animated: true)
     }
+    
+    @objc func sendButtonPressed() {
+        
+    }
+    
 }
 
 // MARK: - UICollectionView DataSource & Delegate

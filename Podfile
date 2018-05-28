@@ -13,7 +13,7 @@ target 'Dalagram' do
   pod 'InputMask'
   pod 'Whisper'
   pod 'SkyFloatingLabelTextField', '~> 3.0'
-  pod 'MessageKit'
+  pod "SlackTextViewController"
   
   target 'DalagramTests' do
     inherit! :search_paths
