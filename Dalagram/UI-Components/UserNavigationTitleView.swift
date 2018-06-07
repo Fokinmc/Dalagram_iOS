@@ -21,6 +21,8 @@ class UserNavigationTitleView: UIView {
     var userNameLabel: UILabel = {
         let label = UILabel()
         label.text = "Zholayev Toremurat"
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.1
         label.textColor = UIColor.white
         return label
     }()
@@ -29,7 +31,7 @@ class UserNavigationTitleView: UIView {
         let label = UILabel()
         label.text = "last seen"
         label.textColor = UIColor.white.withAlphaComponent(0.6)
-        label.font = UIFont.systemFont(ofSize: 13.0)
+        label.font = UIFont.systemFont(ofSize: 12.0)
         return label
     }()
     
@@ -37,15 +39,20 @@ class UserNavigationTitleView: UIView {
         super.init(frame: frame)
         setupViews()
     }
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        userAvatarView.layer.cornerRadius = userAvatarView.frame.height/2
+    }
     
     func setupViews() {
+        
         addSubview(userAvatarView)
         addSubview(userNameLabel)
         addSubview(userStatusLabel)
-        
+
         userAvatarView.snp.makeConstraints { (make) in
             make.left.equalTo(0.0)
-            make.top.equalTo(0.0)
+            make.top.equalTo(2.0)
             make.bottom.equalTo(-3.0)
             make.width.equalTo(userAvatarView.snp.height).multipliedBy(1/1)
         }
@@ -54,6 +61,7 @@ class UserNavigationTitleView: UIView {
             make.left.equalTo(userAvatarView.snp.right).offset(16.0)
             make.top.equalTo(userAvatarView.snp.top)
             make.right.equalTo(-16.0)
+            make.bottom.equalTo(userStatusLabel.snp.top)
         }
         
         userStatusLabel.snp.makeConstraints { (make) in
@@ -61,7 +69,6 @@ class UserNavigationTitleView: UIView {
             make.bottom.equalTo(userAvatarView.snp.bottom)
         }
         
-        userAvatarView.layer.cornerRadius = userAvatarView.bounds.width/2
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -15,7 +15,7 @@ class ContactsController: UITableViewController {
     fileprivate let inviteCellIndetifier = InviteFriendCell.defaultReuseIdentifier
     
     // MARK: - Variables
-    let aplhabet: [String] = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+    let viewModel = ContactsViewModel()
     
     // MARK: - Life cycle
     
@@ -46,14 +46,12 @@ class ContactsController: UITableViewController {
         plusButton.tintColor = UIColor.white
         self.navigationItem.rightBarButtonItem = plusButton
         
-        // MARK:
-        
     }
 }
 extension ContactsController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return aplhabet.count + 1
+        return viewModel.aplhabet.count + 1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -71,7 +69,7 @@ extension ContactsController {
     }
     
     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        return self.aplhabet
+        return viewModel.aplhabet
     }
     
     override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
@@ -83,7 +81,7 @@ extension ContactsController {
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return section != 0 ? self.aplhabet[section - 1] : ""
+        return section != 0 ?  viewModel.aplhabet[section - 1] : ""
     }
     
 

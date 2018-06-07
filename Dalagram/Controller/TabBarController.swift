@@ -27,7 +27,7 @@ class TabBarController : UITabBarController {
         vc1.title = "Контакты"
         let nc1 = UINavigationController.init(rootViewController: vc1)
 
-        let vc2 = ChatsController()
+        let vc2 = MessagesController()
         vc2.title = "Чаты"
         let nc2 = UINavigationController.init(rootViewController: vc2)
         

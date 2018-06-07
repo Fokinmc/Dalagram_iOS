@@ -5,16 +5,22 @@ target 'Dalagram' do
  
   use_frameworks!
   pod 'SwiftLint'
+  pod 'SwiftyJSON'
   pod 'IQKeyboardManagerSwift'
-  pod 'ChameleonFramework/Swift', :git => 'https://github.com/ViccAlexander/Chameleon.git', :branch => 'master'
   pod 'SnapKit'
   pod 'Kingfisher'
   pod 'ReachabilitySwift', '~> 3'
   pod 'InputMask'
   pod 'Whisper'
   pod 'SkyFloatingLabelTextField', '~> 3.0'
-  pod "SlackTextViewController"
-  
+  pod 'RxCocoa'
+  pod 'RxSwift'
+  pod 'Moya/RxSwift'
+  pod 'Moya-ModelMapper/RxSwift'
+  pod 'DropDown'
+  pod 'RealmSwift'
+
+
   target 'DalagramTests' do
     inherit! :search_paths
     # Pods for testing

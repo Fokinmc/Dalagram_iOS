@@ -8,6 +8,7 @@
 
 import UIKit
 import InputMask
+import RxSwift
 
 class ConfirmController: UIViewController {
 
@@ -19,6 +20,8 @@ class ConfirmController: UIViewController {
     
     // MARK: - Variables
     
+    var viewModel: AuthViewModel!
+    var disposeBag = DisposeBag()
     var maskDelegate: MaskedTextFieldDelegate? = nil
     var timer: Timer = Timer()
     lazy var seconds: TimeInterval = 120.0 // 2 minutes
@@ -38,14 +41,20 @@ class ConfirmController: UIViewController {
         setupTimer()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        timer.invalidate()
+    }
+    
     // MARK: - Configuring UI
     
     func configureUI() {
         setEmptyBackTitle()
-        maskDelegate = MaskedTextFieldDelegate(format: "[0000]")
+        maskDelegate = MaskedTextFieldDelegate(format: "[000000]")
         maskDelegate?.listener = self
         codeField.delegate = maskDelegate
-        codeField.placeholder = "0000"
+        codeField.placeholder = "000000"
+        codeField.becomeFirstResponder()
     }
     
     // MARK: - Setup Timer
@@ -73,8 +82,16 @@ class ConfirmController: UIViewController {
 extension ConfirmController: MaskedTextFieldDelegateListener {
     
     func textField(_ textField: UITextField, didFillMandatoryCharacters complete: Bool, didExtractValue value: String) {
-        if value.count == 4 {
-            print("ok")
+        if value.count == 6 {
+            viewModel.confirmAccount(smsCode: value, {
+                if self.viewModel.isNewUser.value {
+                    let vc = CredentialsController.fromStoryboard(name: "Auth", bundle: nil)
+                    self.show(vc, sender: nil)
+                } else {
+                    AppDelegate.shared().configureRootController(isLogged: true)
+                }
+            })
         }
     }
+    
 }

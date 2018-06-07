@@ -1,5 +1,5 @@
 //
-//  ChatsController.swift
+//  MessagesController.swift
 //  Dalagram
 //
 //  Created by Toremurat on 19.05.18.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ChatsController: UITableViewController {
+class MessagesController: UITableViewController {
 
     // MARK: - IBOutlets
     
@@ -32,7 +32,6 @@ class ChatsController: UITableViewController {
         // MARK: View
         view.backgroundColor = UIColor.white
         tableView.registerNib(ChatCell.self)
-        
         // MARK: - UIBarButtonItem
         let createItem = UIBarButtonItem(image: UIImage(named: "icon_create"), style: .plain, target: self, action: #selector(createChatAction))
         createItem.tintColor = UIColor.white
@@ -43,14 +42,15 @@ class ChatsController: UITableViewController {
     // MARK: - Create Chat UIBarButton Action
     
     @objc func createChatAction() {
-        
+        let vc = NewChatController()
+        self.show(vc, sender: nil)
     }
 
 }
 
 // MARK: - TableView Delegate & DataSource
 
-extension ChatsController {
+extension MessagesController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -66,7 +66,8 @@ extension ChatsController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = ChatDetailController()
+        let vc = ChatController()
+        vc.user = "Tore"
         vc.hidesBottomBarWhenPushed = true
         self.show(vc, sender: nil)
     }

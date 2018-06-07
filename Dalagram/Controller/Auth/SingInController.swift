@@ -8,6 +8,9 @@
 
 import UIKit
 import InputMask
+import RxSwift
+import RxCocoa
+import DropDown
 
 class SignInController: UIViewController {
 
@@ -18,12 +21,15 @@ class SignInController: UIViewController {
     
     // MARK: - Variables
     
+    var viewModel = AuthViewModel()
     var maskDelegate: MaskedTextFieldDelegate? = nil
+    var disBag = DisposeBag()
+    let dropDown = DropDown()
     
     // MARK: - Initializer
     
     static func instantiate() -> SignInController {
-        return UIStoryboard.init(name: "Auth", bundle: nil).instantiateViewController(withIdentifier: "SignInController") as! SignInController
+        return SignInController.fromStoryboard(name: "Auth", bundle: nil)
     }
     
     // MARK: - Life cycle
@@ -32,10 +38,8 @@ class SignInController: UIViewController {
         super.viewDidLoad()
         self.title = "Регистрация"
         configureUI()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+        phoneField.rx.text.orEmpty.bind(to: viewModel.phone).disposed(by: disBag)
+//        setBlueNavBar()
     }
     
     // MARK: - Configuring UI
@@ -51,8 +55,20 @@ class SignInController: UIViewController {
         maskDelegate?.put(text: "+7 ", into: phoneField)
         maskDelegate?.listener = self
         phoneField.delegate = maskDelegate
+        
+        // DropDown for CountyField
+        countryField.allowsEditingTextAttributes = false
+        countryField.addTarget(self, action: #selector(openDropDown), for: UIControlEvents.touchDown)
+        dropDown.anchorView = countryField
+        dropDown.dataSource = ["+7 Kazakhstan", "+9 Russia", "+8 Kyrgyzstan", "+1 United States", "+998 Uzbekistan"]
+        dropDown.selectionAction = {[unowned self] (index: Int, item: String) in
+            self.countryField.text = item
+        }
     }
     
+    @objc func openDropDown() {
+        dropDown.show()
+    }
     
 }
 
@@ -62,15 +78,22 @@ extension SignInController: MaskedTextFieldDelegateListener {
     
     func textField(_ textField: UITextField, didFillMandatoryCharacters complete: Bool, didExtractValue value: String) {
         if value.count == 12 {
-            showConfirmAlert(phone: value)
+            alert(title: "Подтверждение телефона",
+                message: "Убедитесь что правильно ввели Ваш номер \(value)",
+                cancelButton: "Отмена",
+                actionButton: "Подтвердить", handler: { [unowned self] () -> (Void) in
+                self.viewModel.attempSignIn({ [unowned self] (value) in
+                    self.showNextController(isNewUser: value)
+                })
+            })
         }
     }
-    
-    func showConfirmAlert(phone: String) {
-        alert(title: "Подтверждение телефона", message: "Убедитесь что правильно ввели Ваш номер \(phone)", cancelButton: "Отмена", actionButton: "Подтвердить", handler: { () -> (Void) in
-            let vc = ConfirmController.instantiate()
-            self.show(vc, sender: nil)
-        }, cancelHandler: nil)
+
+    func showNextController(isNewUser: Bool) {
+        let vc = ConfirmController.instantiate()
+        viewModel.isNewUser.value = isNewUser
+        vc.viewModel = viewModel
+        self.show(vc, sender: nil)
     }
-    
+
 }

@@ -11,6 +11,15 @@ import UIKit
 
 extension UIViewController {
     
+    // MARK: Safe Area Bottom Inset
+    func calculateBottomSafeArea(_ value: CGFloat) -> CGFloat {
+        var holder = value
+        if #available(iOS 11.0, *) {
+            holder += UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0.0
+        }
+        return holder
+    }
+    
     // MARK: Hide Keyboard
     func hideKeyboardWhenTappedAround() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
@@ -30,6 +39,7 @@ extension UIViewController {
     func setBlueNavBar() {
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.barTintColor = UIColor.darkBlueNavColor
+        self.navigationController?.navigationBar.tintColor = UIColor.white
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font : UIFont.systemFont(ofSize: 18.0, weight: UIFont.Weight.init(0.01))]
     }
