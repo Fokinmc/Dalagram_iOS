@@ -12,6 +12,7 @@ class GroupContactCell: UITableViewCell {
     
     var markIcon: UIImageView = {
         let img = UIImageView(image: UIImage(named: "icon_mark"))
+        img.isHidden = true
         return img
     }()
     
@@ -19,29 +20,37 @@ class GroupContactCell: UITableViewCell {
         let img = UIImageView(frame: CGRect.zero)
         img.image = UIImage(named: "userpic")
         img.contentMode = .scaleAspectFill
+        img.clipsToBounds = true
         return img
     }()
     
     var userName: UILabel = {
         let label = UILabel()
         label.text = "Zholayev Toremurat"
-        
+        label.font = UIFont.systemFont(ofSize: 17.0)
         return label
     }()
+    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
+        selectionStyle = .none
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        separatorInset.left = userImage.frame.width + 32
+        userImage.layer.cornerRadius = userImage.frame.width/2
     }
     
     func setupViews() {
         addSubview(userImage)
         addSubview(userName)
         addSubview(markIcon)
-        userImage.layer.cornerRadius = userImage.frame.width/2
+        
+        userImage.layer.borderWidth = 0.5
+        userImage.layer.borderColor = UIColor.lightBlueColor.cgColor
+        
         userImage.snp.makeConstraints { (make) in
             make.left.equalTo(16.0)
             make.top.equalTo(6)
@@ -56,14 +65,16 @@ class GroupContactCell: UITableViewCell {
             make.left.equalTo(userImage.snp.right).offset(16)
             make.centerY.equalToSuperview()
         }
+        
     }
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    func setupContact(_ data: Contact) {
+        userName.text      = data.user_name != "" ? data.user_name : data.contact_name
+        userImage.kf.setImage(with: URL(string: data.avatar), placeholder: #imageLiteral(resourceName: "img_contact"))
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
 }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 class ChatController: UIViewController {
     
@@ -29,6 +30,7 @@ class ChatController: UIViewController {
         collectionView.register(TextMessageCell.self)
         collectionView.backgroundColor = UIColor.white
         collectionView.keyboardDismissMode = .interactive
+        collectionView.contentOffset = CGPoint(x: 0, y: 100)
         collectionView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8.0, right: 0)
         collectionView.alwaysBounceVertical = true
         let bgView = UIImageView(image: UIImage(named: "image_chatbg"))
@@ -51,14 +53,14 @@ class ChatController: UIViewController {
     }
     
     override var canBecomeFirstResponder: Bool { return true }
-    // MARK: Variables
-    var messages = ["Hello message", "Test running, or pest concluding",
-                    "Some big test test test test test",
-                    "Some big test test test test testSome big test test test test testSome big test test test test tests", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."]
     
-    var user: String = "" {
+    // MARK: Variables
+    
+    var messages: [ChatMessage] = []
+    
+    var contact: Contact! {
         didSet {
-            configureNavBar(user)
+            configureNavBar(contact)
         }
     }
 
@@ -69,6 +71,22 @@ class ChatController: UIViewController {
         //configureNavBar()
         configureUI()
         configureKeyboard()
+       
+        SocketIOManager.shared.establishConnection()
+        SocketIOManager.shared.socket.on(clientEvent: .connect) {data, ack in
+            print("socket connected \(data)")
+        }
+
+        SocketIOManager.shared.socket.on("message") { dataArray, ack in
+            print("socket message \(dataArray)")
+            let dict = dataArray[0] as! NSDictionary
+            if let text = dict.value(forKey: "message") as? String, let id = dict.value(forKey: "user_id") as? Int, let name = dict.value(forKey: "name") as? String  {
+                
+                let message = ChatMessage(user_id: id, user_name: name, text: text)
+                self.messages.append(message)
+                self.collectionView.reloadData()
+            }
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -78,11 +96,13 @@ class ChatController: UIViewController {
     
     // MARK: - Configure NavBar
     
-    func configureNavBar(_ user: String = "Klimov Yerbol") {
+    func configureNavBar(_ contact: Contact) {
         let backItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icon_back"), style: .plain, target: self, action: #selector(backItemPressed))
         let titleItem = UIBarButtonItem(customView: titleView)
         self.navigationItem.leftBarButtonItems = [backItem, titleItem]
-        titleView.userNameLabel.text = user
+        titleView.userNameLabel.text = contact.user_name.isEmpty ? contact.contact_name : contact.user_name
+        titleView.userStatusLabel.text = contact.user_status != "" ? contact.user_status : contact.last_visit
+        titleView.userAvatarView.kf.setImage(with: URL(string: contact.avatar))
     }
     
     // MARK: - Configure UI
@@ -95,10 +115,9 @@ class ChatController: UIViewController {
             make.left.equalToSuperview()
             make.right.equalToSuperview()
             make.top.equalToSuperview()
-            //make.bottom.equalTo(-calculateBottomSafeArea(48.0))
             make.bottom.equalToSuperview()
+            //make.bottom.equalTo(-containterView.frame.height)
         }
-        collectionView.reloadData()
     }
     
     // MARK: - Keyboard Observer
@@ -113,15 +132,14 @@ class ChatController: UIViewController {
     @objc func keyboardWillShow(notification: NSNotification) {
         let keyboardFrame = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         if #available(iOS 11.0, *) {
-            collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardFrame.height - view.safeAreaInsets.bottom + 8.0, right: 0)
+            collectionView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: keyboardFrame.height - view.safeAreaInsets.bottom + 8.0, right: 0)
         } else {
-           collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardFrame.height + 8.0, right: 0)
+           collectionView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: keyboardFrame.height + 8.0, right: 0)
         }
-        scrollToLastItem()
     }
     
     @objc func keyboardWillHide(notification: NSNotification) {
-         collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 8.0, right: 0)
+         collectionView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8.0, right: 0)
     }
     
     // MARK: - Navigation Back Button Action
@@ -137,10 +155,11 @@ class ChatController: UIViewController {
             return
         }
         inputBarView.inputTextField.text = nil
-        messages.append(text)
-       
-        collectionView.reloadData()
-        scrollToLastItem()
+        SocketIOManager.shared.socket.emit("message",
+                                           ["message": text,
+                                            "name": User.currentUser()!.user_name,
+                                            "user_id": contact.user_id])
+        //scrollToLastItem()
     }
     
     // MARK: - Scroll To Last Item
@@ -149,12 +168,12 @@ class ChatController: UIViewController {
         let lastSection = collectionView.numberOfSections - 1
         let lastRow = collectionView.numberOfItems(inSection: lastSection)
         let indexPath = IndexPath(row: lastRow - 1, section: lastSection)
-        self.collectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
+        self.collectionView.scrollToItem(at: indexPath, at: .bottom, animated: false)
     }
     
 }
 
-// MARK: - UICollectionView DataSource & Delegate
+// MARK: - Buble UICollectionView DataSource & Delegate
 
 extension ChatController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
@@ -163,26 +182,18 @@ extension ChatController: UICollectionViewDelegate, UICollectionViewDataSource, 
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let textMessageCell: TextMessageCell = collectionView.dequeReusableCell(for: indexPath)
-        textMessageCell.textView.text = messages[indexPath.row]
-        if indexPath.row % 2 == 0 {
-            textMessageCell.bubleView.backgroundColor = UIColor.lightBlueColor
-            textMessageCell.textView.textColor = UIColor.white
-            textMessageCell.bubleLeftAnchor?.isActive = false
-            textMessageCell.bubleRightAnchor?.isActive = true
-        } else {
-            textMessageCell.bubleView.backgroundColor = UIColor.white
-            textMessageCell.textView.textColor = UIColor.black
-            textMessageCell.bubleLeftAnchor?.isActive = true
-            textMessageCell.bubleRightAnchor?.isActive = false
-        }
-        textMessageCell.bubleWidthAnchor?.constant = estimatedFrameForText(messages[indexPath.row]).width + 32
-        return textMessageCell
+        let textCell: TextMessageCell = collectionView.dequeReusableCell(for: indexPath)
+        textCell.textView.text = messages[indexPath.row].text
+        
+        messages[indexPath.row].user_id == contact.user_id ? textCell.setupRightBuble() : textCell.setupLeftBuble()
+        
+        textCell.bubleWidthAnchor?.constant = estimatedFrameForText(messages[indexPath.row].text).width + 32
+        return textCell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var height: CGFloat = 80.0
-        height = estimatedFrameForText(messages[indexPath.row]).height + 20.0
+        height = estimatedFrameForText(messages[indexPath.row].text).height + 20.0
         return CGSize(width: view.frame.width, height: height)
     }
     

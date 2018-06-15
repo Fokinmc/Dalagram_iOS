@@ -7,12 +7,19 @@
 //
 
 import UIKit
+import Contacts
 
 class ContactsController: UITableViewController {
 
     // MARK: - IBOutlets
     fileprivate var searchBar: UISearchBar = UISearchBar()
-    fileprivate let inviteCellIndetifier = InviteFriendCell.defaultReuseIdentifier
+    
+    lazy var inviteFriendsView: InviteFriendsView = {
+        let view = InviteFriendsView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 55))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(inviteFriendsPressed))
+        view.addGestureRecognizer(tapGesture)
+        return view
+    }()
     
     // MARK: - Variables
     let viewModel = ContactsViewModel()
@@ -21,8 +28,23 @@ class ContactsController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         configureUI()
         setBlueNavBar()
+        
+        viewModel.fetchContacts {
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+        
+        self.viewModel.getContacts(onSuccess: {
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        })
+        print(RealmManager.shared.getCount(Contact.self))
+        
     }
     
     // MARK: - Configuring UI
@@ -35,10 +57,10 @@ class ContactsController: UITableViewController {
         searchBar.searchBarStyle = .minimal
         searchBar.placeholder = " Поиск"
         searchBar.sizeToFit()
-        tableView.tableHeaderView = searchBar
+        tableView.tableHeaderView = inviteFriendsView
+        tableView.tableFooterView = UIView()
         
         //MARK: TableView
-        tableView.register(InviteFriendCell.self)
         tableView.registerNib(ContactCell.self)
         
         // MARK: UIBarButtonItem
@@ -47,29 +69,61 @@ class ContactsController: UITableViewController {
         self.navigationItem.rightBarButtonItem = plusButton
         
     }
+    
+    // MARK: - Invite Friends Action
+    
+    @objc func inviteFriendsPressed() {
+        let vc = InviteController()
+        vc.viewModel = viewModel
+        self.present(UINavigationController(rootViewController: vc), animated: true, completion: nil)
+    }
+    
+
 }
 extension ContactsController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.aplhabet.count + 1
+        return viewModel.phoneContacts.count + 1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        switch section {
+        case 0:
+            return RealmManager.shared.getCount(Contact.self)
+        default:
+            return viewModel.phoneContacts[section - 1].value.count
+        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == 0 && indexPath.section == 0 {
-            let cell: InviteFriendCell = tableView.dequeReusableCell(for: indexPath)
-            return cell
+        let cell: ContactCell = tableView.dequeReusableCell(for: indexPath)
+        if indexPath.section == 0 {
+            if let contact = RealmManager.shared.getObjects(type: Contact.self) {
+                cell.setupRegisteredContact(contact[indexPath.row] as! Contact)
+            }
         } else {
-            let cell: ContactCell = tableView.dequeReusableCell(for: indexPath)
-            return cell
+            let contact = viewModel.phoneContacts[indexPath.section - 1].value[indexPath.row]
+            cell.setupSystemContact(contact)
+            
+        }
+        return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.section {
+        case 0:
+            if let contact = RealmManager.shared.getObjects(type: Contact.self) {
+                let vc = ChatController()
+                vc.contact = contact[indexPath.row] as! Contact
+                self.show(vc, sender: nil)
+            }
+        default:
+            break
         }
     }
     
     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        return viewModel.aplhabet
+        return viewModel.letters
     }
     
     override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
@@ -77,13 +131,11 @@ extension ContactsController {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50.0
+        return 50
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return section != 0 ?  viewModel.aplhabet[section - 1] : ""
+        return section != 0 ? viewModel.phoneContacts[section - 1].key : " "
     }
-    
-
     
 }

@@ -25,6 +25,7 @@ class User: Object {
     static func initWith(json: JSON) {
         
         let id = json["user_id"].intValue
+        print(id)
         if User.isset() {
             print("Realm - User with id \(id) already exists")
             // Updating User object
@@ -34,9 +35,12 @@ class User: Object {
                     obj.user_name   = json["user_name"].stringValue
                     obj.is_new_user = json["is_new_user"].boolValue
                     obj.avatar      = imageWithEncoding(json["avatar"].stringValue)
-                    obj.token       = json["token"].stringValue
+           
+                    //obj.token       = json["token"].stringValue
+                    //obj.user_id  = id
                 }
             }
+            return
         }
         
         let object = User()
@@ -84,6 +88,7 @@ class User: Object {
     }
     
     static func imageWithEncoding(_ str: String) -> String {
-        return str.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? str
+        return (AppManager.baseUrl + str).addingPercentEncoding(withAllowedCharacters:
+            .urlQueryAllowed) ?? str
     }
 }

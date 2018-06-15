@@ -8,8 +8,13 @@
 
 import Foundation
 import UIKit
+import RxSwift
 
 class UsersCollectionView: UIView {
+    
+    let viewModel = ContactsViewModel()
+    var data: [Contact] = []
+    let disposeBag = DisposeBag()
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -20,43 +25,94 @@ class UsersCollectionView: UIView {
         collectionView.backgroundColor = UIColor.white
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.showsHorizontalScrollIndicator = false
 
         return collectionView
+    }()
+    
+    lazy var placehoderLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Чтобы начать диалог необходимо выбрать контакты из списка"
+        label.textColor = UIColor.lightGray
+        label.textAlignment = .center
+        label.numberOfLines = 5
+        label.font = UIFont.systemFont(ofSize: 15.0)
+        return label
+    }()
+    
+    lazy var lineView: UIView = {
+        let line = UIView()
+        line.backgroundColor = UIColor.groupTableViewBackground
+        return line
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
+        setupEvents()
+    }
+    
+    func setupEvents() {
+        viewModel.selectedContacts.asObservable().subscribe(onNext: { [unowned self] (contacts) in
+            self.placehoderLabel.isHidden = !contacts.isEmpty
+            self.data.removeAll()
+            for value in contacts {
+                self.data.append(value.value)
+            }
+            self.collectionView.reloadData()
+            print(self.viewModel.selectedContacts.value)
+        }).disposed(by: disposeBag)
+    }
+    
+    func setupViews() {
+        addSubview(lineView)
+        lineView.snp.makeConstraints { (make) in
+            make.bottom.equalToSuperview()
+            make.height.equalTo(1.0)
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
+        }
+        addSubview(collectionView)
+        collectionView.snp.makeConstraints { (make) in
+            make.top.equalToSuperview()
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
+            make.bottom.equalTo(lineView.snp.top)
+        }
+        
+        addSubview(placehoderLabel)
+        placehoderLabel.snp.makeConstraints { (make) in
+            make.left.equalTo(20.0)
+            make.right.equalTo(-20)
+            make.centerY.equalToSuperview()
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    func setupViews() {
-        addSubview(collectionView)
-        collectionView.snp.makeConstraints { (make) in
-            make.edges.equalToSuperview()
-        }
     }
 }
 
 extension UsersCollectionView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        print(indexPath.row, "indezx")
         let cell: UsersCell = collectionView.dequeReusableCell(for: indexPath)
+        cell.setupUser(data[indexPath.row])
         return cell
-    }
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 7
+        return data.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        viewModel.selectedContacts.value.removeValue(forKey: indexPath.row)
+        viewModel.selectedIndex.value = indexPath.row
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 80.0, height: collectionView.frame.height)
+        return CGSize(width: 90.0, height: collectionView.frame.height)
     }
     
 }
@@ -77,7 +133,7 @@ class UsersCell: BaseCollectionCell {
         let label = UILabel()
         label.text = "Zholayev Toremurat"
         label.numberOfLines = 3
-        label.font = UIFont.systemFont(ofSize: 13)
+        label.font = UIFont.systemFont(ofSize: 14)
         label.textAlignment = .center
         return label
     }()
@@ -109,8 +165,8 @@ class UsersCell: BaseCollectionCell {
         }
         
         deleteIcon.snp.makeConstraints { (make) in
-            make.trailing.equalTo(userImage)
-            make.top.equalTo(userImage.snp.top)
+            make.trailing.equalTo(userImage).offset(3)
+            make.top.equalTo(userImage.snp.top).offset(-3)
         }
         
         nameLabel.snp.makeConstraints { (make) in
@@ -125,6 +181,10 @@ class UsersCell: BaseCollectionCell {
             make.top.equalToSuperview()
             make.bottom.equalTo(nameLabel.snp.top)
         }
-        
+    }
+    
+    func setupUser(_ data: Contact) {
+        nameLabel.text = data.user_name != "" ? data.user_name : data.contact_name
+        userImage.kf.setImage(with: URL(string: data.avatar))
     }
 }

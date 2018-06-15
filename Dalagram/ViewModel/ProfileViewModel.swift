@@ -20,27 +20,38 @@ struct ProfileViewModel {
     
     var isNeedToUpdate = Variable<Bool>(false)
     
-    func getProfile(onCompletion: @escaping () -> ()) {
+    func getProfile(onCompletion: @escaping () -> Void) {
         NetworkManager.makeRequest(.getProfile(user_id: nil), success: { (json) in
             let data = json["data"]
+            User.initWith(json: data)
             self.name.value     = data["user_name"].stringValue
-            self.avatar.value   = data["avatar"].stringValue
+            self.avatar.value   = AppManager.baseUrl + data["avatar"].stringValue
             self.phone.value    = data["phone"].stringValue
             self.status.value   = data["user_status"].stringValue
             self.email.value    = data["email"].stringValue
+       
             onCompletion()
         })
     }
     
     func editProfile(_ onCompletion: @escaping () -> Void) {
-        let params = ["user_status": status.value,
-                      "user_name": name.value,
-                      "email" : email.value]
+        let params = ["user_status" : status.value,
+                      "user_name"   : name.value,
+                      "email"       : email.value]
         
         NetworkManager.makeRequest(.editProfile(params), success: { (json) in
             WhisperHelper.showSuccessMurmur(title: json["message"].stringValue)
             onCompletion()
         })
+    }
+    
+    func uploadAvatar(image: UIImage) {
+        if let data = UIImageJPEGRepresentation(image, 0.5) {
+            NetworkManager.makeRequest(.uploadAvatar(data), success: { (json) in
+                WhisperHelper.showSuccessMurmur(title: json["message"].stringValue)
+                self.avatar.value = json["image_url"].stringValue
+            })
+        }
     }
     
 }

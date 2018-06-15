@@ -62,6 +62,19 @@ class TextMessageCell: BaseCollectionCell {
             make.top.equalToSuperview()
             make.height.equalToSuperview()
         }
+    }
     
+    func setupLeftBuble() {
+        bubleView.backgroundColor = UIColor.white
+        textView.textColor = UIColor.black
+        bubleLeftAnchor?.isActive = true
+        bubleRightAnchor?.isActive = false
+    }
+    
+    func setupRightBuble() {
+        bubleView.backgroundColor = UIColor.lightBlueColor
+        textView.textColor = UIColor.white
+        bubleLeftAnchor?.isActive = false
+        bubleRightAnchor?.isActive = true
     }
 }

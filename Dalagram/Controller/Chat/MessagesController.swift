@@ -36,7 +36,7 @@ class MessagesController: UITableViewController {
         let createItem = UIBarButtonItem(image: UIImage(named: "icon_create"), style: .plain, target: self, action: #selector(createChatAction))
         createItem.tintColor = UIColor.white
         self.navigationItem.rightBarButtonItem = createItem
-        
+
     }
     
     // MARK: - Create Chat UIBarButton Action
@@ -67,7 +67,7 @@ extension MessagesController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = ChatController()
-        vc.user = "Tore"
+        vc.contact = Contact()
         vc.hidesBottomBarWhenPushed = true
         self.show(vc, sender: nil)
     }

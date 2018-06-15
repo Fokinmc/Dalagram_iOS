@@ -53,6 +53,8 @@ class EditProfileController: UITableViewController {
     func configureUI() {
         hideKeyboardWhenTappedAround()
         avatarView.layer.cornerRadius = avatarView.frame.width/2
+        avatarView.layer.borderWidth = 1.0
+        avatarView.layer.borderColor = UIColor.darkBlueNavColor.cgColor
         tableView.tableFooterView = UIView()
         self.navigationItem.rightBarButtonItem = saveButton
     }
@@ -64,12 +66,9 @@ class EditProfileController: UITableViewController {
         statusField.text = viewModel.status.value
         emailField.text  = viewModel.email.value
         
-        //avatarView.kf.setImage(with: URL(string: viewModel.avatar.value), placeholder: #imageLiteral(resourceName: "userprofile"))
-        
-        nameField.rx.text.orEmpty.bind(to: viewModel.name).disposed(by: disposeBag)
-        statusField.rx.text.orEmpty.bind(to: viewModel.status).disposed(by: disposeBag)
-        emailField.rx.text.orEmpty.bind(to: viewModel.email).disposed(by: disposeBag)
-
+        viewModel.avatar.asObservable().subscribe(onNext: {[unowned self] (avatarUrl) in
+            self.avatarView.kf.setImage(with: URL(string: avatarUrl), placeholder: #imageLiteral(resourceName: "placeholder"))
+        }).disposed(by: disposeBag)
     }
     
     // MARK: - Avatar View Action
@@ -80,6 +79,10 @@ class EditProfileController: UITableViewController {
     
     // MARK: - Save BarButton Action
     @objc func saveButtonPressed() {
+        viewModel.name.value    = nameField.text ?? ""
+        viewModel.status.value  = statusField.text ?? ""
+        viewModel.email.value   = emailField.text ?? ""
+
         viewModel.editProfile {
             self.viewModel.isNeedToUpdate.value = true
             self.navigationController?.popViewController(animated: true)
@@ -98,7 +101,7 @@ extension EditProfileController: UIImagePickerControllerDelegate, UINavigationCo
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         let image = info[UIImagePickerControllerOriginalImage] as! UIImage
-        avatarView.image = image
         imagePicker.dismiss(animated: true, completion: nil)
+        viewModel.uploadAvatar(image: image)
     }
 }

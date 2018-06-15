@@ -19,26 +19,26 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Kazakhstan" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="PiW-ON-V1o">
-                                <rect key="frame" x="30" y="60" width="315" height="32"/>
+                                <rect key="frame" x="30" y="60" width="315" height="27"/>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="+7 700 000 00 00" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ImB-za-tvb">
-                                <rect key="frame" x="30" y="121" width="315" height="29"/>
+                                <rect key="frame" x="30" y="116" width="315" height="27"/>
                                 <color key="textColor" red="0.067895772960018891" green="0.030895900898752143" blue="0.38575513925729443" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WYQ-X4-wFj">
-                                <rect key="frame" x="30" y="100" width="315" height="1"/>
+                                <rect key="frame" x="30" y="95" width="315" height="1"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.053776840490797548" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="ate-o7-XbN"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6nz-bF-1D3">
-                                <rect key="frame" x="30" y="158" width="315" height="1"/>
+                                <rect key="frame" x="30" y="151" width="315" height="1"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.053776840489999998" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="Kcd-rz-Kct"/>
@@ -93,9 +93,9 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b5C-xA-Z0k">
-                                <rect key="frame" x="30" y="117" width="243.5" height="50.5"/>
-                                <string key="text">Код доставлен на номер
-8 705 22 33 123. Повторно можно
+                                <rect key="frame" x="30" y="117" width="243.5" height="51"/>
+                                <string key="text">Код доставлен на Ваш номер
+ телефона. Повторно можно
 будет оправить через:</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="displayP3"/>

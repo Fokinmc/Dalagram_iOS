@@ -11,6 +11,8 @@ import RealmSwift
 
 class RealmManager {
     
+    static let shared = RealmManager()
+    
     let realm = try! Realm()
     
     func deleteObject(object: Object) {
@@ -32,6 +34,10 @@ class RealmManager {
     
     func getObjects(type: Object.Type) -> Results<Object>? {
         return realm.objects(type)
+    }
+    
+    func getCount(_ type: Object.Type) -> Int {
+        return realm.objects(type).count
     }
     
 }

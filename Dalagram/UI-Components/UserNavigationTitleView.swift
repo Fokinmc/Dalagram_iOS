@@ -49,7 +49,7 @@ class UserNavigationTitleView: UIView {
         addSubview(userAvatarView)
         addSubview(userNameLabel)
         addSubview(userStatusLabel)
-
+        
         userAvatarView.snp.makeConstraints { (make) in
             make.left.equalTo(0.0)
             make.top.equalTo(2.0)

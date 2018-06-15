@@ -15,6 +15,7 @@ class SettingsController: UITableViewController {
 
     // MARK: - IBOutlets
     
+    @IBOutlet weak var loader: UIActivityIndicatorView!
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var phoneLabel: UILabel!
@@ -44,17 +45,25 @@ class SettingsController: UITableViewController {
     }
     
     func configureEvents() {
-        viewModel.isNeedToUpdate.asObservable().subscribe(onNext: { [unowned self] (isUpdate) in
-            if isUpdate {
-                self.setupData()
-            }
+        viewModel.isNeedToUpdate.asObservable().subscribe(onNext: { [weak self] (isUpdate) in
+            isUpdate ? self?.setupData() : ()
+        }).disposed(by: disposeBag)
+        
+        viewModel.avatar.asObservable().subscribe(onNext: { [weak self]
+            (avatarUrl) in
+            self?.profileImage.kf.setImage(with: URL(string: avatarUrl), placeholder: #imageLiteral(resourceName: "placeholder"))
         }).disposed(by: disposeBag)
     }
     
+    // MARK: FIXME - ActivityIndicator on failure image loading 
+    
     func setupData() {
-        viewModel.getProfile(onCompletion: {
-            self.phoneLabel.text = self.viewModel.phone.value
-            self.nameLabel.text  = self.viewModel.name.value
+        loader.startAnimating()
+        viewModel.getProfile(onCompletion: { [weak self] in
+            self?.loader.stopAnimating()
+            self?.loader.isHidden = true
+            self?.phoneLabel.text = self?.viewModel.phone.value
+            self?.nameLabel.text  = self?.viewModel.name.value
         })
     }
     
@@ -77,6 +86,9 @@ extension SettingsController {
         case 1: // >> Edit
             let vc = EditProfileController.fromStoryboard()
             vc.viewModel = viewModel
+            self.show(vc, sender: nil)
+        case 2: // >> Notifications
+            let vc = NotificationsController.fromStoryboard()
             self.show(vc, sender: nil)
         case 5: // >> Logout
             User.removeUser()

@@ -9,15 +9,15 @@
 import UIKit
 import SnapKit
 
-class InviteFriendCell: UITableViewCell {
+class InviteFriendsView: UIView {
     
-    var plusIcon: UIImageView = {
+    lazy var plusIcon: UIImageView = {
         let icon = UIImageView(image: UIImage(named: "icon_plus"))
         icon.contentMode = .center
         return icon
     }()
     
-    var inviteLabel: UILabel = {
+    lazy var inviteLabel: UILabel = {
         let label = UILabel()
         label.text = "Пригласить друзей"
         label.font = UIFont.systemFont(ofSize: 17.0)
@@ -25,8 +25,14 @@ class InviteFriendCell: UITableViewCell {
         return label
     }()
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    lazy var lineView: UIView = {
+        let line = UIView()
+        line.backgroundColor = UIColor.groupTableViewBackground
+        return line
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         configureUI()
     }
     
@@ -37,6 +43,7 @@ class InviteFriendCell: UITableViewCell {
     func configureUI() {
         addSubview(plusIcon)
         addSubview(inviteLabel)
+        addSubview(lineView)
         
         // Configure Constraints
         plusIcon.snp.makeConstraints { (make) in
@@ -50,7 +57,14 @@ class InviteFriendCell: UITableViewCell {
             make.left.equalTo(plusIcon.snp.right).offset(16.0)
             make.centerY.equalTo(plusIcon)
         }
-       
-        separatorInset = UIEdgeInsets(top: 0, left: 76.0, bottom: 0, right: 0)
+        
+        lineView.snp.makeConstraints { (make) in
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
+            make.bottom.equalTo(0)
+            make.height.equalTo(1.0)
+        }
+        
+        //separatorInset = UIEdgeInsets(top: 0, left: 76.0, bottom: 0, right: 0)
     }
 }

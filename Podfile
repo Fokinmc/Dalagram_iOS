@@ -19,7 +19,7 @@ target 'Dalagram' do
   pod 'Moya-ModelMapper/RxSwift'
   pod 'DropDown'
   pod 'RealmSwift'
-
+  pod 'Socket.IO-Client-Swift', '~> 13.1.1'
 
   target 'DalagramTests' do
     inherit! :search_paths

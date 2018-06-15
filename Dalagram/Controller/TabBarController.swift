@@ -31,9 +31,8 @@ class TabBarController : UITabBarController {
         vc2.title = "Чаты"
         let nc2 = UINavigationController.init(rootViewController: vc2)
         
-        let vc3 = UIViewController()
+        let vc3 = NewsController()
         vc3.title = "Новости"
-        vc3.view.backgroundColor = UIColor.white
         let nc3 = UINavigationController.init(rootViewController: vc3)
         
         let vc4 = SettingsController.fromStoryboard()
@@ -41,7 +40,7 @@ class TabBarController : UITabBarController {
         let nc4 = UINavigationController.init(rootViewController: vc4)
     
         self.viewControllers = [nc2, nc1, nc3, nc4]
-        
+        print(User.getToken())
     }
     
     func configUI() {

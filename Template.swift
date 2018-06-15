@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     // MARK: - IBOutlets
     
     // MARK: - Variables
+    var model: Messages!
     
     // MARK: - Initializer
     
@@ -20,6 +21,10 @@ class ViewController: UIViewController {
         return UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ID") as! ViewController
     }
     
+    convenience init(model: Messages) {
+        self.init()
+        self.model = model
+    }
     // MARK: - Life cycle
     
     override func viewDidLoad() {

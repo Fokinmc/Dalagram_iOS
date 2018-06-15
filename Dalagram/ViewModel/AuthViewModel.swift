@@ -14,14 +14,15 @@ import Whisper
 
 struct AuthViewModel {
     
-    var phone = Variable<String>("")
-    var isNewUser = Variable<Bool>(false)
+    var phone       = Variable<String>("")
+    var isNewUser   = Variable<Bool>(false)
     
     // MARK: SignIn Route
     
     func attempSignIn(_ callback: @escaping (Bool) -> Void) {
         let phoneNum = removeWhiteSpaces(phone.value)
         NetworkManager.makeRequest(.signIn(phone: phoneNum), success: { (json) in
+            
             if let message = json["message"].string {
                 WhisperHelper.showSuccessMurmur(title: message)
             }
@@ -34,6 +35,7 @@ struct AuthViewModel {
     func confirmAccount(smsCode: String, _ callback: @escaping () -> Void) {
         let phoneNum = removeWhiteSpaces(phone.value)
         NetworkManager.makeRequest(.confirmAccount(phone: phoneNum, code: smsCode), success: { (json) in
+            print(json["data"])
             User.initWith(json: json["data"])
             callback()
         })
