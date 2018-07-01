@@ -23,9 +23,10 @@ struct ProfileViewModel {
     func getProfile(onCompletion: @escaping () -> Void) {
         NetworkManager.makeRequest(.getProfile(user_id: nil), success: { (json) in
             let data = json["data"]
+            print(json)
             User.initWith(json: data)
             self.name.value     = data["user_name"].stringValue
-            self.avatar.value   = AppManager.baseUrl + data["avatar"].stringValue
+            self.avatar.value   = data["avatar"].stringValue
             self.phone.value    = data["phone"].stringValue
             self.status.value   = data["user_status"].stringValue
             self.email.value    = data["email"].stringValue

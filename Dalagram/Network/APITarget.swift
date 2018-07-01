@@ -27,13 +27,13 @@ public enum Dalagram {
     case removeContact(user_id: Int)
     
     // MARK: - Chat
-    case sendMessage([String: String])
-    case getDialogs([String: String])
-    case getDialogDetails([String: String])
+    case sendMessage([String: Any])
+    case getDialogs([String: Any])
+    case getDialogDetails([String: Any])
     
     // MARK: - Group
-    case createGroup([String: String])
-    case uploadGroupPhoto([String: String])
+    case createGroup(name: String, users: [[String: Int]], image: Data?)
+    case uploadGroupPhoto(group_id: Int, image: Data)
     case editGroup(group_id: Int)
     case getGroups([String: String])
     case getGroupDetails(group_id: Int)
@@ -225,8 +225,21 @@ extension Dalagram: TargetType {
                                                urlParameters: ["token" : User.getToken()])
             
         case .getDialogs(let params), .getDialogDetails(let params):
-              return .requestParameters(parameters: params, encoding: URLEncoding.default)
-
+            return .requestParameters(parameters: params, encoding: URLEncoding.default)
+        
+        // MARK: Group
+        case .createGroup(let groupName, let usersParams, let imageData):
+            if let image = imageData {
+                let imgData = MultipartFormData(provider: .data(image), name: "image", fileName: "photo.jpg", mimeType: "image/jpeg")
+                return .uploadCompositeMultipart([imgData], urlParameters: ["token" : User.getToken(),"group_name": groupName, "group_users": usersParams])
+            } else {
+                return .requestCompositeParameters(bodyParameters: ["group_name": groupName, "group_users": usersParams], bodyEncoding: JSONEncoding.default, urlParameters: ["token" : User.getToken()])
+            }
+           
+        case .uploadGroupPhoto(let group_id, let imageData):
+            let imgData = MultipartFormData(provider: .data(imageData), name: "image", fileName: "group_photo.jpg", mimeType: "image/jpeg")
+            return .uploadCompositeMultipart([imgData], urlParameters: ["token" : User.getToken(), "group_id": group_id])
+            
         default:
             return .requestPlain
         }
@@ -236,9 +249,5 @@ extension Dalagram: TargetType {
         return "Default sample data".data(using: String.Encoding.utf8)!
     }
     
-}
-struct ContactMoyaCodable: Codable {
-    var phone: String
-    var contact_user_name: String
 }
 

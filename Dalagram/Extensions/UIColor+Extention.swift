@@ -11,6 +11,10 @@ import UIKit
 
 extension UIColor {
     
+    open static var lightGreenColor: UIColor = {
+        return UIColor(red:0.88, green:1.00, blue:0.78, alpha:1.0)
+    }()
+    
     open static var darkBlueNavColor: UIColor = {
         return UIColor(red: 63/255.0, green: 93/255.0, blue: 161/255.0, alpha: 1.0)
     }()

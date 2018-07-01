@@ -83,7 +83,7 @@
                                 <rect key="frame" x="30" y="60" width="315" height="32"/>
                                 <color key="textColor" red="0.74501616380000002" green="0.74501616380000002" blue="0.74501616380000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="26"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numberPad"/>
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5ie-Mo-IwD">
                                 <rect key="frame" x="30" y="100" width="315" height="1"/>

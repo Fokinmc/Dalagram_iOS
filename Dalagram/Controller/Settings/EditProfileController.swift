@@ -67,7 +67,7 @@ class EditProfileController: UITableViewController {
         emailField.text  = viewModel.email.value
         
         viewModel.avatar.asObservable().subscribe(onNext: {[unowned self] (avatarUrl) in
-            self.avatarView.kf.setImage(with: URL(string: avatarUrl), placeholder: #imageLiteral(resourceName: "placeholder"))
+            self.avatarView.kf.setImage(with: URL(string: avatarUrl), placeholder: #imageLiteral(resourceName: "bg_navbar_sky"))
         }).disposed(by: disposeBag)
     }
     

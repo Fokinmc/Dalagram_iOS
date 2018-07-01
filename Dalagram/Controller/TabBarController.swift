@@ -27,7 +27,7 @@ class TabBarController : UITabBarController {
         vc1.title = "Контакты"
         let nc1 = UINavigationController.init(rootViewController: vc1)
 
-        let vc2 = MessagesController()
+        let vc2 = DialogsController()
         vc2.title = "Чаты"
         let nc2 = UINavigationController.init(rootViewController: vc2)
         
@@ -45,15 +45,15 @@ class TabBarController : UITabBarController {
     
     func configUI() {
         
-        self.tabBar.isTranslucent = true
+        self.tabBar.isTranslucent = false
         
         let tabBarItem0 = self.tabBar.items?.first
-        tabBarItem0?.image = UIImage.init(named: "icon_contacts")?.withRenderingMode(.alwaysOriginal)
-        tabBarItem0?.selectedImage = UIImage.init(named: "icon_contacts_ac")?.withRenderingMode(.alwaysOriginal)
+        tabBarItem0?.image = UIImage.init(named: "icon_chat")?.withRenderingMode(.alwaysOriginal)
+        tabBarItem0?.selectedImage = UIImage.init(named: "icon_chat_ac")?.withRenderingMode(.alwaysOriginal)
         
         let tabBarItem1 = self.tabBar.items?[1]
-        tabBarItem1?.image = UIImage.init(named: "icon_chat")?.withRenderingMode(.alwaysOriginal)
-        tabBarItem1?.selectedImage = UIImage.init(named: "icon_chat_ac")?.withRenderingMode(.alwaysOriginal)
+        tabBarItem1?.image = UIImage.init(named: "icon_contacts")?.withRenderingMode(.alwaysOriginal)
+        tabBarItem1?.selectedImage = UIImage.init(named: "icon_contacts_ac")?.withRenderingMode(.alwaysOriginal)
         
         let tabBarItem2 = self.tabBar.items?[2]
         tabBarItem2?.image = UIImage.init(named: "icon_news")?.withRenderingMode(.alwaysOriginal)

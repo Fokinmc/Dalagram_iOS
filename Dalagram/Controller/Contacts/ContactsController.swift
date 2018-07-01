@@ -8,6 +8,7 @@
 
 import UIKit
 import Contacts
+import RealmSwift
 
 class ContactsController: UITableViewController {
 
@@ -28,7 +29,6 @@ class ContactsController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureUI()
         setBlueNavBar()
         
@@ -43,24 +43,21 @@ class ContactsController: UITableViewController {
                 self.tableView.reloadData()
             }
         })
-        print(RealmManager.shared.getCount(Contact.self))
-        
     }
     
     // MARK: - Configuring UI
     
     func configureUI() {
-       
         view.backgroundColor = UIColor.white
         
         //MARK: SearchBar
         searchBar.searchBarStyle = .minimal
         searchBar.placeholder = " Поиск"
         searchBar.sizeToFit()
+        
         tableView.tableHeaderView = inviteFriendsView
         tableView.tableFooterView = UIView()
-        
-        //MARK: TableView
+        tableView.separatorColor = UIColor.groupTableViewBackground
         tableView.registerNib(ContactCell.self)
         
         // MARK: UIBarButtonItem
@@ -112,10 +109,14 @@ extension ContactsController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.section {
         case 0:
+            /// Need to pass contactInfo and dialogId. user_id is actually primary key of Dialog table
             if let contact = RealmManager.shared.getObjects(type: Contact.self) {
-                let vc = ChatController()
-                vc.contact = contact[indexPath.row] as! Contact
-                self.show(vc, sender: nil)
+                if let contactItem = contact[indexPath.row] as? Contact {
+                    let contactInfo = DialogInfo(contact: contactItem)
+                    let vc = ChatController(info: contactInfo, dialogId: String(contactItem.user_id))
+                    vc.hidesBottomBarWhenPushed = true
+                    self.show(vc, sender: nil)
+                }
             }
         default:
             break
@@ -126,6 +127,11 @@ extension ContactsController {
         return viewModel.letters
     }
     
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let sectioView = view as! UITableViewHeaderFooterView
+        sectioView.textLabel?.font = UIFont.systemFont(ofSize: 17.0, weight: UIFont.Weight.init(0))
+    }
+
     override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
         return index + 1
     }

@@ -45,6 +45,7 @@ class InviteController: UITableViewController {
         tableView.tableHeaderView = searchBar
         tableView.tableFooterView = UIView()
         tableView.allowsMultipleSelection = true
+        tableView.separatorColor = UIColor.groupTableViewBackground
         
         //MARK: TableView
         tableView.registerNib(ContactCell.self)
@@ -82,10 +83,12 @@ class InviteController: UITableViewController {
     // MARK: - Send Button Action
     
     @objc func sendButtonPressed() {
-        if let url = URL(string:"sms:+12345678901body=Хей, я использую новый мессенджер. Присоединяйтесь www.itunes.apple.com/dalagramUrl") {
+        if let url = URL(string:"sms:+77087042247&body=Хей") {
             if UIApplication.shared.canOpenURL(url) {
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
             }
+        } else {
+            UIApplication.shared.open(URL(string:"sms:")!, options: [:], completionHandler: nil)
         }
     }
 }

@@ -39,7 +39,7 @@ class SignInController: UIViewController {
         self.title = "Регистрация"
         configureUI()
         phoneField.rx.text.orEmpty.bind(to: viewModel.phone).disposed(by: disBag)
-//        setBlueNavBar()
+        setBlueNavBar()
     }
     
     // MARK: - Configuring UI

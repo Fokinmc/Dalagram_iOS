@@ -37,7 +37,7 @@ extension UIViewController {
     }
     
     func setBlueNavBar() {
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.setBackgroundImage(#imageLiteral(resourceName: "bg_navbar_sky"), for: .default)
         self.navigationController?.navigationBar.barTintColor = UIColor.darkBlueNavColor
         self.navigationController?.navigationBar.tintColor = UIColor.white
         self.navigationController?.navigationBar.isTranslucent = false
@@ -51,6 +51,20 @@ extension UIViewController {
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.view.backgroundColor = .clear
        
+    }
+    
+    // MARK: - Empty Content View
+    
+    func showNoContentView(dataCount: Int) {
+        dataCount == 0 ? self.showNoContent(title: "У вас пока нет сообщений", message: "Выберите пользователя из списка контактов или же создайте чат", iconName: "icon_empty_chat") : self.removeNoContentView()
+    }
+    
+    func showNoContent(title:String?, message:String?, iconName:String?) {
+        self.view.showNoContent(title: title, message: message, iconName: iconName)
+    }
+    
+    func removeNoContentView() {
+        self.view.removeNoContentView()
     }
     
     // MARK: - Actions
@@ -206,4 +220,36 @@ extension UIViewController {
     //        self.present(actionSheet, animated: true, completion: nil)
     //
     //    }
+}
+
+public extension UICollectionView {
+    func scrollToLastItem(animated: Bool = true) {
+        scrollToLastItem(animated: animated, atScrollPosition: .bottom)
+    }
+    
+    func scrollToLastItem(animated: Bool, atScrollPosition scrollPosition: UICollectionViewScrollPosition) {
+        guard numberOfSections > 0 else {
+            return
+        }
+        
+        var sectionWithItems: SectionInfo?
+        for section in Array(0...(numberOfSections - 1)) {
+            let itemCount = numberOfItems(inSection: section)
+            if itemCount > 0 {
+                sectionWithItems = SectionInfo(numberOfItems: itemCount, sectionIndex: section)
+            }
+        }
+        
+        guard let lastSectionWithItems = sectionWithItems else {
+            return
+        }
+        
+        let lastItemIndexPath = IndexPath(row: lastSectionWithItems.numberOfItems - 1, section: lastSectionWithItems.sectionIndex)
+        scrollToItem(at: lastItemIndexPath, at: scrollPosition, animated: animated)
+    }
+}
+
+struct SectionInfo {
+    var numberOfItems: Int
+    var sectionIndex: Int
 }

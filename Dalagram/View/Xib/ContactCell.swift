@@ -31,23 +31,30 @@ class ContactCell: UITableViewCell {
         firstName.text      = data.firstName
         lastName.text       = data.lastName
         statusLabel.text    = data.phone
-        avatarView.image = #imageLiteral(resourceName: "img_contact")
-        userCreds.isHidden = false
-        userCreds.text = "\(data.firstName.first!)\(data.lastName.first!)"
+        avatarView.image    = UIImage(named: "bg_gradient_\(arc4random_uniform(4))")
+        userCreds.isHidden  = false
+        var credits = ""
+        if let nameFirst = data.firstName.first {
+            credits += String(nameFirst).capitalized
+        }
+        if let surnameFirst = data.lastName.first {
+            credits += String(surnameFirst).capitalized
+        }
+        userCreds.text = "\(credits)"
     }
     
     func setupRegisteredContact(_ data: Contact) {
-        
-        firstName.text      = data.user_name != "" ? data.user_name : data.contact_name
+        let contactName = data.user_name != "" ? data.user_name : data.contact_name
+        firstName.text      = contactName
         statusLabel.text    = "Был(а) в сети \(data.last_visit)"
         lastName.text       = ""
-        if data.avatar != "" {
+        if data.avatar != "http://dalagram.bugingroup.com/media/default-user.jpg" {
             userCreds.isHidden = true
-            avatarView.kf.setImage(with: URL(string: data.avatar), placeholder: #imageLiteral(resourceName: "img_contact"))
+            avatarView.kf.setImage(with: URL(string: data.avatar), placeholder: #imageLiteral(resourceName: "bg_gradient_2"))
         } else {
-            avatarView.image = #imageLiteral(resourceName: "img_contact")
+            avatarView.image = UIImage(named: "bg_gradient_\(arc4random_uniform(4))")
             userCreds.isHidden = false
-            userCreds.text = "\(data.user_name.first!)"
+            userCreds.text = "\(contactName.first!)"
         }
     }
     

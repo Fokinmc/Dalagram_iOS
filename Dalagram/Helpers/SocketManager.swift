@@ -13,20 +13,12 @@ class SocketIOManager: NSObject {
 
     static let shared = SocketIOManager()
     
-    let manager = SocketManager(socketURL: URL(string: "http://bugingroup.com:8008")!, config: [.log(true), .compress])
-    
+    let manager = SocketManager(socketURL: URL(string: "http://bugingroup.com:8008")!, config: [.log(false), .compress])
     var socket: SocketIOClient!
     
     override init() {
         super.init()
-        //socket = manager.defaultSocket
         socket = manager.defaultSocket
- 
-
-        // Socket Events
-        
-//        
-
     }
 
     func establishConnection() {

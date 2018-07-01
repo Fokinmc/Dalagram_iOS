@@ -10,6 +10,7 @@ import Foundation
 import Contacts
 import SwiftyJSON
 import RxSwift
+import RealmSwift
 
 class ContactsViewModel {
     
@@ -17,6 +18,7 @@ class ContactsViewModel {
     var phoneContacts: [(key: String, value:[PhoneContact])] = []
     var selectedContacts = Variable<[Int: Contact]>([:])
     var selectedIndex = Variable<Int>(0)
+    var selectedIndexArray: [Int] = []
     
     // MARK: - Geting Contacts
     func getContacts(onSuccess: @escaping () -> Void) {
@@ -26,6 +28,27 @@ class ContactsViewModel {
             }
             onSuccess()
         })
+    }
+    
+    // MARK: - Get user_id Json Dictionary
+    func getGroupJsonArray() -> [[String: Int]] {
+        var dict: [[String: Int]] = []
+        for item in selectedContacts.value {
+            dict.append(["user_id": item.value.user_id])
+        }
+//        if let stringJSON = JSON(dict).rawString(.utf8, options: []) {
+//            let str = stringJSON.replacingOccurrences(of: "[", with: "")
+//            return stringJSON
+//        }
+        return dict
+    }
+    
+    // MARK: Check for existing dialog
+    // Dialog primary key (id) is actually user_id
+    
+    func getExistingDialog(by user_id: Int) -> Dialog? {
+        let realm = try! Realm()
+        return realm.object(ofType: Dialog.self, forPrimaryKey: user_id)
     }
     
     // MARK: - Fetching Contacts
@@ -76,6 +99,7 @@ class ContactsViewModel {
                     for item in sorted { self.letters.append(item.key) }
                     onSuccess()
                     
+                    contactsJsonDict.append(["phone": "+77087042247", "contact_user_name": "Tony Default"])
                     /// Adding contacts in order to know registered users
                     NetworkManager.makeRequest(.addContacts(contactsJsonDict), success: { (json) in
                         onSuccess()

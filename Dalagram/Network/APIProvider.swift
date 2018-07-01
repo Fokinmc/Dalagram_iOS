@@ -10,32 +10,35 @@ import Foundation
 import Moya
 import Alamofire
 import SwiftyJSON
-
+import SVProgressHUD
 
 typealias Success = (_ data: JSON) -> Void
-typealias Failure = (_ responseError: Any?) -> Void
+typealias Failure = (_ responseError: JSON) -> Void
 
 class NetworkManager {
     
-    static let provider = MoyaProvider<Dalagram>(plugins: [NetworkLoggerPlugin.init(verbose: true)])
-    //static let provider = MoyaProvider<Dalagram>()
+    //static let provider = MoyaProvider<Dalagram>(plugins: [NetworkLoggerPlugin.init(verbose: true)])
+    static let provider = MoyaProvider<Dalagram>()
     
-    static func makeRequest(_ target: Dalagram, success:@escaping Success = { _ in }, failure:@escaping Failure = { _ in }) -> Void {
+    static func makeRequest(_ target: Dalagram, success: @escaping Success = { _ in }, failure: @escaping Failure = { _ in }) -> Void {
        
         provider.request(target) { (result) in
             switch result {
             case .success(let response):
                 if response.statusCode >= 200 && response.statusCode <= 300 {
                     do {
-                        let json = try JSON(data: response.data)
-                        print(json)
+                        var json = try JSON(data: response.data)
+                        //print(json)
                         if json["status"].boolValue {
                             success(json)
                         } else {
+                            failure(json)
+                            SVProgressHUD.dismiss()
                             WhisperHelper.showErrorMurmur(title: json["error"].stringValue)
                         }
                     }
                     catch {
+                        
                         WhisperHelper.showErrorMurmur(title: "JSON mapping error (Ошибка обработки данных")
                     }
                 } else {

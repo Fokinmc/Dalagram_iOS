@@ -9,12 +9,12 @@
 import UIKit
 import IQKeyboardManagerSwift
 import DropDown
+import RealmSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         configureRootController(isLogged: User.isset())
         configureNavBar()
         configureTabBar()
-        
+        print(Realm.Configuration.defaultConfiguration.fileURL!)
         return true
     }
     
@@ -35,15 +35,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        
+        SocketIOManager.shared.closeConnection()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
-       
+
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-       
+        SocketIOManager.shared.establishConnection()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

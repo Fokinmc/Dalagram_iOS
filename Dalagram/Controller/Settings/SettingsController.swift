@@ -51,7 +51,7 @@ class SettingsController: UITableViewController {
         
         viewModel.avatar.asObservable().subscribe(onNext: { [weak self]
             (avatarUrl) in
-            self?.profileImage.kf.setImage(with: URL(string: avatarUrl), placeholder: #imageLiteral(resourceName: "placeholder"))
+            self?.profileImage.kf.setImage(with: URL(string: avatarUrl), placeholder: #imageLiteral(resourceName: "bg_navbar_sky"))
         }).disposed(by: disposeBag)
     }
     
@@ -92,6 +92,7 @@ extension SettingsController {
             self.show(vc, sender: nil)
         case 5: // >> Logout
             User.removeUser()
+            RealmManager.shared.deleteDatabase()
             AppDelegate.shared().configureRootController(isLogged: false)
         default:
             break
