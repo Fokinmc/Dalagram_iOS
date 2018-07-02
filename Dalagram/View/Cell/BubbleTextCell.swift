@@ -39,7 +39,7 @@ class BubbleTextCell: BaseCollectionCell {
         let image = UIImageView(image: #imageLiteral(resourceName: "icon_mark_green"))
         image.contentMode = .scaleAspectFit
         return image
-    }()
+    }() 
     
     lazy var bubleView: UIView = {
         let view = UIView()

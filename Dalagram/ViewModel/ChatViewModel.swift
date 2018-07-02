@@ -51,6 +51,17 @@ class ChatViewModel {
         })
     }
     
+    // MARK: Get Detail of Chat
+    
+    func getGroupDetails(success: @escaping (String, String) -> Void) {
+        NetworkManager.makeRequest(.getGroupDetails(group_id: info.group_id), success: { [unowned self] (json)  in
+            print(json)
+            let avatar = json["data"]["group_avatar"].stringValue
+            let groupName = json["data"]["group_name"].stringValue
+            success(groupName, avatar)
+        })
+    }
+    
     // MARK: - Socket Event: Message
     
     func socketMessageEvent(success: @escaping () -> Void) {

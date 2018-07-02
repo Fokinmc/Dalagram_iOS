@@ -13,7 +13,7 @@ class WhisperHelper {
     
     static func showSuccessMurmur(title:String) {
         var murmur = Murmur(title: title)
-        murmur.backgroundColor = UIColor(red:0.15, green:0.61, blue:0.14, alpha:1.0)
+        murmur.backgroundColor = UIColor(red:0.18, green:0.80, blue:0.44, alpha:1.0)
         murmur.titleColor = UIColor.white
         Whisper.show(whistle: murmur, action: .show(2.5))
     }

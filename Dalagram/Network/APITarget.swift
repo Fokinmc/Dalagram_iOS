@@ -34,7 +34,7 @@ public enum Dalagram {
     // MARK: - Group
     case createGroup(name: String, users: [[String: Int]], image: Data?)
     case uploadGroupPhoto(group_id: Int, image: Data)
-    case editGroup(group_id: Int)
+    case editGroup(group_id: Int, group_name: String)
     case getGroups([String: String])
     case getGroupDetails(group_id: Int)
     case getGroupMembers([String: String])
@@ -109,7 +109,7 @@ extension Dalagram: TargetType {
             return "/group"
         case .uploadGroupPhoto:
             return  "/group/avatar"
-        case .editGroup(let group_id):
+        case .editGroup(let group_id, _):
             return "/group/\(group_id)"
         case .getGroupDetails(let group_id):
             return "/group/\(group_id)"
@@ -235,11 +235,22 @@ extension Dalagram: TargetType {
             } else {
                 return .requestCompositeParameters(bodyParameters: ["group_name": groupName, "group_users": usersParams], bodyEncoding: JSONEncoding.default, urlParameters: ["token" : User.getToken()])
             }
-           
+            
         case .uploadGroupPhoto(let group_id, let imageData):
             let imgData = MultipartFormData(provider: .data(imageData), name: "image", fileName: "group_photo.jpg", mimeType: "image/jpeg")
             return .uploadCompositeMultipart([imgData], urlParameters: ["token" : User.getToken(), "group_id": group_id])
             
+        case .editGroup(_, let group_name):
+            return .requestCompositeParameters(bodyParameters: ["group_name": group_name], bodyEncoding: URLEncoding.httpBody, urlParameters: ["token" : User.getToken()])
+            
+        case .getGroupDetails(_):
+            return .requestParameters(parameters: ["token": User.getToken()], encoding: URLEncoding.default)
+            
+        case .setGroupAdmin(let group_id, let user_id), .addGroupMember(let group_id, let user_id):
+            return .requestCompositeParameters(bodyParameters: ["group_id": group_id, "user_id": user_id], bodyEncoding: URLEncoding.httpBody, urlParameters: ["token" : User.getToken()])
+            
+        case .removeGroupMember(let group_id, let user_id), .declineGroupAdmin(let group_id, let user_id):
+            return .requestCompositeParameters(bodyParameters: ["group_id": group_id, "user_id": user_id], bodyEncoding: URLEncoding.httpBody, urlParameters: ["token" : User.getToken()])
         default:
             return .requestPlain
         }

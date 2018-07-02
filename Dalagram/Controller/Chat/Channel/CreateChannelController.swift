@@ -61,6 +61,7 @@ class CreateChannelController: UITableViewController {
     // MARK: - Create Channel Action
     
     @objc func createChannelAction() {
+         WhisperHelper.showErrorMurmur(title: "Канал делается, в принципе он очень похож на группу. Coming soon")
         guard let name = channelName.text, !name.isEmpty else {
             WhisperHelper.showErrorMurmur(title: "Заполните название группы")
             return

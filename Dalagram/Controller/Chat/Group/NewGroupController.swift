@@ -1,5 +1,5 @@
 //
-//  NewChatController.swift
+//  NewGroupController.swift
 //  Dalagram
 //
 //  Created by Toremurat on 01.06.18.
@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 
 
-class NewChatController: UITableViewController {
+class NewGroupController: UITableViewController {
     
     lazy var usersCollectionView: UsersCollectionView = {
         let header = UsersCollectionView()
@@ -107,7 +107,7 @@ class NewChatController: UITableViewController {
 
 // MARK: - TableView Delegate & DataSource
 
-extension NewChatController {
+extension NewGroupController {
         
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1

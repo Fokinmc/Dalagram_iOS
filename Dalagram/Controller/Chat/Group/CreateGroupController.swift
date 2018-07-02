@@ -77,14 +77,14 @@ class CreateGroupController: UITableViewController {
             if let imageData = UIImageJPEGRepresentation(groupImage.image!, 0.5) {
                 NetworkManager.makeRequest(.createGroup(name: name, users: viewModel.getGroupJsonArray(), image: imageData), success: { [weak self] (json) in
                     self?.navigationController?.popToRootViewController(animated: true)
-                    NotificationCenter.default.post(name: NSNotification.Name("loadDialogsFromServer"), object: nil)
+                    NotificationCenter.default.post(name: AppManager.loadDialogsNotification, object: nil)
                     print(json)
                 })
             }
         } else {
             NetworkManager.makeRequest(.createGroup(name: name, users: viewModel.getGroupJsonArray(), image: nil), success: { [weak self] (json) in
                 self?.navigationController?.popToRootViewController(animated: true)
-                NotificationCenter.default.post(name: NSNotification.Name("loadDialogsFromServer"), object: nil)
+                NotificationCenter.default.post(name: AppManager.loadDialogsNotification, object: nil)
                 print(json)
             })
         }

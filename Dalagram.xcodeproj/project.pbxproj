@@ -45,7 +45,7 @@
 		2B7BFFAC20B7477700FA7507 /* MessageInputBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7BFFAB20B7477700FA7507 /* MessageInputBarView.swift */; };
 		2B7FF06020C0527000013D48 /* BubbleImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7FF05F20C0527000013D48 /* BubbleImageCell.swift */; };
 		2B7FF06220C097D200013D48 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7FF06120C097D200013D48 /* ChatViewModel.swift */; };
-		2B7FF06620C14EB000013D48 /* NewChatController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7FF06520C14EB000013D48 /* NewChatController.swift */; };
+		2B7FF06620C14EB000013D48 /* NewGroupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7FF06520C14EB000013D48 /* NewGroupController.swift */; };
 		2B7FF06820C1629300013D48 /* ContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7FF06720C1629300013D48 /* ContactsViewModel.swift */; };
 		2B7FF06B20C276FF00013D48 /* UsersCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7FF06A20C276FF00013D48 /* UsersCollectionView.swift */; };
 		2B7FF06E20C40BD500013D48 /* GroupContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7FF06D20C40BD500013D48 /* GroupContactCell.swift */; };
@@ -64,7 +64,7 @@
 		2BD252E120D8608500B5690E /* DialogItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD252E020D8608500B5690E /* DialogItem.swift */; };
 		2BD252E320D8609500B5690E /* DialogHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD252E220D8609500B5690E /* DialogHistory.swift */; };
 		2BDD4C0620E8F22B00505940 /* DialogActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDD4C0520E8F22B00505940 /* DialogActionCell.swift */; };
-		2BDE4F7520D40ABF0063D9B6 /* ContactInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE4F7420D40ABF0063D9B6 /* ContactInfo.swift */; };
+		2BDE4F7520D40ABF0063D9B6 /* DialogInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE4F7420D40ABF0063D9B6 /* DialogInfo.swift */; };
 		2BDE4F7720D42C3A0063D9B6 /* MediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE4F7620D42C3A0063D9B6 /* MediaCell.swift */; };
 		2BE6B86420B2AB4D00E45260 /* ReusableCellProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE6B86320B2AB4D00E45260 /* ReusableCellProtocol.swift */; };
 		2BE85F0E20B433E0000FF3BE /* ChatController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE85F0D20B433E0000FF3BE /* ChatController.swift */; };
@@ -139,7 +139,7 @@
 		2B7BFFAB20B7477700FA7507 /* MessageInputBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageInputBarView.swift; sourceTree = "<group>"; };
 		2B7FF05F20C0527000013D48 /* BubbleImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleImageCell.swift; sourceTree = "<group>"; };
 		2B7FF06120C097D200013D48 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
-		2B7FF06520C14EB000013D48 /* NewChatController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewChatController.swift; sourceTree = "<group>"; };
+		2B7FF06520C14EB000013D48 /* NewGroupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGroupController.swift; sourceTree = "<group>"; };
 		2B7FF06720C1629300013D48 /* ContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsViewModel.swift; sourceTree = "<group>"; };
 		2B7FF06A20C276FF00013D48 /* UsersCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersCollectionView.swift; sourceTree = "<group>"; };
 		2B7FF06D20C40BD500013D48 /* GroupContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupContactCell.swift; sourceTree = "<group>"; };
@@ -158,7 +158,7 @@
 		2BD252E020D8608500B5690E /* DialogItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogItem.swift; sourceTree = "<group>"; };
 		2BD252E220D8609500B5690E /* DialogHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogHistory.swift; sourceTree = "<group>"; };
 		2BDD4C0520E8F22B00505940 /* DialogActionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogActionCell.swift; sourceTree = "<group>"; };
-		2BDE4F7420D40ABF0063D9B6 /* ContactInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactInfo.swift; sourceTree = "<group>"; };
+		2BDE4F7420D40ABF0063D9B6 /* DialogInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogInfo.swift; sourceTree = "<group>"; };
 		2BDE4F7620D42C3A0063D9B6 /* MediaCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCell.swift; sourceTree = "<group>"; };
 		2BE6B86320B2AB4D00E45260 /* ReusableCellProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableCellProtocol.swift; sourceTree = "<group>"; };
 		2BE85F0D20B433E0000FF3BE /* ChatController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatController.swift; sourceTree = "<group>"; };
@@ -220,7 +220,7 @@
 			children = (
 				2B1D083520CAC31100B41AED /* Contact.swift */,
 				2B1D084320D14D7800B41AED /* PhoneContact.swift */,
-				2BDE4F7420D40ABF0063D9B6 /* ContactInfo.swift */,
+				2BDE4F7420D40ABF0063D9B6 /* DialogInfo.swift */,
 			);
 			path = Contacts;
 			sourceTree = "<group>";
@@ -411,6 +411,32 @@
 			path = UIKit;
 			sourceTree = "<group>";
 		};
+		2BA3ACCC20EA309400B92D13 /* Group */ = {
+			isa = PBXGroup;
+			children = (
+				2B7FF06520C14EB000013D48 /* NewGroupController.swift */,
+				2BB8388D20E676A300AD9B06 /* CreateGroupController.swift */,
+				2BB8389120E679D000AD9B06 /* EditGroupController.swift */,
+			);
+			path = Group;
+			sourceTree = "<group>";
+		};
+		2BA3ACCD20EA309D00B92D13 /* Channel */ = {
+			isa = PBXGroup;
+			children = (
+				2BB8388F20E679BC00AD9B06 /* CreateChannelController.swift */,
+			);
+			path = Channel;
+			sourceTree = "<group>";
+		};
+		2BA3ACD020EA30CF00B92D13 /* Single */ = {
+			isa = PBXGroup;
+			children = (
+				2B1D083B20CD357100B41AED /* UserProfileController.swift */,
+			);
+			path = Single;
+			sourceTree = "<group>";
+		};
 		2BC1593720B2BA5400514397 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -437,11 +463,9 @@
 			children = (
 				2B0F122A20B0443600F5EF7F /* DialogsController.swift */,
 				2BE85F0D20B433E0000FF3BE /* ChatController.swift */,
-				2B1D083B20CD357100B41AED /* UserProfileController.swift */,
-				2B7FF06520C14EB000013D48 /* NewChatController.swift */,
-				2BB8388D20E676A300AD9B06 /* CreateGroupController.swift */,
-				2BB8389120E679D000AD9B06 /* EditGroupController.swift */,
-				2BB8388F20E679BC00AD9B06 /* CreateChannelController.swift */,
+				2BA3ACD020EA30CF00B92D13 /* Single */,
+				2BA3ACCC20EA309400B92D13 /* Group */,
+				2BA3ACCD20EA309D00B92D13 /* Channel */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -852,7 +876,7 @@
 				2BC3F02C20C93ECD0057FFB3 /* CredentialsController.swift in Sources */,
 				2B2F967A20B04665003DE273 /* UIColor+Extention.swift in Sources */,
 				2B20878F20D3DC1C00EE4599 /* UIView+Extension.swift in Sources */,
-				2BDE4F7520D40ABF0063D9B6 /* ContactInfo.swift in Sources */,
+				2BDE4F7520D40ABF0063D9B6 /* DialogInfo.swift in Sources */,
 				2B1BA5BF20C8F676009FC7E3 /* APITarget.swift in Sources */,
 				2BC1594220B2D13E00514397 /* UiStoryboardProtocol.swift in Sources */,
 				2B1EEE4420B15B3C00CDE800 /* InviteFriendsView.swift in Sources */,
@@ -872,7 +896,7 @@
 				2B1D083820CBB09100B41AED /* InviteController.swift in Sources */,
 				2BE85F1220B43683000FF3BE /* BaseCollectionCell.swift in Sources */,
 				2B7FF06820C1629300013D48 /* ContactsViewModel.swift in Sources */,
-				2B7FF06620C14EB000013D48 /* NewChatController.swift in Sources */,
+				2B7FF06620C14EB000013D48 /* NewGroupController.swift in Sources */,
 				2BC1593D20B2CA0000514397 /* SettingsController.swift in Sources */,
 				2BE85F0E20B433E0000FF3BE /* ChatController.swift in Sources */,
 				2B20878B20D3C88400EE4599 /* Dialog.swift in Sources */,

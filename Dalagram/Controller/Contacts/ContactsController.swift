@@ -26,7 +26,6 @@ class ContactsController: UITableViewController {
     let viewModel = ContactsViewModel()
     
     // MARK: - Life cycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
@@ -59,12 +58,6 @@ class ContactsController: UITableViewController {
         tableView.tableFooterView = UIView()
         tableView.separatorColor = UIColor.groupTableViewBackground
         tableView.registerNib(ContactCell.self)
-        
-        // MARK: UIBarButtonItem
-        let plusButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: nil)
-        plusButton.tintColor = UIColor.white
-        self.navigationItem.rightBarButtonItem = plusButton
-        
     }
     
     // MARK: - Invite Friends Action
@@ -109,11 +102,11 @@ extension ContactsController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.section {
         case 0:
-            /// Need to pass contactInfo and dialogId. user_id is actually primary key of Dialog table
+            /// Need to pass dialogInfo and dialogId which is user_id + prefix "U" as User
             if let contact = RealmManager.shared.getObjects(type: Contact.self) {
                 if let contactItem = contact[indexPath.row] as? Contact {
                     let contactInfo = DialogInfo(contact: contactItem)
-                    let vc = ChatController(info: contactInfo, dialogId: String(contactItem.user_id))
+                    let vc = ChatController(info: contactInfo, dialogId: String(contactItem.user_id) + "U")
                     vc.hidesBottomBarWhenPushed = true
                     self.show(vc, sender: nil)
                 }

@@ -12,6 +12,7 @@ class InviteController: UITableViewController {
     
     // MARK: - IBOutlets
     fileprivate var searchBar: UISearchBar = UISearchBar()
+    
     lazy var sendButton: UIButton = {
         let button = UIButton()
         button.setTitle("Отправить", for: .normal)

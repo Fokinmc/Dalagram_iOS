@@ -49,13 +49,13 @@ class DialogsController: UITableViewController {
         loadData()
         connetToSocket()
         listenMessageUpdates()
-        NotificationCenter.default.addObserver(self, selector: #selector(loadData), name: NSNotification.Name("loadDialogsFromServer"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(loadData), name: AppManager.loadDialogsNotification, object: nil)
         
     }
     
     deinit {
         notificationToken?.invalidate()
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("loadDialogsFromServer"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: AppManager.loadDialogsNotification, object: nil)
     }
     
     // MARK: Connect to socket
@@ -85,7 +85,8 @@ class DialogsController: UITableViewController {
             switch changes {
             case .initial:
                 // Results are now populated and can be accessed without blocking the UI
-                tableView.reloadData()
+                //tableView.reloadData()
+                print("initial")
             case .update(_):
                 print("update")
                 //tableView.reloadData()
@@ -98,7 +99,6 @@ class DialogsController: UITableViewController {
     // MARK: - Load Data
     
     @objc func loadData() {
-        /// Dialogs loading to Realm database
         viewModel.getUserDialogs { [weak self] in
             guard let vc = self else { return }
             vc.tableView.reloadData()
@@ -112,7 +112,7 @@ class DialogsController: UITableViewController {
         let alert = UIAlertController(title: "Выберите", message: nil, preferredStyle: .actionSheet)
         alert.view.tintColor = UIColor.darkBlueNavColor
         let groupAction = UIAlertAction(title: "Новая группа", style: .default) { (act) in
-            let vc = NewChatController()
+            let vc = NewGroupController()
             self.show(vc, sender: nil)
         }
         let channelAction = UIAlertAction(title: "Новый канал", style: .default) { (act) in
@@ -120,7 +120,9 @@ class DialogsController: UITableViewController {
             self.show(vc, sender: nil)
         }
         let singleAction = UIAlertAction(title: "Новый чат", style: .default) { (act) in
-            print(0)
+            let vc = ContactsController()
+            vc.title = "Новый диалог"
+            self.show(vc, sender: nil)
         }
         let cancelAction = UIAlertAction(title: "Отмена", style: .cancel, handler: nil)
         alert.addAction(groupAction)

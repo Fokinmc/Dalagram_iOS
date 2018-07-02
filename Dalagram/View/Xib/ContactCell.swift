@@ -58,4 +58,19 @@ class ContactCell: UITableViewCell {
         }
     }
     
+    func setupRegisteredContact(_ data: JSONContact) {
+        let contactName = data.user_name != "" ? data.user_name : !data.contact_name.isEmpty ? data.contact_name : data.phone
+        firstName.text      = contactName
+        statusLabel.text    = "Был(а) в сети \(data.last_visit)"
+        lastName.text       = ""
+        if data.avatar != "http://dalagram.bugingroup.com/media/default-user.jpg" {
+            userCreds.isHidden = true
+            avatarView.kf.setImage(with: URL(string: data.avatar), placeholder: #imageLiteral(resourceName: "bg_gradient_2"))
+        } else {
+            avatarView.image = UIImage(named: "bg_gradient_\(arc4random_uniform(4))")
+            userCreds.isHidden = false
+            userCreds.text = "\(contactName.first!)"
+        }
+    }
+    
 }

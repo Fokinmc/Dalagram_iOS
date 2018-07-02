@@ -62,7 +62,6 @@ class ChatController: UIViewController {
         self.viewModel.info = info
         self.viewModel.chatType = type
         self.info = info
-        
         configureNavBar(info)
     }
     
@@ -75,11 +74,13 @@ class ChatController: UIViewController {
         setEmptyBackTitle()
         addKeyboardObservers()
         loadMessages()
-
+        
         viewModel.socketMessageEvent { [weak self] in
             self?.collectionView.reloadData()
             self?.collectionView.scrollToLastItem(animated: true)
         }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(loadGroupDetails), name: AppManager.dialogDetailsNotification, object: nil)
     }
     
     override func viewDidLayoutSubviews() {
@@ -93,7 +94,6 @@ class ChatController: UIViewController {
         super.viewDidDisappear(animated)
         NotificationCenter.default.removeObserver(self, name: Notification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name.UIKeyboardWillHide, object: nil)
-      
         // Remove everything with chat_id 0
         let realm = try! Realm()
         for object in realm.objects(DialogHistory.self).filter("chat_id = 0") {
@@ -115,10 +115,18 @@ class ChatController: UIViewController {
         })
     }
     
+    @objc func loadGroupDetails() {
+        viewModel.getGroupDetails { [weak self] (groupName, groupAva) in
+            self?.titleView.userNameLabel.text = groupName
+            self?.titleView.userAvatarView.kf.setImage(with: URL(string: groupAva), placeholder: #imageLiteral(resourceName: "bg_gradient_0"))
+        }
+    }
+    
     // MARK: - Navigation Back Button Action
     
     @objc func backItemPressed() {
         self.navigationController?.popViewController(animated: true)
+        NotificationCenter.default.removeObserver(self, name: AppManager.dialogDetailsNotification, object: nil)
     }
     
     // MARK: - InputBar Send Button Action
@@ -146,7 +154,7 @@ class ChatController: UIViewController {
         case .single:
             let vc = UserProfileController.fromStoryboard()
             vc.contact = info
-            self.navigationController?.pushViewController(vc, animated: true)
+            self.show(vc, sender: nil)
         case .group:
             let vc = EditGroupController.fromStoryboard()
             vc.groupInfo = info

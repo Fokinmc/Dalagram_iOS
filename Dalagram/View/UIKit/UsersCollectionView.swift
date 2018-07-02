@@ -16,7 +16,7 @@ class UsersCollectionView: UIView {
     var data: [Contact] = []
     let disposeBag = DisposeBag()
     
-    var newChatVC: NewChatController?  {
+    var newChatVC: NewGroupController?  {
         didSet {
             viewModel = newChatVC?.viewModel
             setupEvents()

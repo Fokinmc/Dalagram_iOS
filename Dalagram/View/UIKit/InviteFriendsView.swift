@@ -47,7 +47,7 @@ class InviteFriendsView: UIView {
         
         // Configure Constraints
         plusIcon.snp.makeConstraints { (make) in
-            make.left.equalTo(16.0)
+            make.left.equalTo(10.0)
             make.top.equalTo(3.0)
             make.bottom.equalTo(-3.0)
             make.width.equalTo(plusIcon.snp.height).multipliedBy(1/1)

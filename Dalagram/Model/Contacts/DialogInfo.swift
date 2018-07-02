@@ -25,7 +25,6 @@ struct DialogInfo {
         self.avatar = contact.avatar
         self.last_visit = contact.last_visit
         self.phone = contact.contact_name
-        
     }
     
     /// Init from Dialogs Controller

@@ -11,6 +11,26 @@ import UIKit
 import SwiftyJSON
 import RealmSwift
 
+struct JSONContact {
+    var user_id: Int        = 0
+    var user_name: String   = ""
+    var phone: String       = ""
+    var contact_name:String = ""
+    var avatar: String      = ""
+    var user_status: String = ""
+    var last_visit: String  = ""
+    
+    init(json: JSON) {
+        self.user_id = json["user_id"].intValue
+        self.user_name = json["user_name"].stringValue
+        self.phone = json["phone"].stringValue
+        self.contact_name = json["contact_user_name"].stringValue
+        self.avatar = json["avatar"].stringValue
+        self.user_status = json["user_status"].stringValue
+        self.last_visit = json["last_visit"].stringValue
+    }
+}
+
 class Contact: Object {
     
     @objc dynamic var user_id: Int          = 0

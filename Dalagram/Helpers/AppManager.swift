@@ -9,5 +9,9 @@
 import Foundation
 
 class AppManager {
+    
     static let baseUrl = "http://dalagram.bugingroup.com"
+    static let loadDialogsNotification = NSNotification.Name("loadDialogsNotification")
+    static let dialogDetailsNotification = NSNotification.Name("dialogDetailsNotification")
+    
 }

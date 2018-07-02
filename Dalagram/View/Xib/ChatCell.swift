@@ -45,11 +45,11 @@ class ChatCell: UITableViewCell {
             
             if item.group_id != 0 || item.channel_id != 0 {
                 userNameLabel.text = item.chat_name
-                messageLabel.text = item.chat_text
                 if item.chat_kind == "action" {
                      messageLabel.text = item.action_name
                 }
             }
+            
             if item.avatar.isEmpty {
                 if let firstLetter = item.chat_name.first {
                     prefix = firstLetter.description.capitalized
