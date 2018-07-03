@@ -107,7 +107,7 @@ extension InviteController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: ContactCell = tableView.dequeReusableCell(for: indexPath)
         let contact = viewModel.phoneContacts[indexPath.section].value[indexPath.row]
-        cell.setupSystemContact(contact)
+        cell.setupSystemContact(contact, section: indexPath.section)
         return cell
     }
     

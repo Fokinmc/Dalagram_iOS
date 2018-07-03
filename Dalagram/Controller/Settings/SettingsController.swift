@@ -78,7 +78,7 @@ extension SettingsController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 6
+        return 5
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -90,7 +90,7 @@ extension SettingsController {
         case 2: // >> Notifications
             let vc = NotificationsController.fromStoryboard()
             self.show(vc, sender: nil)
-        case 5: // >> Logout
+        case 4: // >> Logout
             User.removeUser()
             RealmManager.shared.deleteDatabase()
             AppDelegate.shared().configureRootController(isLogged: false)

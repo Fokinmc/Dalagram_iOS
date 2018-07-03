@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DialogActionCell: BaseCollectionCell {
+class BubleActionCell: BaseCollectionCell {
     
     lazy var bgView: UIView = {
         let view = UIView()
@@ -22,6 +22,8 @@ class DialogActionCell: BaseCollectionCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14.0)
         label.textColor = UIColor.white
+        label.textAlignment = .center
+        label.numberOfLines = 2
         return label
     }()
     
@@ -30,6 +32,9 @@ class DialogActionCell: BaseCollectionCell {
         addSubview(bgView)
         
         bgView.snp.makeConstraints { (make) in
+            //make.centerX.equalToSuperview()
+            make.left.greaterThanOrEqualTo(8.0)
+            make.right.lessThanOrEqualTo(-8.0)
             make.centerX.equalToSuperview()
             make.top.equalTo(8)
             make.bottom.equalTo(-8)

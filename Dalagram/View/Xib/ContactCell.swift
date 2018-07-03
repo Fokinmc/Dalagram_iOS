@@ -26,12 +26,11 @@ class ContactCell: UITableViewCell {
         avatarView.layer.cornerRadius = avatarView.frame.width/2
     }
     
-    func setupSystemContact(_ data: PhoneContact) {
-      
+    func setupSystemContact(_ data: PhoneContact, section: Int) {
         firstName.text      = data.firstName
         lastName.text       = data.lastName
         statusLabel.text    = data.phone
-        avatarView.image    = UIImage(named: "bg_gradient_\(arc4random_uniform(4))")
+        avatarView.image    = UIImage(named: "bg_gradient_\(section % 4)")
         userCreds.isHidden  = false
         var credits = ""
         if let nameFirst = data.firstName.first {
@@ -46,13 +45,14 @@ class ContactCell: UITableViewCell {
     func setupRegisteredContact(_ data: Contact) {
         let contactName = data.user_name != "" ? data.user_name : data.contact_name
         firstName.text      = contactName
-        statusLabel.text    = "Был(а) в сети \(data.last_visit)"
+        statusLabel.text    = "Был(а) в сети \(!data.last_visit.isEmpty ? data.last_visit : "недавно")"
         lastName.text       = ""
-        if data.avatar != "http://dalagram.bugingroup.com/media/default-user.jpg" {
+        if !data.avatar.isEmpty {
             userCreds.isHidden = true
+            userCreds.text = ""
             avatarView.kf.setImage(with: URL(string: data.avatar), placeholder: #imageLiteral(resourceName: "bg_gradient_2"))
         } else {
-            avatarView.image = UIImage(named: "bg_gradient_\(arc4random_uniform(4))")
+            avatarView.image = UIImage(named: "bg_gradient_2")
             userCreds.isHidden = false
             userCreds.text = "\(contactName.first!)"
         }

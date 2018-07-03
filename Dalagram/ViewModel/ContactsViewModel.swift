@@ -36,10 +36,6 @@ class ContactsViewModel {
         for item in selectedContacts.value {
             dict.append(["user_id": item.value.user_id])
         }
-//        if let stringJSON = JSON(dict).rawString(.utf8, options: []) {
-//            let str = stringJSON.replacingOccurrences(of: "[", with: "")
-//            return stringJSON
-//        }
         return dict
     }
     
@@ -78,10 +74,9 @@ class ContactsViewModel {
                         /// contactsObj - Single object which represent contact
                         
                         if let prefix = contact.familyName.first ?? contact.givenName.first, let phone = contact.phoneNumbers.first {
-                            
-                            let contactObj = PhoneContact(firstName: contact.givenName, lastName: contact.familyName, phone: phone.value.stringValue, image: contact.thumbnailImageData)
-                            let contactJsonObj = ["phone": phone.value.stringValue, "contact_user_name": contactObj.getFullName()]
-                            
+                            let phoneStr = phone.value.stringValue.removeWhitespace()
+                            let contactObj = PhoneContact(firstName: contact.givenName, lastName: contact.familyName, phone: phoneStr, image: contact.thumbnailImageData)
+                            let contactJsonObj = ["phone": phoneStr, "contact_user_name": contactObj.getFullName()]
                             /// Collecting contacts as a JSON Parameter for .addContacts request
                             contactsJsonDict.append(contactJsonObj)
                             
@@ -99,7 +94,6 @@ class ContactsViewModel {
                     for item in sorted { self.letters.append(item.key) }
                     onSuccess()
                     
-                    contactsJsonDict.append(["phone": "+77087042247", "contact_user_name": "Tony Default"])
                     /// Adding contacts in order to know registered users
                     NetworkManager.makeRequest(.addContacts(contactsJsonDict), success: { (json) in
                         onSuccess()

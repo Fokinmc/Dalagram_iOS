@@ -31,17 +31,16 @@ class ContactsController: UITableViewController {
         configureUI()
         setBlueNavBar()
         
-        viewModel.fetchContacts {
+        viewModel.fetchContacts { [weak self] in
             DispatchQueue.main.async {
-                self.tableView.reloadData()
+                self?.tableView.reloadData()
             }
+            self?.viewModel.getContacts(onSuccess: {
+                DispatchQueue.main.async {
+                    self?.tableView.reloadData()
+                }
+            })
         }
-        
-        self.viewModel.getContacts(onSuccess: {
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        })
     }
     
     // MARK: - Configuring UI
@@ -93,7 +92,7 @@ extension ContactsController {
             }
         } else {
             let contact = viewModel.phoneContacts[indexPath.section - 1].value[indexPath.row]
-            cell.setupSystemContact(contact)
+            cell.setupSystemContact(contact, section: indexPath.section)
             
         }
         return cell

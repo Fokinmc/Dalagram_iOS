@@ -34,7 +34,9 @@ class ChatController: UIViewController {
     
     lazy var collectionView: UICollectionView = {
         layout.scrollDirection = .vertical
-        let collectionView = UICollectionView(frame: view.frame, collectionViewLayout: layout)
+        let lt = ChatCollectionViewFlowLayout()
+        lt.scrollDirection = .vertical
+        let collectionView = UICollectionView(frame: view.frame, collectionViewLayout: lt)
         let backgroundView = UIImageView(image: UIImage(named: "image_chatbg"))
         backgroundView.contentMode = .scaleAspectFill
         collectionView.backgroundView = backgroundView
@@ -62,7 +64,7 @@ class ChatController: UIViewController {
         self.viewModel.info = info
         self.viewModel.chatType = type
         self.info = info
-        configureNavBar(info)
+        self.configureNavBar(info)
     }
     
     
@@ -82,27 +84,26 @@ class ChatController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(loadGroupDetails), name: AppManager.dialogDetailsNotification, object: nil)
     }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
         self.view.layoutIfNeeded()
         let bottomOffset = collectionView.contentSize.height - collectionView.bounds.height + 8.0
         self.collectionView.setContentOffset(CGPoint(x: 0, y: bottomOffset), animated: false)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         NotificationCenter.default.removeObserver(self, name: Notification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name.UIKeyboardWillHide, object: nil)
-        // Remove everything with chat_id 0
-        let realm = try! Realm()
-        for object in realm.objects(DialogHistory.self).filter("chat_id = 0") {
-            try! realm.write {
-                realm.delete(object)
-            }
-        }
         
-        SocketIOManager.shared.socket.off("message")
+        // Remove everything with chat_id 0
+        viewModel.removeDialogHistory()
+        
+        //SocketIOManager.shared.socket.off("message")
     }
     
     // MARK: Load Chat Details
@@ -111,7 +112,7 @@ class ChatController: UIViewController {
         viewModel.getDialogDetails(success: { [weak self] in
             guard let vc = self else { return }
             vc.collectionView.reloadData()
-            vc.collectionView.scrollToLastItem(animated: false)
+            //vc.collectionView.scrollToLastItem(animated: false)
         })
     }
     
@@ -177,24 +178,13 @@ extension ChatController: UICollectionViewDelegate, UICollectionViewDataSource, 
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let message = viewModel.messages![indexPath.row]
-        if message.chat_kind == "action" {
-            let cell: DialogActionCell = collectionView.dequeReusableCell(for: indexPath)
+        if message.chat_kind == "action" && viewModel.chatType != .single {
+            let cell: BubleActionCell = collectionView.dequeReusableCell(for: indexPath)
             cell.setupData(message)
             return cell
         } else {
             let textCell: BubbleTextCell = collectionView.dequeReusableCell(for: indexPath)
-        
-            textCell.textView.text = message.chat_text
-            textCell.dateLabel.text = message.chat_date
-            textCell.bubleWidthAnchor?.constant = (round((estimatedFrameForText(message.chat_text).width + estimatedFrameForText(message.chat_date).width)/2.0) * 2) + 38.0
-            
-            if viewModel.chatType == .group {
-                textCell.setupLeftBuble()
-            } else {
-                message.sender_user_id != info.user_id ? textCell.setupRightBuble() : textCell.setupLeftBuble()
-            }
-            
-            //textCell.bubleWidthAnchor?.isActive = true
+            textCell.setupData(message, chatType: viewModel.chatType, user_id: info.user_id)
             return textCell
         }
        
@@ -206,20 +196,28 @@ extension ChatController: UICollectionViewDelegate, UICollectionViewDataSource, 
         return CGSize(width: collectionView.frame.width - collectionView.frame.width.truncatingRemainder(dividingBy: 2), height: height)
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        keyboardWillHide()
-    }
-    
     private func estimatedFrameForText(_ text: String) -> CGRect {
         let size = CGSize(width: 180, height: 1000)
         let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
         return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 16.0)], context: nil)
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        keyboardWillHide()
+    }
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         collectionView.collectionViewLayout.invalidateLayout()
     }
 
+}
+
+extension ChatController: ChatLayoutDelegate {
+    func collectionView(_ collectionView: UICollectionView,
+                        heightForBubleAtIndexPath indexPath:IndexPath) -> CGFloat {
+        
+        return estimatedFrameForText(viewModel.messages![indexPath.row].chat_text).height + 20.0
+    }
 }
 
 // MARK: - UIKeyboard Observers
@@ -288,13 +286,13 @@ extension ChatController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(BubbleTextCell.self)
-        collectionView.register(DialogActionCell.self)
+        collectionView.register(BubleActionCell.self)
         collectionView.backgroundColor = UIColor.white
         collectionView.keyboardDismissMode = .interactive
         collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 8, left: 0, bottom: 8.0, right: 0)
         collectionView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8.0, right: 0)
-        collectionView.contentOffset = CGPoint(x: 0, y: collectionView.contentSize.height - collectionView.bounds.height + 8.0)
         collectionView.alwaysBounceVertical = true
+        
         collectionView.snp.makeConstraints { (make) in
             make.top.equalToSuperview()
             make.left.equalToSuperview()

@@ -17,12 +17,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        
+        window?.layer.speed = 1.4
         DropDown.startListeningToKeyboard()
         configureRootController(isLogged: User.isset())
         configureNavBar()
         configureTabBar()
         print(Realm.Configuration.defaultConfiguration.fileURL!)
+        
         return true
     }
     

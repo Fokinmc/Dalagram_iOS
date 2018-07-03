@@ -43,7 +43,6 @@ class ChatViewModel {
         }
     
         NetworkManager.makeRequest(.getDialogDetails(parameters), success: { [unowned self] (json)  in
-            print(json)
             for (_, subJson):(String, JSON) in json["data"] {
                 DialogHistory.initWith(json: subJson, dialog_id: self.dialogId)
             }
@@ -105,6 +104,17 @@ class ChatViewModel {
             print("makeRequest(.sendMessage", json)
             //DialogHistory.initWith(json: json["data"], dialog_id: self.dialogId)
         })
+    }
+    
+    // MARK: Remove DialogHistory with chat_id 0
+    
+    func removeDialogHistory() {
+        let realm = try! Realm()
+        for object in realm.objects(DialogHistory.self).filter("chat_id = 0") {
+            try! realm.write {
+                realm.delete(object)
+            }
+        }
     }
     
 }

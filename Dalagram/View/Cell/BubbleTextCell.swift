@@ -60,7 +60,6 @@ class BubbleTextCell: BaseCollectionCell {
     
     override func setupViews() {
         super.setupViews()
-        
         addSubview(bubleView)
         addSubview(textView)
         addSubview(dateLabel)
@@ -75,14 +74,16 @@ class BubbleTextCell: BaseCollectionCell {
             bubleRightAnchor = bubleView.rightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.rightAnchor, constant: -8.0)
         }
         
+        bubleLeftAnchor?.isActive = true
+        bubleRightAnchor?.isActive = true
+        
         // Top & Height Constraints
         bubleView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         //bubleView.topAnchor.constraint(equalTo: self.topAnchor, constant: 0.0).isActive = true
         bubleView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
         
         //Width Contraints
-        bubleWidthAnchor = bubleView.widthAnchor.constraint(equalToConstant: 200)
-    
+        //bubleWidthAnchor = bubleView.widthAnchor.constraint(equalToConstant: 200)
 
         markIcon.snp.makeConstraints { (make) in
             make.right.equalTo(bubleView).offset(-8.0)
@@ -103,19 +104,40 @@ class BubbleTextCell: BaseCollectionCell {
         }
     }
     
+    func setupData(_ data: DialogHistory, chatType: DialogType, user_id: Int) {
+        textView.text   = data.chat_text
+        dateLabel.text  = data.chat_date
+        bubleWidthAnchor?.constant = (round((estimatedFrameForText(data.chat_text).width +
+            estimatedFrameForText(data.chat_date).width)/2.0) * 2) + 40.0
+        
+        switch chatType {
+        case .group, .channel:
+            setupLeftBuble()
+        default:
+            data.sender_user_id != user_id ? setupRightBuble() : setupLeftBuble()
+        }
+    }
+    
     func setupLeftBuble() {
-        dateLabel.textColor = UIColor.lightGray
-        bubleView.backgroundColor = UIColor.white
-        bubleLeftAnchor?.isActive = true
-        bubleRightAnchor?.isActive = false
-        bubleWidthAnchor?.isActive = true
+        dateLabel.textColor         = UIColor.lightGray
+        bubleView.backgroundColor   = UIColor.white
+        bubleLeftAnchor?.isActive   = true
+        bubleRightAnchor?.isActive  = false
+        bubleWidthAnchor?.isActive  = true
     }
     
     func setupRightBuble() {
-        dateLabel.textColor = UIColor.init(red: 90/255.0, green: 184/255.0, blue: 20/255.0, alpha: 1.0)
-        bubleView.backgroundColor = UIColor.lightGreenColor
-        bubleLeftAnchor?.isActive = false
-        bubleRightAnchor?.isActive = true
-        bubleWidthAnchor?.isActive = true
+        dateLabel.textColor         = UIColor.init(red: 90/255.0, green: 184/255.0, blue: 20/255.0, alpha: 1.0)
+        bubleView.backgroundColor   = UIColor.lightGreenColor
+        bubleLeftAnchor?.isActive   = false
+        bubleRightAnchor?.isActive  = true
+        bubleWidthAnchor?.isActive  = true
     }
+    
+    private func estimatedFrameForText(_ text: String) -> CGRect {
+        let size = CGSize(width: 180, height: 1000)
+        let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+        return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 16.0)], context: nil)
+    }
+    
 }

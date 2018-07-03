@@ -253,3 +253,10 @@ struct SectionInfo {
     var numberOfItems: Int
     var sectionIndex: Int
 }
+
+extension String {
+    
+    func removeWhitespace() -> String {
+        return components(separatedBy: .whitespaces).joined()
+    }
+}

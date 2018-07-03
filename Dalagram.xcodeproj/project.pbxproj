@@ -49,6 +49,7 @@
 		2B7FF06820C1629300013D48 /* ContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7FF06720C1629300013D48 /* ContactsViewModel.swift */; };
 		2B7FF06B20C276FF00013D48 /* UsersCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7FF06A20C276FF00013D48 /* UsersCollectionView.swift */; };
 		2B7FF06E20C40BD500013D48 /* GroupContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7FF06D20C40BD500013D48 /* GroupContactCell.swift */; };
+		2B983C4420EB9E7A00116C45 /* ChatCollectioViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B983C4320EB9E7A00116C45 /* ChatCollectioViewLayout.swift */; };
 		2B9AB1F020B019C4004CB2A7 /* ViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9AB1EF20B019C4004CB2A7 /* ViewController+Extension.swift */; };
 		2BA9CFFB20C94F0000C99FB1 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA9CFFA20C94F0000C99FB1 /* ProfileViewModel.swift */; };
 		2BA9CFFD20C9679900C99FB1 /* EditProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA9CFFC20C9679900C99FB1 /* EditProfileController.swift */; };
@@ -63,7 +64,7 @@
 		2BC3F02C20C93ECD0057FFB3 /* CredentialsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC3F02B20C93ECD0057FFB3 /* CredentialsController.swift */; };
 		2BD252E120D8608500B5690E /* DialogItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD252E020D8608500B5690E /* DialogItem.swift */; };
 		2BD252E320D8609500B5690E /* DialogHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD252E220D8609500B5690E /* DialogHistory.swift */; };
-		2BDD4C0620E8F22B00505940 /* DialogActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDD4C0520E8F22B00505940 /* DialogActionCell.swift */; };
+		2BDD4C0620E8F22B00505940 /* BubleActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDD4C0520E8F22B00505940 /* BubleActionCell.swift */; };
 		2BDE4F7520D40ABF0063D9B6 /* DialogInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE4F7420D40ABF0063D9B6 /* DialogInfo.swift */; };
 		2BDE4F7720D42C3A0063D9B6 /* MediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE4F7620D42C3A0063D9B6 /* MediaCell.swift */; };
 		2BE6B86420B2AB4D00E45260 /* ReusableCellProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE6B86320B2AB4D00E45260 /* ReusableCellProtocol.swift */; };
@@ -143,6 +144,7 @@
 		2B7FF06720C1629300013D48 /* ContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsViewModel.swift; sourceTree = "<group>"; };
 		2B7FF06A20C276FF00013D48 /* UsersCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersCollectionView.swift; sourceTree = "<group>"; };
 		2B7FF06D20C40BD500013D48 /* GroupContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupContactCell.swift; sourceTree = "<group>"; };
+		2B983C4320EB9E7A00116C45 /* ChatCollectioViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCollectioViewLayout.swift; sourceTree = "<group>"; };
 		2B9AB1EF20B019C4004CB2A7 /* ViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+Extension.swift"; sourceTree = "<group>"; };
 		2BA9CFFA20C94F0000C99FB1 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		2BA9CFFC20C9679900C99FB1 /* EditProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileController.swift; sourceTree = "<group>"; };
@@ -157,7 +159,7 @@
 		2BC3F02B20C93ECD0057FFB3 /* CredentialsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsController.swift; sourceTree = "<group>"; };
 		2BD252E020D8608500B5690E /* DialogItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogItem.swift; sourceTree = "<group>"; };
 		2BD252E220D8609500B5690E /* DialogHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogHistory.swift; sourceTree = "<group>"; };
-		2BDD4C0520E8F22B00505940 /* DialogActionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogActionCell.swift; sourceTree = "<group>"; };
+		2BDD4C0520E8F22B00505940 /* BubleActionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubleActionCell.swift; sourceTree = "<group>"; };
 		2BDE4F7420D40ABF0063D9B6 /* DialogInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogInfo.swift; sourceTree = "<group>"; };
 		2BDE4F7620D42C3A0063D9B6 /* MediaCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCell.swift; sourceTree = "<group>"; };
 		2BE6B86320B2AB4D00E45260 /* ReusableCellProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableCellProtocol.swift; sourceTree = "<group>"; };
@@ -442,9 +444,9 @@
 			children = (
 				2BE85F0F20B43594000FF3BE /* BubbleTextCell.swift */,
 				2B7FF05F20C0527000013D48 /* BubbleImageCell.swift */,
+				2BDD4C0520E8F22B00505940 /* BubleActionCell.swift */,
 				2B7FF06D20C40BD500013D48 /* GroupContactCell.swift */,
 				2BDE4F7620D42C3A0063D9B6 /* MediaCell.swift */,
-				2BDD4C0520E8F22B00505940 /* DialogActionCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -463,6 +465,7 @@
 			children = (
 				2B0F122A20B0443600F5EF7F /* DialogsController.swift */,
 				2BE85F0D20B433E0000FF3BE /* ChatController.swift */,
+				2B983C4320EB9E7A00116C45 /* ChatCollectioViewLayout.swift */,
 				2BA3ACD020EA30CF00B92D13 /* Single */,
 				2BA3ACCC20EA309400B92D13 /* Group */,
 				2BA3ACCD20EA309D00B92D13 /* Channel */,
@@ -878,6 +881,7 @@
 				2B20878F20D3DC1C00EE4599 /* UIView+Extension.swift in Sources */,
 				2BDE4F7520D40ABF0063D9B6 /* DialogInfo.swift in Sources */,
 				2B1BA5BF20C8F676009FC7E3 /* APITarget.swift in Sources */,
+				2B983C4420EB9E7A00116C45 /* ChatCollectioViewLayout.swift in Sources */,
 				2BC1594220B2D13E00514397 /* UiStoryboardProtocol.swift in Sources */,
 				2B1EEE4420B15B3C00CDE800 /* InviteFriendsView.swift in Sources */,
 				2B7FF06B20C276FF00013D48 /* UsersCollectionView.swift in Sources */,
@@ -907,7 +911,7 @@
 				2BB8388E20E676A300AD9B06 /* CreateGroupController.swift in Sources */,
 				2B73B7FC20AEBA42009D51F8 /* AppDelegate.swift in Sources */,
 				2B7BFFAA20B7336600FA7507 /* UserNavigationTitleView.swift in Sources */,
-				2BDD4C0620E8F22B00505940 /* DialogActionCell.swift in Sources */,
+				2BDD4C0620E8F22B00505940 /* BubleActionCell.swift in Sources */,
 				2B0F122B20B0443600F5EF7F /* DialogsController.swift in Sources */,
 				2BA9CFFB20C94F0000C99FB1 /* ProfileViewModel.swift in Sources */,
 			);
