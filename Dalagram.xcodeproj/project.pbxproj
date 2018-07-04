@@ -32,6 +32,9 @@
 		2B2F967A20B04665003DE273 /* UIColor+Extention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2F967920B04665003DE273 /* UIColor+Extention.swift */; };
 		2B2F967F20B0500E003DE273 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2F967D20B0500E003DE273 /* ContactCell.swift */; };
 		2B2F968020B0500E003DE273 /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B2F967E20B0500E003DE273 /* ContactCell.xib */; };
+		2B4574F820ECBA73008391B3 /* MediaColletionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4574F720ECBA73008391B3 /* MediaColletionController.swift */; };
+		2B4574FA20ECBEF9008391B3 /* ChatContactsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4574F920ECBEF9008391B3 /* ChatContactsController.swift */; };
+		2B4574FC20ECDF46008391B3 /* DialogDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4574FB20ECDF46008391B3 /* DialogDetail.swift */; };
 		2B676F2520C7147900A168DE /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B676F2420C7147900A168DE /* AuthViewModel.swift */; };
 		2B73B7FC20AEBA42009D51F8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B73B7FB20AEBA42009D51F8 /* AppDelegate.swift */; };
 		2B73B80120AEBA42009D51F8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B73B7FF20AEBA42009D51F8 /* Main.storyboard */; };
@@ -121,6 +124,9 @@
 		2B2F967920B04665003DE273 /* UIColor+Extention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extention.swift"; sourceTree = "<group>"; };
 		2B2F967D20B0500E003DE273 /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		2B2F967E20B0500E003DE273 /* ContactCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactCell.xib; sourceTree = "<group>"; };
+		2B4574F720ECBA73008391B3 /* MediaColletionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaColletionController.swift; sourceTree = "<group>"; };
+		2B4574F920ECBEF9008391B3 /* ChatContactsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatContactsController.swift; sourceTree = "<group>"; };
+		2B4574FB20ECDF46008391B3 /* DialogDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogDetail.swift; sourceTree = "<group>"; };
 		2B676F2420C7147900A168DE /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		2B73B7F820AEBA42009D51F8 /* Dalagram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dalagram.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B73B7FB20AEBA42009D51F8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -222,7 +228,6 @@
 			children = (
 				2B1D083520CAC31100B41AED /* Contact.swift */,
 				2B1D084320D14D7800B41AED /* PhoneContact.swift */,
-				2BDE4F7420D40ABF0063D9B6 /* DialogInfo.swift */,
 			);
 			path = Contacts;
 			sourceTree = "<group>";
@@ -233,6 +238,8 @@
 				2B20878A20D3C88400EE4599 /* Dialog.swift */,
 				2BD252E020D8608500B5690E /* DialogItem.swift */,
 				2BD252E220D8609500B5690E /* DialogHistory.swift */,
+				2B4574FB20ECDF46008391B3 /* DialogDetail.swift */,
+				2BDE4F7420D40ABF0063D9B6 /* DialogInfo.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -419,6 +426,7 @@
 				2B7FF06520C14EB000013D48 /* NewGroupController.swift */,
 				2BB8388D20E676A300AD9B06 /* CreateGroupController.swift */,
 				2BB8389120E679D000AD9B06 /* EditGroupController.swift */,
+				2B4574F720ECBA73008391B3 /* MediaColletionController.swift */,
 			);
 			path = Group;
 			sourceTree = "<group>";
@@ -434,6 +442,7 @@
 		2BA3ACD020EA30CF00B92D13 /* Single */ = {
 			isa = PBXGroup;
 			children = (
+				2B4574F920ECBEF9008391B3 /* ChatContactsController.swift */,
 				2B1D083B20CD357100B41AED /* UserProfileController.swift */,
 			);
 			path = Single;
@@ -882,6 +891,7 @@
 				2BDE4F7520D40ABF0063D9B6 /* DialogInfo.swift in Sources */,
 				2B1BA5BF20C8F676009FC7E3 /* APITarget.swift in Sources */,
 				2B983C4420EB9E7A00116C45 /* ChatCollectioViewLayout.swift in Sources */,
+				2B4574FC20ECDF46008391B3 /* DialogDetail.swift in Sources */,
 				2BC1594220B2D13E00514397 /* UiStoryboardProtocol.swift in Sources */,
 				2B1EEE4420B15B3C00CDE800 /* InviteFriendsView.swift in Sources */,
 				2B7FF06B20C276FF00013D48 /* UsersCollectionView.swift in Sources */,
@@ -892,6 +902,7 @@
 				2B0F122720B030A700F5EF7F /* TabBarController.swift in Sources */,
 				2B1BA5C720C907CB009FC7E3 /* WhisperHelper.swift in Sources */,
 				2B1BA5C120C8FB60009FC7E3 /* APIProvider.swift in Sources */,
+				2B4574FA20ECBEF9008391B3 /* ChatContactsController.swift in Sources */,
 				2B1D084020CE7ED200B41AED /* NewsController.swift in Sources */,
 				2B9AB1F020B019C4004CB2A7 /* ViewController+Extension.swift in Sources */,
 				2B20878920D3C7CD00EE4599 /* DialogsViewModel.swift in Sources */,
@@ -908,6 +919,7 @@
 				2BA9CFFD20C9679900C99FB1 /* EditProfileController.swift in Sources */,
 				2BC1593A20B2BB3E00514397 /* ChatCell.swift in Sources */,
 				2B676F2520C7147900A168DE /* AuthViewModel.swift in Sources */,
+				2B4574F820ECBA73008391B3 /* MediaColletionController.swift in Sources */,
 				2BB8388E20E676A300AD9B06 /* CreateGroupController.swift in Sources */,
 				2B73B7FC20AEBA42009D51F8 /* AppDelegate.swift in Sources */,
 				2B7BFFAA20B7336600FA7507 /* UserNavigationTitleView.swift in Sources */,

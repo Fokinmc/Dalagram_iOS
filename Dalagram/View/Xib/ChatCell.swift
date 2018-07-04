@@ -39,7 +39,8 @@ class ChatCell: UITableViewCell {
         if let item = data.dialogItem {
            
             userNameLabel.text  = !item.contact_user_name.isEmpty ? item.contact_user_name : item.chat_name.isEmpty ? item.phone : item.chat_name
-            
+            iconMute.isHidden   = item.is_mute == 0 ? true : false
+            iconMark.isHidden   = item.is_own_last_message ? false : true
             dateLabel.text      = item.chat_date
             messageLabel.text   = item.chat_text
             
@@ -58,6 +59,7 @@ class ChatCell: UITableViewCell {
             } else {
                 prefix = ""
             }
+            
             userImageView.kf.setImage(with: URL(string: item.avatar), placeholder: UIImage(named: "bg_gradient_\(arc4random_uniform(4))"))
         }
         countLabel.text = "\(data.messagesCount)"

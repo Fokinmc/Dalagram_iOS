@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 class CreateGroupController: UITableViewController {
 
@@ -25,17 +26,38 @@ class CreateGroupController: UITableViewController {
         return item
     }()
     
+    @IBOutlet weak var groupPrefix: UILabel!
     @IBOutlet weak var groupNameField: UITextField!
     @IBOutlet weak var groupImage: UIImageView!
     
     // MARK: - Variables
-    var isImagePicked: Bool = false
-    var viewModel: ContactsViewModel!
     
+    var isImagePicked: Bool = false {
+        didSet {
+            groupPrefix.isHidden = isImagePicked
+        }
+    }
+    
+    var viewModel: ContactsViewModel! {
+        didSet {
+            parseGroupContacts()
+        }
+    }
+    
+    var groupContacts: [Contact] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+    }
+    
+    // MARK: Prepare Group Contacts as a Array
+    
+    func parseGroupContacts() {
+        for item in viewModel.selectedContacts.value {
+            groupContacts.append(item.value)
+        }
+        tableView.reloadData()
     }
     
     // MARK: - Configure UI
@@ -63,7 +85,24 @@ class CreateGroupController: UITableViewController {
     // MARK: - IBOutlets
     
     @IBAction func uploadPhotoPressed(_ sender: UIButton) {
-        self.present(imagePicker, animated: true, completion: nil)
+        if isImagePicked {
+            let alert = UIAlertController(title: "Выберите", message: nil, preferredStyle: .actionSheet)
+            let uploadAction = UIAlertAction(title: "Загрузить другое фото", style: .default, handler: { [unowned self] (act) in
+                 self.present(self.imagePicker, animated: true, completion: nil)
+            })
+            let deleteAction = UIAlertAction(title: "Удалить текущее фото", style: .default, handler: { [unowned self] (act) in
+                self.groupImage.image = #imageLiteral(resourceName: "bg_gradient_0")
+                self.isImagePicked = false
+            })
+            let cancelAction = UIAlertAction(title: "Отмена", style: .cancel, handler: nil)
+            
+            alert.addAction(uploadAction)
+            alert.addAction(deleteAction)
+            alert.addAction(cancelAction)
+            self.present(alert, animated: true, completion: nil)
+        } else {
+            self.present(imagePicker, animated: true, completion: nil)
+        }
     }
     
     // MARK: - Create Group Action
@@ -75,17 +114,19 @@ class CreateGroupController: UITableViewController {
         }
         if isImagePicked {
             if let imageData = UIImageJPEGRepresentation(groupImage.image!, 0.5) {
+                SVProgressHUD.show()
                 NetworkManager.makeRequest(.createGroup(name: name, users: viewModel.getGroupJsonArray(), image: imageData), success: { [weak self] (json) in
                     self?.navigationController?.popToRootViewController(animated: true)
                     NotificationCenter.default.post(name: AppManager.loadDialogsNotification, object: nil)
-                    print(json)
+                    SVProgressHUD.dismiss()
                 })
             }
         } else {
+            SVProgressHUD.show()
             NetworkManager.makeRequest(.createGroup(name: name, users: viewModel.getGroupJsonArray(), image: nil), success: { [weak self] (json) in
                 self?.navigationController?.popToRootViewController(animated: true)
                 NotificationCenter.default.post(name: AppManager.loadDialogsNotification, object: nil)
-                print(json)
+                SVProgressHUD.dismiss()
             })
         }
     }
@@ -100,13 +141,12 @@ extension CreateGroupController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.selectedContacts.value.count
+        return groupContacts.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: GroupContactCell = tableView.dequeReusableCell(for: indexPath)
-        let contacts = viewModel.selectedContacts.value
-        cell.setupContact(contacts[indexPath.row] as! Contact)
+        cell.setupContact(groupContacts[indexPath.row])
         return cell
     }
     

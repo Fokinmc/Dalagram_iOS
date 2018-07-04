@@ -16,6 +16,8 @@ class ContactsViewModel {
     
     var letters: [String] = []
     var phoneContacts: [(key: String, value:[PhoneContact])] = []
+    
+    // New Group Controller Variables
     var selectedContacts = Variable<[Int: Contact]>([:])
     var selectedIndex = Variable<Int>(0)
     var selectedIndexArray: [Int] = []
@@ -30,7 +32,7 @@ class ContactsViewModel {
         })
     }
     
-    // MARK: - Get user_id Json Dictionary
+    // MARK: - Get user_id Json Dictionary for REST API
     func getGroupJsonArray() -> [[String: Int]] {
         var dict: [[String: Int]] = []
         for item in selectedContacts.value {

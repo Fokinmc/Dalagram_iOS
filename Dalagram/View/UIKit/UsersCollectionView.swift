@@ -203,5 +203,8 @@ class UsersCell: BaseCollectionCell {
     func setupUser(_ data: Contact) {
         nameLabel.text = data.user_name != "" ? data.user_name : data.contact_name
         userImage.kf.setImage(with: URL(string: data.avatar))
+        if data.avatar.isEmpty {
+            userImage.image = #imageLiteral(resourceName: "bg_gradient_2")
+        }
     }
 }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 class CreateChannelController: UITableViewController {
     
@@ -25,11 +26,20 @@ class CreateChannelController: UITableViewController {
         return item
     }()
     
+    @IBOutlet weak var channelPrefix: UILabel!
     @IBOutlet weak var channelLogin: UITextField!
     @IBOutlet weak var channelName: UITextField!
     @IBOutlet weak var channelImage: UIImageView!
     
-    var isImagePicked: Bool = false
+    // MARK: - Variables
+    
+    var isImagePicked: Bool = false {
+        didSet {
+            channelPrefix.isHidden = isImagePicked
+        }
+    }
+    
+    var viewModel: ContactsViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,10 +50,12 @@ class CreateChannelController: UITableViewController {
     // MARK: - Configure UI
     
     func configureUI() {
+        channelImage.image = #imageLiteral(resourceName: "bg_gradient_3")
         channelImage.layer.cornerRadius = channelImage.frame.width/2
         channelImage.clipsToBounds = true
         tableView.tableFooterView = UIView()
         self.navigationItem.rightBarButtonItem = saveButtonItem
+        channelLogin.addTarget(self, action: #selector(channelLoginDidChage), for: UIControlEvents.allEditingEvents)
     }
     
     // MARK: Scroll View Dragging
@@ -52,6 +64,14 @@ class CreateChannelController: UITableViewController {
         view.endEditing(true)
     }
     
+    // MARK: - Channel Login TextField Did Change
+    
+    @objc func channelLoginDidChage() {
+        guard let login = channelLogin.text else { return }
+        if login.isEmpty {
+            channelLogin.text = "@"
+        }
+    }
     // MARK: - Upload Photo Action
     
     @IBAction func uploadPhotoPressed(_ sender: UIButton) {
@@ -61,10 +81,26 @@ class CreateChannelController: UITableViewController {
     // MARK: - Create Channel Action
     
     @objc func createChannelAction() {
-         WhisperHelper.showErrorMurmur(title: "Канал делается, в принципе он очень похож на группу. Coming soon")
-        guard let name = channelName.text, !name.isEmpty else {
+        guard let name = channelName.text, !name.isEmpty, let login = channelLogin.text, !login.isEmpty, login.count > 1 else {
             WhisperHelper.showErrorMurmur(title: "Заполните название группы")
             return
+        }
+        if isImagePicked {
+            if let imageData = UIImageJPEGRepresentation(channelImage.image!, 0.5) {
+                SVProgressHUD.show()
+                NetworkManager.makeRequest(.createChannel(name: name, login: login, users: viewModel.getGroupJsonArray(), image: imageData), success: { [weak self] (json) in
+                    self?.navigationController?.popToRootViewController(animated: true)
+                    NotificationCenter.default.post(name: AppManager.loadDialogsNotification, object: nil)
+                    SVProgressHUD.dismiss()
+                })
+            }
+        } else {
+            SVProgressHUD.show()
+            NetworkManager.makeRequest(.createChannel(name: name, login: login, users: viewModel.getGroupJsonArray(), image: nil), success: { [weak self] (json) in
+                self?.navigationController?.popToRootViewController(animated: true)
+                NotificationCenter.default.post(name: AppManager.loadDialogsNotification, object: nil)
+                SVProgressHUD.dismiss()
+            })
         }
     }
     

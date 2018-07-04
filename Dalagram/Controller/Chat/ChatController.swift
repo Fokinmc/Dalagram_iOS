@@ -57,7 +57,8 @@ class ChatController: UIViewController {
     var viewModel: ChatViewModel!
     var info: DialogInfo!
     
-    // MARK: Initializer of Single Chat/Group/Channel
+    // MARK: Initializer for Single Chat/Group/Channel
+    
     convenience init(type: DialogType = .single, info: DialogInfo, dialogId: String) {
         self.init()
         self.viewModel = ChatViewModel(dialogId)
@@ -81,9 +82,11 @@ class ChatController: UIViewController {
             self?.collectionView.reloadData()
             self?.collectionView.scrollToLastItem(animated: true)
         }
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(loadGroupDetails), name: AppManager.dialogDetailsNotification, object: nil)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(loadDialogDetails), name: AppManager.dialogDetailsNotification, object: nil)
+
     }
+    
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         self.view.layoutIfNeeded()
@@ -93,13 +96,13 @@ class ChatController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        self.view.layoutIfNeeded()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         NotificationCenter.default.removeObserver(self, name: Notification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name.UIKeyboardWillHide, object: nil)
-        
         // Remove everything with chat_id 0
         viewModel.removeDialogHistory()
         
@@ -109,17 +112,17 @@ class ChatController: UIViewController {
     // MARK: Load Chat Details
     
     func loadMessages() {
-        viewModel.getDialogDetails(success: { [weak self] in
+        viewModel.getDialogMessages(success: { [weak self] in
             guard let vc = self else { return }
             vc.collectionView.reloadData()
             //vc.collectionView.scrollToLastItem(animated: false)
         })
     }
     
-    @objc func loadGroupDetails() {
-        viewModel.getGroupDetails { [weak self] (groupName, groupAva) in
-            self?.titleView.userNameLabel.text = groupName
-            self?.titleView.userAvatarView.kf.setImage(with: URL(string: groupAva), placeholder: #imageLiteral(resourceName: "bg_gradient_0"))
+    @objc func loadDialogDetails() {
+        viewModel.getDialogDetails { [weak self] (detail) in
+            self?.titleView.userNameLabel.text = detail.name
+            self?.titleView.userAvatarView.kf.setImage(with: URL(string: detail.avatar), placeholder: #imageLiteral(resourceName: "bg_gradient_3"))
         }
     }
     
@@ -160,7 +163,7 @@ class ChatController: UIViewController {
             let vc = EditGroupController.fromStoryboard()
             vc.groupInfo = info
             self.show(vc, sender: nil)
-        default:
+        case .channel:
             break
         }
        
@@ -267,7 +270,7 @@ extension ChatController {
         let titleItem = UIBarButtonItem(customView: titleView)
         self.navigationItem.leftBarButtonItems = [backItem, titleItem]
         titleView.userNameLabel.text = data.user_name
-        titleView.userStatusLabel.text = data.last_visit
+        titleView.userStatusLabel.text = info.user_id != 0 ? data.last_visit : ""
         titleView.userAvatarView.kf.setImage(with: URL(string: data.avatar), placeholder: UIImage(named: "bg_gradient_\(arc4random_uniform(4))"))
     }
     

@@ -28,10 +28,10 @@ class NewGroupController: UITableViewController {
     
     let viewModel = ContactsViewModel()
     let disposeBag = DisposeBag()
+    var chatType: DialogType = .group
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Новый диалог"
         configureUI()
         
         viewModel.getContacts(onSuccess: { [weak self] in
@@ -81,16 +81,23 @@ class NewGroupController: UITableViewController {
     // MARK: - Next Button Pressed
     
     @objc func nextButtonAction() {
-        if usersCollectionView.viewModel.selectedContacts.value.count != 1 {
-            // Group Chat
-            let vc = CreateGroupController.fromStoryboard()
-            vc.viewModel = usersCollectionView.viewModel
-            self.show(vc, sender: nil)
-        } else {
-            // Single Chat
+        switch usersCollectionView.viewModel.selectedContacts.value.count {
+        case 0:
+            WhisperHelper.showErrorMurmur(title: "Добавьте контакт")
+        case 1: // Single Chat
             if let userData = usersCollectionView.viewModel.selectedContacts.value.first {
-                let vc = ChatController(info: DialogInfo(contact: userData.value), dialogId: "none")
+                let vc = ChatController(info: DialogInfo(contact: userData.value), dialogId: "\(userData.value.user_id)U")
                 vc.hidesBottomBarWhenPushed = true
+                self.show(vc, sender: nil)
+            }
+        default: // Group Chat
+            if chatType == .group {
+                let vc = CreateGroupController.fromStoryboard()
+                vc.viewModel = usersCollectionView.viewModel
+                self.show(vc, sender: nil)
+            } else if chatType == .channel {
+                let vc = CreateChannelController.fromStoryboard()
+                vc.viewModel = usersCollectionView.viewModel
                 self.show(vc, sender: nil)
             }
         }
@@ -130,9 +137,10 @@ extension NewGroupController {
         cell.accessoryType = .checkmark
         cell.markIcon.isHidden = false
         if let contacts = RealmManager.shared.getObjects(type: Contact.self) {
-            let contact = contacts[indexPath.row] as! Contact
-            usersCollectionView.viewModel.selectedContacts.value[indexPath.row] = contact
-            viewModel.selectedIndexArray.append(indexPath.row)
+            if let contact = contacts[indexPath.row] as? Contact {
+                usersCollectionView.viewModel.selectedContacts.value[indexPath.row] = contact
+                viewModel.selectedIndexArray.append(indexPath.row)
+            }
         }
     }
     

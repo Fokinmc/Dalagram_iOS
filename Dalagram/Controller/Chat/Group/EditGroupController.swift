@@ -44,6 +44,7 @@ class EditGroupController: UITableViewController {
     // MARK: - Configuring UI
     
     func configureUI() {
+        setEmptyBackTitle()
         self.navigationItem.rightBarButtonItem = changeButtonItem
         
         tableView.registerNib(ContactCell.self)
@@ -89,6 +90,7 @@ class EditGroupController: UITableViewController {
             guard let vc = self else { return }
             vc.groupContacts.removeAll()
             vc.groupNameField.text = json["data"]["group_name"].stringValue
+            vc.groupInfo.user_name = json["data"]["group_name"].stringValue
             vc.groupImage.kf.setImage(with: URL(string: json["data"]["group_avatar"].stringValue), placeholder: #imageLiteral(resourceName: "bg_gradient_0"))
             for (_, subJson):(String, JSON) in json["data"]["group_users"] {
                 let newContact = JSONContact(json: subJson)
@@ -103,11 +105,10 @@ class EditGroupController: UITableViewController {
     func editGroupRequest() {
         if groupInfo.user_name != groupNameField.text && !groupNameField.text!.isEmpty {
             SVProgressHUD.show()
-            NetworkManager.makeRequest(.editGroup(group_id: groupInfo.group_id, group_name: groupNameField.text!), success: { [weak self] (json) in
+            NetworkManager.makeRequest(.editGroup(group_id: groupInfo.group_id, group_name: groupNameField.text!), success: { (json) in
                 SVProgressHUD.dismiss()
                 WhisperHelper.showSuccessMurmur(title: json["message"].stringValue)
                 NotificationCenter.default.post(name: AppManager.dialogDetailsNotification, object: nil)
-                self?.navigationController?.popViewController(animated: true)
             })
         }
     }
@@ -183,7 +184,17 @@ extension EditGroupController {
         switch indexPath.section {
         case 0: // Change photo
             self.present(imagePicker, animated: true, completion: nil)
-        case 3: // Group Members
+        case 1 where indexPath.row == 1: // Collection of media
+            let vc = MediaColletionController()
+            self.show(vc, sender: nil)
+        case 2: // Add a Group Member
+            let vc = ChatContactsController(chatType: .group, dialogInfo: groupInfo)
+            vc.title = "Выберите контакт"
+            vc.groupCompletion = { [unowned self] in
+                self.loadGroupDetails()
+            }
+            self.show(vc, sender: nil)
+        case 3: // List of Group Members
             showMembersActionSheet(data: groupContacts[indexPath.row])
         default:
             break
@@ -216,7 +227,8 @@ extension EditGroupController: UIImagePickerControllerDelegate, UINavigationCont
             NetworkManager.makeRequest(.uploadGroupPhoto(group_id: data.group_id, image: photo), success: { (json) in
                 print(json)
                 SVProgressHUD.dismiss()
-                WhisperHelper.showSuccessMurmur(title: "")
+                WhisperHelper.showSuccessMurmur(title: json["message"].stringValue)
+                NotificationCenter.default.post(name: AppManager.dialogDetailsNotification, object: nil)
             })
         }
         

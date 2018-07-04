@@ -44,12 +44,12 @@ public enum Dalagram {
     case declineGroupAdmin(group_id: Int, user_id: Int)
     
     // MARK: - Channel
-    case createChannel([String: String])
-    case uploadChannelPhoto(image: Data, channel_id: Int)
-    case ediChannel(channel_id: Int, [String: String])
+    case createChannel(name: String, login: String, users: [[String: Int]], image: Data?)
+    case uploadChannelPhoto(channel_id: Int, image: Data)
+    case editChannel(channel_id: Int, name: String, login: String)
     case getChannels([String: String])
     case getChannelDetails(channel_id: Int)
-    case getChannelMembers(channel_id: Int, [String: String])
+    case getChannelMembers(channel_id: Int, page: Int, count: Int)
     case addChannelMember(user_id: Int)
     case removeChannelMember(channel_id: Int, user_id: Int)
     case setChannelAdmin(channel_id: Int, user_id: Int)
@@ -129,11 +129,11 @@ extension Dalagram: TargetType {
             return "/channel"
         case .uploadChannelPhoto:
             return "/channel/avatar"
-        case .ediChannel(let channel_id, _):
+        case .editChannel(let channel_id, _, _):
             return "/channel/\(channel_id)"
         case .getChannelDetails(let channel_id):
             return "/channel/\(channel_id)"
-        case .getChannelMembers(let channel_id, _):
+        case .getChannelMembers(let channel_id, _, _):
             return "/channel/user/\(channel_id)"
         case .addChannelMember(let channel_id):
             return "/channel/user/\(channel_id)"
@@ -251,6 +251,36 @@ extension Dalagram: TargetType {
             
         case .removeGroupMember(let group_id, let user_id), .declineGroupAdmin(let group_id, let user_id):
             return .requestCompositeParameters(bodyParameters: ["group_id": group_id, "user_id": user_id], bodyEncoding: URLEncoding.httpBody, urlParameters: ["token" : User.getToken()])
+            
+        // MARK: Channel
+            
+        case .createChannel(let name, let login, let usersParams, let imageData):
+            if let image = imageData {
+                let imgData = MultipartFormData(provider: .data(image), name: "image", fileName: "photo.jpg", mimeType: "image/jpeg")
+                return .uploadCompositeMultipart([imgData], urlParameters: ["token" : User.getToken(),"channel_name": name, "channel_login": login, "channel_users": usersParams])
+            } else {
+                return .requestCompositeParameters(bodyParameters: ["channel_name": name, "channel_login": login, "channel_users": usersParams], bodyEncoding: JSONEncoding.default, urlParameters: ["token" : User.getToken()])
+            }
+            
+        case .uploadChannelPhoto(let channel_id, let imageData):
+            let imgData = MultipartFormData(provider: .data(imageData), name: "image", fileName: "group_photo.jpg", mimeType: "image/jpeg")
+            return .uploadCompositeMultipart([imgData], urlParameters: ["token" : User.getToken(), "channel_id": channel_id])
+        
+        case .editChannel(_, let name, let login):
+            return .requestCompositeParameters(bodyParameters: ["channel_name": name, "channel_login": login], bodyEncoding: URLEncoding.httpBody, urlParameters: ["token" : User.getToken()])
+        
+        case .getChannelDetails(_):
+            return .requestParameters(parameters: ["token": User.getToken()], encoding: URLEncoding.default)
+            
+        case .getChannelMembers(_, let page, let count):
+            return .requestParameters(parameters: ["token": User.getToken(), "page": page, "per_page": count], encoding: URLEncoding.default)
+            
+        case .addChannelMember(let user_id), .setChannelAdmin(_, let user_id):
+            return .requestCompositeParameters(bodyParameters: ["user_id": user_id], bodyEncoding: URLEncoding.httpBody, urlParameters: ["token" : User.getToken()])
+            
+        case .removeChannelMember(_, let user_id), .declineChannelAdmin(_, let user_id):
+            return .requestCompositeParameters(bodyParameters: ["user_id": user_id], bodyEncoding: URLEncoding.httpBody, urlParameters: ["token" : User.getToken()])
+            
         default:
             return .requestPlain
         }

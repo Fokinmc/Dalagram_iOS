@@ -29,7 +29,7 @@ class ChatViewModel {
     
     // MARK: Get Detail of Chat
     
-    func getDialogDetails(page: Int = 1, per_page: Int = 100, success: @escaping () -> Void) {
+    func getDialogMessages(page: Int = 1, per_page: Int = 100, success: @escaping () -> Void) {
         
         var parameters = ["token": User.getToken(), "page": page, "per_page": per_page] as [String : Any]
         
@@ -50,15 +50,21 @@ class ChatViewModel {
         })
     }
     
-    // MARK: Get Detail of Chat
+    // MARK: Get Detail Info of Chat
     
-    func getGroupDetails(success: @escaping (String, String) -> Void) {
-        NetworkManager.makeRequest(.getGroupDetails(group_id: info.group_id), success: { [unowned self] (json)  in
-            print(json)
-            let avatar = json["data"]["group_avatar"].stringValue
-            let groupName = json["data"]["group_name"].stringValue
-            success(groupName, avatar)
-        })
+    func getDialogDetails(success: @escaping (DialogDetail) -> Void) {
+        switch chatType {
+        case .group:
+            NetworkManager.makeRequest(.getGroupDetails(group_id: info.group_id), success: { (json)  in
+                success(DialogDetail(type: .group, json: json["data"]))
+            })
+        case .channel:
+            NetworkManager.makeRequest(.getChannelDetails(channel_id: info.channel_id), success: { (json) in
+                success(DialogDetail(type: .channel, json: json["data"]))
+            })
+        default:
+            break
+        }
     }
     
     // MARK: - Socket Event: Message

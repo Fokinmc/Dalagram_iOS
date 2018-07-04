@@ -113,14 +113,18 @@ class DialogsController: UITableViewController {
         alert.view.tintColor = UIColor.darkBlueNavColor
         let groupAction = UIAlertAction(title: "Новая группа", style: .default) { (act) in
             let vc = NewGroupController()
+            vc.title = "Новая группа"
+            vc.chatType = .group
             self.show(vc, sender: nil)
         }
         let channelAction = UIAlertAction(title: "Новый канал", style: .default) { (act) in
-            let vc = CreateChannelController.fromStoryboard()
+            let vc = NewGroupController()
+            vc.chatType = .channel
+            vc.title = "Новый канал"
             self.show(vc, sender: nil)
         }
         let singleAction = UIAlertAction(title: "Новый чат", style: .default) { (act) in
-            let vc = ContactsController()
+            let vc = ChatContactsController(chatType: .single)
             vc.title = "Новый диалог"
             self.show(vc, sender: nil)
         }
@@ -149,7 +153,6 @@ extension DialogsController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: ChatCell = tableView.dequeReusableCell(for: indexPath)
-        cell.iconMute.isHidden = indexPath.row % 3 == 0 ? false : true
         cell.setupDialog(viewModel.dialogs![indexPath.row])
         return cell
     }
@@ -159,12 +162,16 @@ extension DialogsController {
         let currentDialog = viewModel.dialogs![indexPath.row]
         let chatInfo = DialogInfo(dialog: currentDialog.dialogItem!)
         
-        if chatInfo.user_id != 0 {
+        if chatInfo.user_id != 0 { // Single Chat
             let vc = ChatController(type: .single, info: chatInfo, dialogId: currentDialog.id)
             vc.hidesBottomBarWhenPushed = true
             self.show(vc, sender: nil)
-        } else if chatInfo.group_id != 0 {
+        } else if chatInfo.group_id != 0 { // Group Chat
             let vc = ChatController(type: .group, info: chatInfo, dialogId: currentDialog.id)
+            vc.hidesBottomBarWhenPushed = true
+            self.show(vc, sender: nil)
+        } else if chatInfo.channel_id != 0 { // Channel
+            let vc = ChatController(type: .channel, info: chatInfo, dialogId: currentDialog.id)
             vc.hidesBottomBarWhenPushed = true
             self.show(vc, sender: nil)
         }
