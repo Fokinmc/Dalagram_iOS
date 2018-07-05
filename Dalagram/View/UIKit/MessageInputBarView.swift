@@ -21,6 +21,10 @@ class MessageInputBarView: UIView {
     var sendButton: UIButton = {
         let button = UIButton()
         button.setImage(#imageLiteral(resourceName: "icon_send"), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "icon_audio"), for: .selected)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(sendButtonDoubleTap))
+        tap.numberOfTapsRequired = 2
+        button.addGestureRecognizer(tap)
         return button
     }()
     
@@ -30,6 +34,7 @@ class MessageInputBarView: UIView {
         field.backgroundColor = UIColor.white
         field.borderStyle = .roundedRect
         field.isSelected = false
+        field.addTarget(self, action: #selector(inputFieldAction), for: .allEditingEvents)
         return field
     }()
     
@@ -42,12 +47,26 @@ class MessageInputBarView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = UIColor(red: 245/255.0, green: 245/255.0, blue: 245/255.0, alpha: 0.8)
+        sendButton.isSelected = true
         setupConstraints()
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
+    }
+    
+    @objc func inputFieldAction() {
+        guard let inputText = inputTextField.text else { return }
+        if inputText.count > 0 {
+            sendButton.isSelected = false
+        } else {
+            sendButton.isSelected = true
+        }
+    }
+    
+    @objc func sendButtonDoubleTap() {
+        sendButton.isSelected = !sendButton.isSelected
     }
     
     func updateBottomConstaints(_ constant: CGFloat) {

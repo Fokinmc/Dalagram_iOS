@@ -17,6 +17,7 @@ struct DialogInfo {
     var avatar: String
     var last_visit: String
     var phone: String
+    var is_admin: Int = 0
     
     /// Init from Contacts Controller
     init(contact: Contact) {
@@ -37,6 +38,8 @@ struct DialogInfo {
         self.phone = dialog.phone
         self.group_id = dialog.group_id
         self.channel_id = dialog.channel_id
+        self.is_admin = dialog.is_admin
+
     }
     
 }

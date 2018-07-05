@@ -38,13 +38,15 @@ class NetworkManager {
                         }
                     }
                     catch {
-                        
+                        SVProgressHUD.dismiss()
                         WhisperHelper.showErrorMurmur(title: "JSON mapping error (Ошибка обработки данных")
                     }
                 } else {
+                    SVProgressHUD.dismiss()
                     WhisperHelper.showErrorMurmur(title: "External Server Error (Ошибка загрузки данных)")
                 }
             case .failure(let error):
+                SVProgressHUD.dismiss()
                 WhisperHelper.showErrorMurmur(title: error.localizedDescription)
             }
         }

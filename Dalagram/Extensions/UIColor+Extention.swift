@@ -24,7 +24,11 @@ extension UIColor {
     }()
     
     open static var lightGrayColor: UIColor = {
-        return UIColor(red:0.97, green:0.97, blue:0.97, alpha:1.0)
+        return UIColor(red: 0.97, green: 0.97, blue: 0.97, alpha: 1.0)
+    }()
+    
+    open static var navBlueColor: UIColor = {
+        return UIColor(red: 0.26, green: 0.31, blue: 0.56, alpha: 0.95)
     }()
     
 }

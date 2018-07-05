@@ -50,7 +50,7 @@ public enum Dalagram {
     case getChannels([String: String])
     case getChannelDetails(channel_id: Int)
     case getChannelMembers(channel_id: Int, page: Int, count: Int)
-    case addChannelMember(user_id: Int)
+    case addChannelMember(channel_id: Int, user_id: Int)
     case removeChannelMember(channel_id: Int, user_id: Int)
     case setChannelAdmin(channel_id: Int, user_id: Int)
     case declineChannelAdmin(channel_id: Int, user_id: Int)
@@ -135,7 +135,7 @@ extension Dalagram: TargetType {
             return "/channel/\(channel_id)"
         case .getChannelMembers(let channel_id, _, _):
             return "/channel/user/\(channel_id)"
-        case .addChannelMember(let channel_id):
+        case .addChannelMember(let channel_id, _):
             return "/channel/user/\(channel_id)"
         case .removeChannelMember(let channel_id, _):
             return "/channel/user/\(channel_id)"
@@ -246,8 +246,8 @@ extension Dalagram: TargetType {
         case .getGroupDetails(_):
             return .requestParameters(parameters: ["token": User.getToken()], encoding: URLEncoding.default)
             
-        case .setGroupAdmin(let group_id, let user_id), .addGroupMember(let group_id, let user_id):
-            return .requestCompositeParameters(bodyParameters: ["group_id": group_id, "user_id": user_id], bodyEncoding: URLEncoding.httpBody, urlParameters: ["token" : User.getToken()])
+        case .setGroupAdmin(_, let user_id), .addGroupMember(_, let user_id):
+            return .requestCompositeParameters(bodyParameters: ["user_id": user_id], bodyEncoding: URLEncoding.httpBody, urlParameters: ["token" : User.getToken()])
             
         case .removeGroupMember(let group_id, let user_id), .declineGroupAdmin(let group_id, let user_id):
             return .requestCompositeParameters(bodyParameters: ["group_id": group_id, "user_id": user_id], bodyEncoding: URLEncoding.httpBody, urlParameters: ["token" : User.getToken()])
@@ -267,7 +267,7 @@ extension Dalagram: TargetType {
             return .uploadCompositeMultipart([imgData], urlParameters: ["token" : User.getToken(), "channel_id": channel_id])
         
         case .editChannel(_, let name, let login):
-            return .requestCompositeParameters(bodyParameters: ["channel_name": name, "channel_login": login], bodyEncoding: URLEncoding.httpBody, urlParameters: ["token" : User.getToken()])
+            return .requestCompositeParameters(bodyParameters: ["is_public": "0", "channel_name": name, "channel_login": login], bodyEncoding: URLEncoding.httpBody, urlParameters: ["token" : User.getToken()])
         
         case .getChannelDetails(_):
             return .requestParameters(parameters: ["token": User.getToken()], encoding: URLEncoding.default)
@@ -275,7 +275,7 @@ extension Dalagram: TargetType {
         case .getChannelMembers(_, let page, let count):
             return .requestParameters(parameters: ["token": User.getToken(), "page": page, "per_page": count], encoding: URLEncoding.default)
             
-        case .addChannelMember(let user_id), .setChannelAdmin(_, let user_id):
+        case .addChannelMember(_, let user_id), .setChannelAdmin(_, let user_id):
             return .requestCompositeParameters(bodyParameters: ["user_id": user_id], bodyEncoding: URLEncoding.httpBody, urlParameters: ["token" : User.getToken()])
             
         case .removeChannelMember(_, let user_id), .declineChannelAdmin(_, let user_id):

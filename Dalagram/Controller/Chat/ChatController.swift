@@ -14,6 +14,7 @@ import BouncyLayout
 class ChatController: UIViewController {
     
     // MARK: - UI Elements
+    lazy var layout = BouncyLayout(style: BouncyLayout.BounceStyle.subtle)
     
     lazy var titleView: UserNavigationTitleView = {
         let titleView = UserNavigationTitleView()
@@ -24,13 +25,17 @@ class ChatController: UIViewController {
     }()
     
     lazy var inputBarView: MessageInputBarView = {
-        var height: CGFloat = calculateBottomSafeArea(48.0)
+        let height: CGFloat = calculateBottomSafeArea(48.0)
         let view = MessageInputBarView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: height))
         view.chatDetailVC = self
         return view
     }()
     
-    lazy var layout = BouncyLayout(style: BouncyLayout.BounceStyle.subtle)
+    lazy var joinButtonView: JoinChannelView = {
+        let height: CGFloat = calculateBottomSafeArea(48.0)
+        let view = JoinChannelView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: height))
+        return view
+    }()
     
     lazy var collectionView: UICollectionView = {
         layout.scrollDirection = .vertical
@@ -45,11 +50,19 @@ class ChatController: UIViewController {
     
     override var inputAccessoryView: UIView? {
         get {
-            return inputBarView
+            switch viewModel.chatType {
+            case .channel:
+                return info.is_admin == 1 ? inputBarView : joinButtonView
+            default:
+                return inputBarView
+            }
+           
         }
     }
     
-    override var canBecomeFirstResponder: Bool { return true }
+    override var canBecomeFirstResponder: Bool {
+        return true
+    }
     
     // MARK: Variables
     
@@ -89,23 +102,26 @@ class ChatController: UIViewController {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        self.view.layoutIfNeeded()
         let bottomOffset = collectionView.contentSize.height - collectionView.bounds.height + 8.0
         self.collectionView.setContentOffset(CGPoint(x: 0, y: bottomOffset), animated: false)
+       
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.view.layoutIfNeeded()
+        let bottomOffset = collectionView.contentSize.height - collectionView.bounds.height + 8.0
+        self.collectionView.setContentOffset(CGPoint(x: 0, y: bottomOffset), animated: false)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         NotificationCenter.default.removeObserver(self, name: Notification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.removeObserver(self, name: AppManager.dialogDetailsNotification, object: nil)
+        
         // Remove everything with chat_id 0
         viewModel.removeDialogHistory()
-        
         //SocketIOManager.shared.socket.off("message")
     }
     
@@ -115,7 +131,7 @@ class ChatController: UIViewController {
         viewModel.getDialogMessages(success: { [weak self] in
             guard let vc = self else { return }
             vc.collectionView.reloadData()
-            //vc.collectionView.scrollToLastItem(animated: false)
+            vc.collectionView.scrollToLastItem(animated: true)
         })
     }
     
@@ -145,6 +161,13 @@ class ChatController: UIViewController {
         }
     }
     
+    // MARK: - Join to Channel Action
+    
+    @objc func joinChannelPressed() {
+        print("yea")
+    }
+
+    
     // MARK: - UserNavigationView TapGesture Action
     
     @objc func userTitleViewPressed() {
@@ -164,9 +187,10 @@ class ChatController: UIViewController {
             vc.groupInfo = info
             self.show(vc, sender: nil)
         case .channel:
-            break
+            let vc = EditChannelController.fromStoryboard()
+            vc.channelInfo = info
+            self.show(vc, sender: nil)
         }
-       
     }
     
 }
@@ -246,7 +270,10 @@ extension ChatController {
         if keyboardFrameBegin.height.isEqual(to: 0.0) || keyboardFrameEnd.height == inputBarView.frame.height {
             return
         }
-        let bottomInset = keyboardFrameEnd.height - inputBarView.frame.height + 8.0
+        var bottomInset = keyboardFrameEnd.height - inputBarView.frame.height + 8.0
+        if keyboardFrameBegin.height > keyboardFrameEnd.height {
+            bottomInset = keyboardFrameEnd.height - inputBarView.frame.height - 8.0
+        }
         self.collectionView.contentInset.bottom = bottomInset
         self.collectionView.scrollIndicatorInsets.bottom = bottomInset
         self.collectionView.scrollToLastItem(animated: true)
@@ -254,7 +281,7 @@ extension ChatController {
     
     @objc func keyboardWillHide() {
         collectionView.contentInset.bottom = 8.0
-        collectionView.scrollIndicatorInsets.bottom = 0.0
+        collectionView.scrollIndicatorInsets.bottom = 8.0
     }
 }
 
@@ -271,7 +298,16 @@ extension ChatController {
         self.navigationItem.leftBarButtonItems = [backItem, titleItem]
         titleView.userNameLabel.text = data.user_name
         titleView.userStatusLabel.text = info.user_id != 0 ? data.last_visit : ""
-        titleView.userAvatarView.kf.setImage(with: URL(string: data.avatar), placeholder: UIImage(named: "bg_gradient_\(arc4random_uniform(4))"))
+        var placeholderImage = #imageLiteral(resourceName: "bg_gradient_2")
+        switch viewModel.chatType {
+        case .single:
+            placeholderImage = #imageLiteral(resourceName: "bg_gradient_2")
+        case .group:
+            placeholderImage = #imageLiteral(resourceName: "bg_gradient_1")
+        case .channel:
+            placeholderImage = #imageLiteral(resourceName: "bg_gradient_3")
+        }
+        titleView.userAvatarView.kf.setImage(with: URL(string: data.avatar), placeholder: placeholderImage)
     }
     
     // MARK: - Configure UI
@@ -300,7 +336,7 @@ extension ChatController {
             make.top.equalToSuperview()
             make.left.equalToSuperview()
             make.right.equalToSuperview()
-            make.bottom.equalTo(-inputBarView.frame.height)
+            make.bottom.equalTo(-inputAccessoryView!.frame.height)
         }
     }
 }

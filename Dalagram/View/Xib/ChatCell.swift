@@ -41,8 +41,15 @@ class ChatCell: UITableViewCell {
             userNameLabel.text  = !item.contact_user_name.isEmpty ? item.contact_user_name : item.chat_name.isEmpty ? item.phone : item.chat_name
             iconMute.isHidden   = item.is_mute == 0 ? true : false
             iconMark.isHidden   = item.is_own_last_message ? false : true
+            
             dateLabel.text      = item.chat_date
             messageLabel.text   = item.chat_text
+            
+            if item.is_read == 1 {
+                iconMark.setImage(#imageLiteral(resourceName: "icon_mark_green"), for: .normal)
+            } else {
+                iconMark.setImage(#imageLiteral(resourceName: "icon_mark_double"), for: .normal)
+            }
             
             if item.group_id != 0 || item.channel_id != 0 {
                 userNameLabel.text = item.chat_name

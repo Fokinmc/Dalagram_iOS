@@ -1,8 +1,8 @@
 //
-//  EditGroupController.swift
+//  EditChannelController.swift
 //  Dalagram
 //
-//  Created by Toremurat on 29.06.18.
+//  Created by Toremurat on 05.07.18.
 //  Copyright © 2018 BuginGroup. All rights reserved.
 //
 
@@ -10,10 +10,11 @@ import UIKit
 import SVProgressHUD
 import SwiftyJSON
 
-class EditGroupController: UITableViewController {
-
-    @IBOutlet weak var groupNameField: UITextField!
-    @IBOutlet weak var groupImage: UIImageView!
+class EditChannelController: UITableViewController {
+    
+    @IBOutlet weak var channelLoginField: UITextField!
+    @IBOutlet weak var channelNameField: UITextField!
+    @IBOutlet weak var channelImage: UIImageView!
     
     lazy var changeButtonItem: UIBarButtonItem = {
         let item = UIBarButtonItem(title: "Ред.", style: .plain, target: self, action: #selector(changeBarButtonAction))
@@ -29,16 +30,17 @@ class EditGroupController: UITableViewController {
     }()
     
     var changeButtonState: Bool = false
-    var groupInfo: DialogInfo!
-    var groupContacts: [JSONContact] = []
+    var channelInfo: DialogInfo!
+    var isChannelPublic: Int = 0 // false
+    var channelContacts: [JSONContact] = []
     
     // MARK: - Life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Группа"
+        self.title = "Канал"
         configureUI()
-        loadGroupDetails()
+        loadChannelDetails()
     }
     
     // MARK: - Configuring UI
@@ -46,18 +48,18 @@ class EditGroupController: UITableViewController {
     func configureUI() {
         setEmptyBackTitle()
         
-        if groupInfo.is_admin == 1 {
+        if channelInfo.is_admin == 1 {
             self.navigationItem.rightBarButtonItem = changeButtonItem
         }
         
         tableView.registerNib(ContactCell.self)
         tableView.tableFooterView = UIView()
         
-        groupImage.layer.cornerRadius = groupImage.frame.width/2
-        groupImage.clipsToBounds = true
-        if let detail = groupInfo {
-            groupImage.kf.setImage(with: URL(string: detail.avatar), placeholder: #imageLiteral(resourceName: "bg_gradient_0"))
-            groupNameField.text = detail.user_name
+        channelImage.layer.cornerRadius = channelImage.frame.width/2
+        channelImage.clipsToBounds = true
+        if let detail = channelInfo {
+            channelImage.kf.setImage(with: URL(string: detail.avatar), placeholder: #imageLiteral(resourceName: "bg_gradient_3"))
+            channelNameField.text = detail.user_name
         }
     }
     
@@ -73,14 +75,18 @@ class EditGroupController: UITableViewController {
         if changeButtonState {
             // SAVE
             changeButtonState = false
-            groupNameField.font = UIFont.systemFont(ofSize: 17.0)
-            groupNameField.isEnabled = false
-            editGroupRequest()
+            channelNameField.font = UIFont.systemFont(ofSize: 17.0)
+            channelNameField.isEnabled = false
+            channelLoginField.font = UIFont.systemFont(ofSize: 17.0)
+            channelLoginField.isEnabled = false
+            editChannelRequest()
         } else {
             // CHANGE
-            groupNameField.isEnabled = true
-            groupNameField.font = UIFont.systemFont(ofSize: 18.0)
-            groupNameField.becomeFirstResponder()
+            channelNameField.isEnabled = true
+            channelNameField.font = UIFont.systemFont(ofSize: 18.0)
+            channelLoginField.font = UIFont.systemFont(ofSize: 18.0)
+            channelLoginField.isEnabled = true
+            channelNameField.becomeFirstResponder()
             changeButtonState = true
         }
         changeButtonItem.title = changeButtonState ? "Сохранить" :  "Ред."
@@ -88,16 +94,20 @@ class EditGroupController: UITableViewController {
     
     // MARK: - Get Group Details
     
-    func loadGroupDetails() {
-        NetworkManager.makeRequest(.getGroupDetails(group_id: groupInfo.group_id), success: { [weak self] (json) in
+    func loadChannelDetails() {
+        NetworkManager.makeRequest(.getChannelDetails(channel_id: channelInfo.channel_id), success: { [weak self] (json) in
+            print(json)
             guard let vc = self else { return }
-            vc.groupContacts.removeAll()
-            vc.groupNameField.text = json["data"]["group_name"].stringValue
-            vc.groupInfo.user_name = json["data"]["group_name"].stringValue
-            vc.groupImage.kf.setImage(with: URL(string: json["data"]["group_avatar"].stringValue), placeholder: #imageLiteral(resourceName: "bg_gradient_0"))
-            for (_, subJson):(String, JSON) in json["data"]["group_users"] {
+            vc.channelContacts.removeAll()
+            
+            let data = json["data"]
+            vc.isChannelPublic = data["is_public"].intValue
+            vc.channelNameField.text = data["channel_name"].stringValue
+            vc.channelLoginField.text = data["channel_login"].stringValue
+            vc.channelImage.kf.setImage(with: URL(string: data["channel_avatar"].stringValue), placeholder: #imageLiteral(resourceName: "bg_gradient_3"))
+            for (_, subJson):(String, JSON) in data["channel_users"] {
                 let newContact = JSONContact(json: subJson)
-                vc.groupContacts.append(newContact)
+                vc.channelContacts.append(newContact)
             }
             vc.tableView.reloadData()
         })
@@ -105,10 +115,10 @@ class EditGroupController: UITableViewController {
     
     // MARK: - Edit Group Api
     
-    func editGroupRequest() {
-        if groupInfo.user_name != groupNameField.text && !groupNameField.text!.isEmpty {
+    func editChannelRequest() {
+        if !channelNameField.text!.isEmpty && !channelLoginField.text!.isEmpty {
             SVProgressHUD.show()
-            NetworkManager.makeRequest(.editGroup(group_id: groupInfo.group_id, group_name: groupNameField.text!), success: { (json) in
+            NetworkManager.makeRequest(.editChannel(channel_id: channelInfo.channel_id, name: channelNameField.text!, login: channelLoginField.text!), success: { (json) in
                 SVProgressHUD.dismiss()
                 WhisperHelper.showSuccessMurmur(title: json["message"].stringValue)
                 NotificationCenter.default.post(name: AppManager.dialogDetailsNotification, object: nil)
@@ -121,17 +131,17 @@ class EditGroupController: UITableViewController {
         let alert = UIAlertController(title: "Выберите", message: nil, preferredStyle: .actionSheet)
         alert.view.tintColor = UIColor.darkBlueNavColor
         let adminAction = UIAlertAction(title: "Сделать администратором ", style: .default) { [unowned self] (act) in
-            NetworkManager.makeRequest(.setGroupAdmin(group_id: self.groupInfo.group_id, user_id: data.user_id), success: { (json) in
+            NetworkManager.makeRequest(.setChannelAdmin(channel_id: self.channelInfo.channel_id, user_id: data.user_id), success: { (json) in
                 WhisperHelper.showSuccessMurmur(title: json["message"].stringValue)
                 NotificationCenter.default.post(name: AppManager.dialogDetailsNotification, object: nil)
-                self.loadGroupDetails()
+                self.loadChannelDetails()
             })
         }
-        let deleteAction = UIAlertAction(title: "Удалить из группы", style: .default) { (act) in
-            NetworkManager.makeRequest(.removeGroupMember(group_id: self.groupInfo.group_id, user_id: data.user_id), success: { (json) in
+        let deleteAction = UIAlertAction(title: "Удалить из канала", style: .default) { (act) in
+            NetworkManager.makeRequest(.removeChannelMember(channel_id: self.channelInfo.channel_id, user_id: data.user_id), success: { (json) in
                 WhisperHelper.showSuccessMurmur(title: json["message"].stringValue)
                 NotificationCenter.default.post(name: AppManager.dialogDetailsNotification, object: nil)
-                self.loadGroupDetails()
+                self.loadChannelDetails()
             })
         }
         let cancelAction = UIAlertAction(title: "Отмена", style: .cancel, handler: nil)
@@ -144,7 +154,7 @@ class EditGroupController: UITableViewController {
 
 // MARK: - Table view data source
 
-extension EditGroupController {
+extension EditChannelController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 4
@@ -155,7 +165,7 @@ extension EditGroupController {
         case 0: return 1 // Change photo Cell
         case 1: return 2 // Notifications & Media Cell
         case 2: return 1 // Add Members Cell
-        case 3: return groupContacts.count
+        case 3: return channelContacts.count
         default: return 0
         }
     }
@@ -172,7 +182,7 @@ extension EditGroupController {
             let cell = tableView.dequeueReusableCell(withIdentifier: "MediaCell", for: indexPath)
             return cell
         case 2:
-            if groupInfo.is_admin == 1 {
+            if channelInfo.is_admin == 1 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AddMembersCell", for: indexPath)
                 return cell
             } else {
@@ -184,7 +194,7 @@ extension EditGroupController {
             }
         case 3:
             let cell: ContactCell = tableView.dequeReusableCell(for: indexPath)
-            cell.setupRegisteredContact(groupContacts[indexPath.row])
+            cell.setupRegisteredContact(channelContacts[indexPath.row])
             return cell
         default:
             return UITableViewCell()
@@ -201,14 +211,14 @@ extension EditGroupController {
             let vc = MediaColletionController()
             self.show(vc, sender: nil)
         case 2: // Add a Group Member
-            let vc = ChatContactsController(chatType: .group, dialogInfo: groupInfo)
+            let vc = ChatContactsController(chatType: .channel, dialogInfo: channelInfo)
             vc.title = "Выберите контакт"
             vc.groupCompletion = { [unowned self] in
-                self.loadGroupDetails()
+                self.loadChannelDetails()
             }
             self.show(vc, sender: nil)
         case 3: // List of Group Members
-            showMembersActionSheet(data: groupContacts[indexPath.row])
+            showMembersActionSheet(data: channelContacts[indexPath.row])
         default:
             break
         }
@@ -225,7 +235,7 @@ extension EditGroupController {
 
 // MARK: - UIImagePickerControllerDelegate
 
-extension EditGroupController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension EditChannelController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         imagePicker.dismiss(animated: true, completion: nil)
@@ -234,8 +244,8 @@ extension EditGroupController: UIImagePickerControllerDelegate, UINavigationCont
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         let image = info[UIImagePickerControllerOriginalImage] as! UIImage
         imagePicker.dismiss(animated: true, completion: nil)
-        groupImage.image = image
-        if let data = groupInfo, let photo = UIImageJPEGRepresentation(image, 0.5) {
+        channelImage.image = image
+        if let data = channelInfo, let photo = UIImageJPEGRepresentation(image, 0.5) {
             SVProgressHUD.show()
             NetworkManager.makeRequest(.uploadGroupPhoto(group_id: data.group_id, image: photo), success: { (json) in
                 print(json)

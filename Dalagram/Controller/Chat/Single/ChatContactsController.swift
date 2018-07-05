@@ -86,23 +86,29 @@ extension ChatContactsController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        switch chatType {
-        case .single:
-            // Need to pass dialogInfo and dialogId which is user_id + prefix "U" as User (28U)
-            if let contacts = RealmManager.shared.getObjects(type: Contact.self) {
-                if let contact = contacts[indexPath.row] as? Contact {
+        if let contacts = RealmManager.shared.getObjects(type: Contact.self) {
+            if let contact = contacts[indexPath.row] as? Contact {
+                switch chatType {
+                case .single:
                     let contactInfo = DialogInfo(contact: contact)
                     let vc = ChatController(info: contactInfo, dialogId: String(contact.user_id) + "U")
                     vc.hidesBottomBarWhenPushed = true
                     self.show(vc, sender: nil)
-                }
-            }
-        case .group:
-            if let contacts = RealmManager.shared.getObjects(type: Contact.self) {
-                if let contact = contacts[indexPath.row] as? Contact {
-                    if let groupInfo = dialogInfo {
-                        NetworkManager.makeRequest(.addGroupMember(group_id: groupInfo.group_id, user_id: contact.user_id), success: { [weak self] (json) in
+                case .group:
+                    if let info = dialogInfo {
+                        NetworkManager.makeRequest(.addGroupMember(group_id: info.group_id, user_id: contact.user_id), success: { [weak self] (json) in
                             guard let vc = self else { return }
+                            NotificationCenter.default.post(name: AppManager.dialogDetailsNotification, object: nil)
+                            WhisperHelper.showSuccessMurmur(title: json["message"].stringValue)
+                            vc.navigationController?.popViewController(animated: true)
+                            vc.groupCompletion()
+                        })
+                    }
+                case .channel:
+                    if let info = dialogInfo {
+                        NetworkManager.makeRequest(.addChannelMember(channel_id: info.channel_id, user_id: contact.user_id), success: { [weak self] (json) in
+                            guard let vc = self else { return }
+                            NotificationCenter.default.post(name: AppManager.dialogDetailsNotification, object: nil)
                             WhisperHelper.showSuccessMurmur(title: json["message"].stringValue)
                             vc.navigationController?.popViewController(animated: true)
                             vc.groupCompletion()
@@ -110,11 +116,8 @@ extension ChatContactsController {
                     }
                 }
             }
-            
-            
-        default:
-            break
         }
+        
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

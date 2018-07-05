@@ -70,6 +70,8 @@
 		2BDD4C0620E8F22B00505940 /* BubleActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDD4C0520E8F22B00505940 /* BubleActionCell.swift */; };
 		2BDE4F7520D40ABF0063D9B6 /* DialogInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE4F7420D40ABF0063D9B6 /* DialogInfo.swift */; };
 		2BDE4F7720D42C3A0063D9B6 /* MediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDE4F7620D42C3A0063D9B6 /* MediaCell.swift */; };
+		2BE3008F20EDF3C7001D7E01 /* JoinChannelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE3008E20EDF3C7001D7E01 /* JoinChannelView.swift */; };
+		2BE3009120EDFF3D001D7E01 /* EditChannelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE3009020EDFF3D001D7E01 /* EditChannelController.swift */; };
 		2BE6B86420B2AB4D00E45260 /* ReusableCellProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE6B86320B2AB4D00E45260 /* ReusableCellProtocol.swift */; };
 		2BE85F0E20B433E0000FF3BE /* ChatController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE85F0D20B433E0000FF3BE /* ChatController.swift */; };
 		2BE85F1020B43594000FF3BE /* BubbleTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE85F0F20B43594000FF3BE /* BubbleTextCell.swift */; };
@@ -168,6 +170,8 @@
 		2BDD4C0520E8F22B00505940 /* BubleActionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubleActionCell.swift; sourceTree = "<group>"; };
 		2BDE4F7420D40ABF0063D9B6 /* DialogInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogInfo.swift; sourceTree = "<group>"; };
 		2BDE4F7620D42C3A0063D9B6 /* MediaCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCell.swift; sourceTree = "<group>"; };
+		2BE3008E20EDF3C7001D7E01 /* JoinChannelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinChannelView.swift; sourceTree = "<group>"; };
+		2BE3009020EDFF3D001D7E01 /* EditChannelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditChannelController.swift; sourceTree = "<group>"; };
 		2BE6B86320B2AB4D00E45260 /* ReusableCellProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableCellProtocol.swift; sourceTree = "<group>"; };
 		2BE85F0D20B433E0000FF3BE /* ChatController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatController.swift; sourceTree = "<group>"; };
 		2BE85F0F20B43594000FF3BE /* BubbleTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleTextCell.swift; sourceTree = "<group>"; };
@@ -416,6 +420,7 @@
 				2B7BFFA920B7336600FA7507 /* UserNavigationTitleView.swift */,
 				2B7BFFAB20B7477700FA7507 /* MessageInputBarView.swift */,
 				2B7FF06A20C276FF00013D48 /* UsersCollectionView.swift */,
+				2BE3008E20EDF3C7001D7E01 /* JoinChannelView.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -435,6 +440,7 @@
 			isa = PBXGroup;
 			children = (
 				2BB8388F20E679BC00AD9B06 /* CreateChannelController.swift */,
+				2BE3009020EDFF3D001D7E01 /* EditChannelController.swift */,
 			);
 			path = Channel;
 			sourceTree = "<group>";
@@ -883,6 +889,7 @@
 				2BB8389220E679D000AD9B06 /* EditGroupController.swift in Sources */,
 				2B7FF06220C097D200013D48 /* ChatViewModel.swift in Sources */,
 				2BD252E120D8608500B5690E /* DialogItem.swift in Sources */,
+				2BE3009120EDFF3D001D7E01 /* EditChannelController.swift in Sources */,
 				2B0589C320AEEBF800B57ACF /* ConfirmController.swift in Sources */,
 				2BF7D89B20D240F6009E3314 /* NotificationsController.swift in Sources */,
 				2BC3F02C20C93ECD0057FFB3 /* CredentialsController.swift in Sources */,
@@ -907,6 +914,7 @@
 				2B9AB1F020B019C4004CB2A7 /* ViewController+Extension.swift in Sources */,
 				2B20878920D3C7CD00EE4599 /* DialogsViewModel.swift in Sources */,
 				2B1D084220CEE72B00B41AED /* AppManager.swift in Sources */,
+				2BE3008F20EDF3C7001D7E01 /* JoinChannelView.swift in Sources */,
 				2B1D083620CAC31100B41AED /* Contact.swift in Sources */,
 				2B1D083820CBB09100B41AED /* InviteController.swift in Sources */,
 				2BE85F1220B43683000FF3BE /* BaseCollectionCell.swift in Sources */,

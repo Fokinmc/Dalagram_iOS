@@ -223,8 +223,8 @@ extension UIViewController {
 }
 
 public extension UICollectionView {
-    func scrollToLastItem(animated: Bool = true) {
-        scrollToLastItem(animated: animated, atScrollPosition: .bottom)
+    func scrollToLastItem(animated: Bool = true, position: UICollectionViewScrollPosition = .bottom) {
+        scrollToLastItem(animated: animated, atScrollPosition: position)
     }
     
     func scrollToLastItem(animated: Bool, atScrollPosition scrollPosition: UICollectionViewScrollPosition) {

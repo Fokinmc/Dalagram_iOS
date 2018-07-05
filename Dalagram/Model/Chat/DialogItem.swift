@@ -27,6 +27,8 @@ class DialogItem: Object {
     @objc dynamic var chat_date: String     = ""
     @objc dynamic var contact_user_name: String = ""
     @objc dynamic var is_own_last_message: Bool = false
+    @objc dynamic var is_admin: Int         = 0
+    @objc dynamic var is_read: Int          = 0
     
     override static func primaryKey() -> String? {
         return "dialog_id"
@@ -45,6 +47,8 @@ class DialogItem: Object {
                 existingItem.is_mute            = json["is_mute"].intValue
                 existingItem.action_name        = json["action_name"].stringValue
                 existingItem.is_own_last_message = json["is_own_last_message"].boolValue
+                existingItem.is_read            = json["is_read"].intValue
+                existingItem.is_admin           = json["is_admin"].intValue
             }
             return existingItem
         } else {
@@ -63,6 +67,8 @@ class DialogItem: Object {
             item.phone       = json["phone"].stringValue
             item.chat_text   = json["chat_text"].stringValue
             item.chat_date   = json["chat_date"].stringValue
+            item.is_read     = json["is_read"].intValue
+            item.is_admin    = json["is_admin"].intValue
             item.contact_user_name = json["contact_user_name"].stringValue
             item.is_own_last_message = json["is_own_last_message"].boolValue
             return item
