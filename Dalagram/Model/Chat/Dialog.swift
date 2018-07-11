@@ -9,7 +9,6 @@
 import Foundation
 import SwiftyJSON
 import RealmSwift
-
 /// id - json["user_id"] recipient user id
 /// updateDate - NSDate
 /// messageCount - Int
@@ -26,6 +25,7 @@ class Dialog: Object {
     @objc dynamic var id: String = ""
     @objc dynamic var updatedDate: Date = Date()
     @objc dynamic var messagesCount: Int = 0
+    @objc dynamic var isMute: Bool = false
     @objc dynamic var dialogItem: DialogItem? = nil
     
     override static func primaryKey() -> String? {

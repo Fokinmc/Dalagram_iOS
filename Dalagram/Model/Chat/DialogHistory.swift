@@ -70,12 +70,10 @@ class DialogHistory: Object {
             item.answer_chat_id = json["answer_chat_id"].intValue
             item.chat_text      = json["chat_text"].stringValue
             item.chat_date      = json["chat_date"].stringValue
-            
             item.sender_phone   = json["sender"]["phone"].stringValue
             item.sender_avatar  = json["sender"]["avatar"].stringValue
             item.sender_user_id = json["sender"]["user_id"].intValue
             item.sender_name    = json["sender"]["user_name"].string ?? json["sender"]["contact_user_name"].string ?? json["sender"]["phone"].stringValue
-            
             item.recipient_phone = json["recipient"]["phone"].stringValue
             item.recipient_user_id = json["recipient"]["user_id"].intValue
             item.recipient_avatar = json["recipient"]["avatar"].stringValue

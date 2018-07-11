@@ -10,6 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import Kingfisher
+import SKPhotoBrowser
 
 class SettingsController: UITableViewController {
 
@@ -83,6 +84,13 @@ extension SettingsController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
+        case 0: // >> Avatar
+            if let userImage = profileImage.image {
+                let photo = SKPhoto.photoWithImage(userImage)
+                let browser = SKPhotoBrowser(photos: [photo])
+                browser.initializePageIndex(0)
+                self.present(browser, animated: true, completion: nil)
+            }
         case 1: // >> Edit
             let vc = EditProfileController.fromStoryboard()
             vc.viewModel = viewModel

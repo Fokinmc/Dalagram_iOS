@@ -38,7 +38,7 @@ class TabBarController : UITabBarController {
         let vc4 = SettingsController.fromStoryboard()
         vc4.title = "Настройки"
         let nc4 = UINavigationController.init(rootViewController: vc4)
-    
+        
         self.viewControllers = [nc2, nc1, nc3, nc4]
         print(User.getToken())
     }

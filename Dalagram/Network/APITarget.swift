@@ -30,6 +30,7 @@ public enum Dalagram {
     case sendMessage([String: Any])
     case getDialogs([String: Any])
     case getDialogDetails([String: Any])
+    case removeChat([String: Any])
     
     // MARK: - Group
     case createGroup(name: String, users: [[String: Int]], image: Data?)
@@ -103,6 +104,8 @@ extension Dalagram: TargetType {
             return "/chat"
         case .getDialogDetails:
             return "/chat/detail"
+        case .removeChat:
+            return "/chat"
             
         // MARK: - Group
         case .createGroup, .getGroups:
@@ -168,7 +171,7 @@ extension Dalagram: TargetType {
              .getGroupMembers, .getChannels, .getChannelDetails, .getChannelMembers, .getNews:
             return .get
         case .removePushToken, .removeGroupMember, .declineGroupAdmin, .removeChannelMember,
-             .declineChannelAdmin, .removePhoto:
+             .declineChannelAdmin, .removePhoto, .removeChat:
             return .delete
         default:
             return .post
@@ -219,7 +222,7 @@ extension Dalagram: TargetType {
         case .getContacts():
             return .requestParameters(parameters: ["token": User.getToken()], encoding: URLEncoding.default)
             
-        // MARK: Messages
+        // MARK: Chat
         case .sendMessage(let params):
             return .requestCompositeParameters(bodyParameters: params, bodyEncoding: URLEncoding.httpBody,
                                                urlParameters: ["token" : User.getToken()])
@@ -227,6 +230,9 @@ extension Dalagram: TargetType {
         case .getDialogs(let params), .getDialogDetails(let params):
             return .requestParameters(parameters: params, encoding: URLEncoding.default)
         
+        case .removeChat(let params):
+            return .requestCompositeParameters(bodyParameters: params, bodyEncoding: URLEncoding.httpBody, urlParameters: ["token" : User.getToken()])
+            
         // MARK: Group
         case .createGroup(let groupName, let usersParams, let imageData):
             if let image = imageData {

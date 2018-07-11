@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import SwipeCellKit
 
-class ChatCell: UITableViewCell {
+class ChatCell: SwipeTableViewCell {
 
     @IBOutlet weak var prefixLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
@@ -67,8 +68,11 @@ class ChatCell: UITableViewCell {
                 prefix = ""
             }
             
-            userImageView.kf.setImage(with: URL(string: item.avatar), placeholder: UIImage(named: "bg_gradient_\(arc4random_uniform(4))"))
+            let gradientImage = item.group_id != 0 ? #imageLiteral(resourceName: "bg_gradient_0") : item.channel_id != 0 ? #imageLiteral(resourceName: "bg_gradient_3")  : #imageLiteral(resourceName: "bg_gradient_2")
+            userImageView.kf.setImage(with: URL(string: item.avatar), placeholder: gradientImage)
         }
+        
+        iconMute.isHidden = !data.isMute
         countLabel.text = "\(data.messagesCount)"
         countLabel.isHidden = data.messagesCount == 0 ? true : false
     }

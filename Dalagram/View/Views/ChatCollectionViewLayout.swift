@@ -23,6 +23,7 @@ class ChatCollectionViewFlowLayout: UICollectionViewFlowLayout {
     private var isInsertingItemsToTop    = false
     private var isInsertingItemsToBottom = false
     
+    
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         
         // Reset each time all values to recalculate them

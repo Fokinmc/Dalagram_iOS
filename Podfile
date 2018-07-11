@@ -22,7 +22,10 @@ target 'Dalagram' do
   pod 'Socket.IO-Client-Swift', '~> 13.1.1'
   pod 'SVProgressHUD'
   pod 'BouncyLayout'
-
+  pod 'SwipeCellKit'
+  pod 'SKPhotoBrowser'
+  pod 'Texture'
+  
   target 'DalagramTests' do
     inherit! :search_paths
     # Pods for testing

@@ -31,4 +31,10 @@ extension UIColor {
         return UIColor(red: 0.26, green: 0.31, blue: 0.56, alpha: 0.95)
     }()
     
+    open static var flatRedColor: UIColor = {
+        return UIColor(red:1.00, green:0.42, blue:0.42, alpha:1.0)
+    }()
+    
+   
+    
 }

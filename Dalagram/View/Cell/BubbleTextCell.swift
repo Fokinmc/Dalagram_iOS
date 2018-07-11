@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class BubbleTextCell: BaseCollectionCell {
     
@@ -83,7 +84,6 @@ class BubbleTextCell: BaseCollectionCell {
         bubleView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
         
         //Width Contraints
-        //bubleWidthAnchor = bubleView.widthAnchor.constraint(equalToConstant: 200)
 
         markIcon.snp.makeConstraints { (make) in
             make.right.equalTo(bubleView).offset(-8.0)
@@ -107,9 +107,14 @@ class BubbleTextCell: BaseCollectionCell {
     func setupData(_ data: DialogHistory, chatType: DialogType, user_id: Int) {
         textView.text   = data.chat_text
         dateLabel.text  = data.chat_date
-        bubleWidthAnchor?.constant = (round((estimatedFrameForText(data.chat_text).width +
+        let bubleWidth = (round((estimatedFrameForText(data.chat_text).width +
             estimatedFrameForText(data.chat_date).width)/2.0) * 2) + 40.0
-        
+        if let widthConstraint = bubleWidthAnchor {
+            widthConstraint.constant = bubleWidth
+        } else {
+            bubleWidthAnchor = bubleView.widthAnchor.constraint(equalToConstant: bubleWidth)
+        }
+    
         switch chatType {
         case .group, .channel:
             setupLeftBuble()

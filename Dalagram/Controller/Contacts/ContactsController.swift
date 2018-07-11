@@ -46,6 +46,7 @@ class ContactsController: UITableViewController {
     // MARK: - Configuring UI
     
     func configureUI() {
+        setEmptyBackTitle()
         view.backgroundColor = UIColor.white
         
         //MARK: SearchBar

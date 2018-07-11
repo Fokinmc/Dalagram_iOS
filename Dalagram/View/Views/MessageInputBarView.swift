@@ -9,6 +9,11 @@
 import Foundation
 import UIKit
 
+enum SendButtonState {
+    case audio
+    case text
+}
+
 class MessageInputBarView: UIView {
 
     var chatDetailVC: ChatController?  {
@@ -18,17 +23,16 @@ class MessageInputBarView: UIView {
         }
     }
     
-    var sendButton: UIButton = {
+    lazy var sendButton: UIButton = {
         let button = UIButton()
-        button.setImage(#imageLiteral(resourceName: "icon_send"), for: .normal)
-        button.setImage(#imageLiteral(resourceName: "icon_audio"), for: .selected)
+        button.setImage(#imageLiteral(resourceName: "icon_audio"), for: .normal)
         let tap = UITapGestureRecognizer(target: self, action: #selector(sendButtonDoubleTap))
         tap.numberOfTapsRequired = 2
         button.addGestureRecognizer(tap)
         return button
     }()
     
-    var inputTextField: UITextField = {
+    lazy var inputTextField: UITextField = {
         let field = UITextField()
         field.placeholder = "Введите сообщение.."
         field.backgroundColor = UIColor.white
@@ -38,11 +42,17 @@ class MessageInputBarView: UIView {
         return field
     }()
     
-    var attachButton: UIButton = {
+    lazy var attachButton: UIButton = {
         let button = UIButton()
         button.setImage(#imageLiteral(resourceName: "icon_attache"), for: .normal)
         return button
     }()
+    
+    var sendButtonState: SendButtonState = .audio {
+        didSet {
+            sendButton.setImage(sendButtonState == .audio ? #imageLiteral(resourceName: "icon_audio") : #imageLiteral(resourceName: "icon_send"), for: .normal)
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -59,14 +69,19 @@ class MessageInputBarView: UIView {
     @objc func inputFieldAction() {
         guard let inputText = inputTextField.text else { return }
         if inputText.count > 0 {
-            sendButton.isSelected = false
+            sendButtonState = .text
         } else {
-            sendButton.isSelected = true
+            sendButtonState = .audio
         }
     }
     
     @objc func sendButtonDoubleTap() {
-        sendButton.isSelected = !sendButton.isSelected
+        switch sendButtonState {
+        case .audio:
+            sendButtonState = .text
+        case .text:
+            sendButtonState = .audio
+        }
     }
     
     func updateBottomConstaints(_ constant: CGFloat) {

@@ -170,56 +170,7 @@ extension UIViewController {
         let s = UIStoryboard(name: name, bundle: nil)
         return s.instantiateViewController(withIdentifier: identifier)
     }
-    
-    // MARK: - Alerts
-    
-    //    func alertTryAgain() {
-    //        alert(title:"Ошибка", message:APIResponse.tryAgainMessage)
-    //    }
-    //
-    //    func alert(message:String) {
-    //        alert(title: nil, message: message)
-    //    }
-    //
-    //    func alert(title:String?, message:String?, cancelButton:String = "OK", actionButton:String? = nil, handler: ((Void) -> (Void))? = nil, cancelHandler: ((Void) -> (Void))? = nil) {
-    //        let alert = UIAlertController(title: title ?? "", message:message, preferredStyle: .alert)
-    //        alert.addAction(UIAlertAction(title: cancelButton, style: .cancel) { _ in
-    //            if let h = cancelHandler {
-    //                h()
-    //            }
-    //        })
-    //        if let ab = actionButton {
-    //            alert.addAction(UIAlertAction(title: ab, style: .default) { action in
-    //                if let h = handler {
-    //                    h()
-    //                }
-    //            })
-    //        }
-    //        self.present(alert, animated: true, completion: nil)
-    //    }
-    //
-    //    //MARK: Action Sheet
-    //    func actionSheet(title: String?, message:String?, cancelButton:String = "Отмена", actionButton:String? = nil, handler: ((Void) -> (Void))? = nil, cancelHandler: ((Void) -> (Void))? = nil) {
-    //        let actionSheet = UIAlertController(title: title ?? "", message: message, preferredStyle: .actionSheet)
-    //
-    ////        actionSheet.view.tintColor = UIColor.customOrangeColor()
-    //        if let action = actionButton {
-    //            actionSheet.addAction(UIAlertAction(title: action, style: .destructive, handler: { (action) -> Void in
-    //                if let h = handler {
-    //                    h()
-    //                }
-    //            }))
-    //        }
-    //
-    //        actionSheet.addAction(UIAlertAction(title: cancelButton, style: .cancel) { _ in
-    //            if let h = cancelHandler {
-    //                h()
-    //            }
-    //        })
-    //
-    //        self.present(actionSheet, animated: true, completion: nil)
-    //
-    //    }
+
 }
 
 public extension UICollectionView {
@@ -258,5 +209,113 @@ extension String {
     
     func removeWhitespace() -> String {
         return components(separatedBy: .whitespaces).joined()
+    }
+}
+
+extension CGRect {
+    var x: CGFloat {
+        get {
+            return self.origin.x
+        }
+        set {
+            self = CGRect(x: newValue, y: self.y, width: self.width, height: self.height)
+        }
+    }
+    
+    var y: CGFloat {
+        get {
+            return self.origin.y
+        }
+        set {
+            self = CGRect(x: self.x, y: newValue, width: self.width, height: self.height)
+        }
+    }
+    
+    var width: CGFloat {
+        get {
+            return self.size.width
+        }
+        set {
+            self = CGRect(x: self.x, y: self.y, width: newValue, height: self.height)
+        }
+    }
+    
+    var height: CGFloat {
+        get {
+            return self.size.height
+        }
+        set {
+            self = CGRect(x: self.x, y: self.y, width: self.width, height: newValue)
+        }
+    }
+    
+    
+    var top: CGFloat {
+        get {
+            return self.origin.y
+        }
+        set {
+            y = newValue
+        }
+    }
+    
+    var bottom: CGFloat {
+        get {
+            return self.origin.y + self.size.height
+        }
+        set {
+            self = CGRect(x: x, y: newValue - height, width: width, height: height)
+        }
+    }
+    
+    var left: CGFloat {
+        get {
+            return self.origin.x
+        }
+        set {
+            self.x = newValue
+        }
+    }
+    
+    var right: CGFloat {
+        get {
+            return x + width
+        }
+        set {
+            self = CGRect(x: newValue - width, y: y, width: width, height: height)
+        }
+    }
+    
+    
+    var midX: CGFloat {
+        get {
+            return self.x + self.width / 2
+        }
+        set {
+            self = CGRect(x: newValue - width / 2, y: y, width: width, height: height)
+        }
+    }
+    
+    var midY: CGFloat {
+        get {
+            return self.y + self.height / 2
+        }
+        set {
+            self = CGRect(x: x, y: newValue - height / 2, width: width, height: height)
+        }
+    }
+    
+    
+    var center: CGPoint {
+        get {
+            return CGPoint(x: self.midX, y: self.midY)
+        }
+        set {
+            self = CGRect(x: newValue.x - width / 2, y: newValue.y - height / 2, width: width, height: height)
+        }
+    }
+    
+    init(_ x:CGFloat, _ y:CGFloat, _ w:CGFloat, _ h:CGFloat) {
+        self.init(x:x, y:y, width:w, height:h)
     }
 }

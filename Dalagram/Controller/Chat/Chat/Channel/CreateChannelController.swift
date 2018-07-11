@@ -21,7 +21,7 @@ class CreateChannelController: UITableViewController {
     }()
     
     lazy var saveButtonItem: UIBarButtonItem = {
-        let item = UIBarButtonItem(title: "Создать", style: .plain, target: self, action: #selector(createChannelAction))
+        let item = UIBarButtonItem(title: "Пропустить", style: .plain, target: self, action: #selector(createChannelAction))
         item.tintColor = UIColor.white
         return item
     }()

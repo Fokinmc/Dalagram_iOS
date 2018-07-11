@@ -9,18 +9,20 @@
 import UIKit
 import SVProgressHUD
 import RealmSwift
+import SwipeCellKit
 
 class DialogsController: UITableViewController {
 
     // MARK: - UIElements
     
-    fileprivate var searchBar: UISearchBar {
+    lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.searchBarStyle = .minimal
         searchBar.placeholder = " Поиск по сообщениям и людям"
+        searchBar.delegate = self
         searchBar.sizeToFit()
         return searchBar
-    }
+    }()
     
     lazy var navigationTitle: UILabel = {
         let label = UILabel()
@@ -47,10 +49,14 @@ class DialogsController: UITableViewController {
         super.viewDidLoad()
         configureUI()
         loadData()
-        connetToSocket()
-        listenMessageUpdates()
+        socketConnectionEvents()
         NotificationCenter.default.addObserver(self, selector: #selector(loadData), name: AppManager.loadDialogsNotification, object: nil)
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        SocketIOManager.shared.socket.off("message")
+        listenMessageUpdates()
     }
     
     deinit {
@@ -58,9 +64,9 @@ class DialogsController: UITableViewController {
         NotificationCenter.default.removeObserver(self, name: AppManager.loadDialogsNotification, object: nil)
     }
     
-    // MARK: Connect to socket
+    // MARK: Listen Socket Connection Evenets
     
-    func connetToSocket() {
+    func socketConnectionEvents() {
         viewModel.connectToSocket(onConnect: { [weak self] in
             self?.navigationTitle.text = "Чаты"
             self?.navigationLoader.stopAnimating()
@@ -74,9 +80,8 @@ class DialogsController: UITableViewController {
     // MARK: - Socket Event: Message
     
     func listenMessageUpdates() {
-        viewModel.socketMessageEvent()
-        viewModel.messageEventHandler = { [weak self] in
-            // need to update model and reload. not make request
+        
+        viewModel.socketMessageEvent { [weak self] in
             self?.tableView.reloadData()
         }
         
@@ -84,12 +89,10 @@ class DialogsController: UITableViewController {
             guard let tableView = self?.tableView else { return }
             switch changes {
             case .initial:
-                // Results are now populated and can be accessed without blocking the UI
-                //tableView.reloadData()
                 print("initial")
             case .update(_):
                 print("update")
-                //tableView.reloadData()
+                tableView.reloadData()
             case .error(let error):
                 fatalError("\(error)")
             }
@@ -101,7 +104,6 @@ class DialogsController: UITableViewController {
     @objc func loadData() {
         viewModel.getUserDialogs { [weak self] in
             guard let vc = self else { return }
-            vc.tableView.reloadData()
             vc.showNoContentView(dataCount: vc.viewModel.dialogs?.count ?? 0)
         }
     }
@@ -133,93 +135,22 @@ class DialogsController: UITableViewController {
         alert.addAction(channelAction)
         alert.addAction(singleAction)
         alert.addAction(cancelAction)
-        
         self.present(alert, animated: true, completion: nil)
     }
-
-}
-
-// MARK: - TableView Delegate & DataSource
-
-extension DialogsController {
     
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.dialogs?.count ?? 0
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: ChatCell = tableView.dequeReusableCell(for: indexPath)
-        cell.setupDialog(viewModel.dialogs![indexPath.row])
-        return cell
-    }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // FIXME:  OPTIONALS FORCE UNWRAPPING
-        let currentDialog = viewModel.dialogs![indexPath.row]
-        let chatInfo = DialogInfo(dialog: currentDialog.dialogItem!)
-        
-        if chatInfo.user_id != 0 { // Single Chat
-            let vc = ChatController(type: .single, info: chatInfo, dialogId: currentDialog.id)
-            vc.hidesBottomBarWhenPushed = true
-            self.show(vc, sender: nil)
-        } else if chatInfo.group_id != 0 { // Group Chat
-            let vc = ChatController(type: .group, info: chatInfo, dialogId: currentDialog.id)
-            vc.hidesBottomBarWhenPushed = true
-            self.show(vc, sender: nil)
-        } else if chatInfo.channel_id != 0 { // Channel
-            let vc = ChatController(type: .channel, info: chatInfo, dialogId: currentDialog.id)
-            vc.hidesBottomBarWhenPushed = true
-            self.show(vc, sender: nil)
+    @objc func showDeleteActionSheet(id: String, dialogItem: DialogItem) {
+        let alert = UIAlertController(title: "Выберите", message: nil, preferredStyle: .actionSheet)
+        alert.view.tintColor = UIColor.darkBlueNavColor
+        let deleteAction = UIAlertAction(title: "Удалить", style: .default) { (act) in
+            self.viewModel.removeDialog(by: id, dialogItem: dialogItem)
         }
-        viewModel.resetMessagesCounter(for: currentDialog)
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
-    }
-}
-
-// MARK: - Configuring UI
-
-extension DialogsController {
-
-    func configureUI() {
-        setEmptyBackTitle()
-        setBlueNavBar()
-        view.backgroundColor = UIColor.init(white: 1.0, alpha: 0.98)
-        
-        //MARK: SearchBar
-        tableView.tableHeaderView = searchBar
-        
-        tableView.registerNib(ChatCell.self)
-        tableView.tableFooterView = UIView()
-        tableView.separatorColor = UIColor.init(white: 0.85, alpha: 1.0)
-
-        // MARK: - UIBarButtonItem Configurations
-        let createItem = UIBarButtonItem(image: UIImage(named: "icon_create"), style: .plain, target: self, action: #selector(createChatAction))
-        createItem.tintColor = UIColor.white
-        self.navigationItem.rightBarButtonItem = createItem
-        
-        let editItem = UIBarButtonItem(title: "Изм.", style: .plain, target: self, action: nil)
-        editItem.tintColor = UIColor.white
-        self.navigationItem.leftBarButtonItem = editItem
-        
-        // MARK: - UINavigationBar TitleView Configurations
-        let titleView = UIView()
-        titleView.addSubview(navigationTitle)
-        navigationTitle.snp.makeConstraints { (make) in
-            make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview()
+        let clearAction = UIAlertAction(title: "Очистить", style: .default) { (act) in
+            self.viewModel.clearDialog(by: id)
         }
-        titleView.addSubview(navigationLoader)
-        navigationLoader.snp.makeConstraints { (make) in
-            make.left.equalTo(navigationTitle.snp.right).offset(8.0)
-            make.centerY.equalTo(navigationTitle)
-        }
-        self.navigationItem.titleView = titleView
+        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel, handler: nil)
+        alert.addAction(deleteAction)
+        alert.addAction(clearAction)
+        alert.addAction(cancelAction)
+        self.present(alert, animated: true, completion: nil)
     }
 }

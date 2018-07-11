@@ -65,6 +65,7 @@
                     <connections>
                         <outlet property="countryField" destination="PiW-ON-V1o" id="57u-pG-awY"/>
                         <outlet property="phoneField" destination="ImB-za-tvb" id="Qd5-be-9sj"/>
+                        <segue destination="Vx7-Sc-jNp" kind="show" id="4WB-MV-Ksh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XPo-HC-M64" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SKPhotoBrowser
 
 class UserProfileController: UITableViewController {
     
@@ -50,6 +51,20 @@ extension UserProfileController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 6
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.row {
+        case 0: // Profile Photo
+            if let userImage = userImageView.image {
+                let photo = SKPhoto.photoWithImage(userImage)
+                let browser = SKPhotoBrowser(photos: [photo])
+                browser.initializePageIndex(0)
+                self.present(browser, animated: true, completion: nil)
+            }
+        default:
+            break
+        }
     }
 }
 

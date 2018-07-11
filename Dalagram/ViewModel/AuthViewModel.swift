@@ -22,7 +22,6 @@ struct AuthViewModel {
     func attempSignIn(_ callback: @escaping (Bool) -> Void) {
         let phoneNum = removeWhiteSpaces(phone.value)
         NetworkManager.makeRequest(.signIn(phone: phoneNum), success: { (json) in
-            
             if let message = json["message"].string {
                 WhisperHelper.showSuccessMurmur(title: message)
             }

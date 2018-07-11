@@ -43,10 +43,13 @@ class ChatViewModel {
         }
     
         NetworkManager.makeRequest(.getDialogDetails(parameters), success: { [unowned self] (json)  in
-            for (_, subJson):(String, JSON) in json["data"] {
-                DialogHistory.initWith(json: subJson, dialog_id: self.dialogId)
+            print(json["data"].count, self.messages?.count)
+            if json["data"].count != self.messages?.count {
+                for (_, subJson):(String, JSON) in json["data"] {
+                    DialogHistory.initWith(json: subJson, dialog_id: self.dialogId)
+                }
+                success()
             }
-            success()
         })
     }
     

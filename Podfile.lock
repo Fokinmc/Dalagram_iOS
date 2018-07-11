@@ -21,6 +21,21 @@ PODS:
   - Moya/RxSwift (11.0.0):
     - Moya/Core
     - RxSwift (~> 4.0)
+  - PINCache (3.0.1-beta.6):
+    - PINCache/Arc-exception-safe (= 3.0.1-beta.6)
+    - PINCache/Core (= 3.0.1-beta.6)
+  - PINCache/Arc-exception-safe (3.0.1-beta.6):
+    - PINCache/Core
+  - PINCache/Core (3.0.1-beta.6):
+    - PINOperation (~> 1.1.0)
+  - PINOperation (1.1.1)
+  - PINRemoteImage/Core (3.0.0-beta.13):
+    - PINOperation
+  - PINRemoteImage/iOS (3.0.0-beta.13):
+    - PINRemoteImage/Core
+  - PINRemoteImage/PINCache (3.0.0-beta.13):
+    - PINCache (= 3.0.1-beta.6)
+    - PINRemoteImage/Core
   - ReachabilitySwift (3)
   - Realm (3.1.1):
     - Realm/Headers (= 3.1.1)
@@ -31,6 +46,7 @@ PODS:
   - RxCocoa (4.1.2):
     - RxSwift (~> 4.0)
   - RxSwift (4.1.2)
+  - SKPhotoBrowser (5.1.0)
   - SkyFloatingLabelTextField (3.4.0)
   - SnapKit (4.0.0)
   - Socket.IO-Client-Swift (13.1.1):
@@ -39,6 +55,14 @@ PODS:
   - SVProgressHUD (2.2.5)
   - SwiftLint (0.25.0)
   - SwiftyJSON (4.0.0)
+  - SwipeCellKit (2.0.1)
+  - Texture (2.7):
+    - Texture/PINRemoteImage (= 2.7)
+  - Texture/Core (2.7)
+  - Texture/PINRemoteImage (2.7):
+    - PINRemoteImage/iOS (= 3.0.0-beta.13)
+    - PINRemoteImage/PINCache
+    - Texture/Core
   - Whisper (6.0.2)
 
 DEPENDENCIES:
@@ -53,12 +77,15 @@ DEPENDENCIES:
   - RealmSwift
   - RxCocoa
   - RxSwift
+  - SKPhotoBrowser
   - SkyFloatingLabelTextField (~> 3.0)
   - SnapKit
   - Socket.IO-Client-Swift (~> 13.1.1)
   - SVProgressHUD
   - SwiftLint
   - SwiftyJSON
+  - SwipeCellKit
+  - Texture
   - Whisper
 
 SPEC CHECKSUMS:
@@ -71,12 +98,16 @@ SPEC CHECKSUMS:
   ModelMapper: e576b4e32007bf574d0f9e4f533d29c46d29f146
   Moya: be29766339783963a70d1279d69c891ab3a1393c
   Moya-ModelMapper: 9aa8a99cb664a083b376869d6091c1f20d9f171e
+  PINCache: d195fdba255283f7e9900a55e3cced377f431f9b
+  PINOperation: a6219e6fc9db9c269eb7a7b871ac193bcf400aac
+  PINRemoteImage: d6d51c5d2adda55f1ce30c96e850b6c4ebd2856a
   ReachabilitySwift: f5b9bb30a0777fac8f09ce8b067e32faeb29bb64
   Realm: 42d1c38a5b1bbcc828b48a7ce702cb86fc68adf4
   RealmSwift: d31937ca6a6ee54acde64ec839523c0a3c04924b
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
   RxCocoa: d88ba0f1f6abf040011a9eb4b539324fc426843a
   RxSwift: e49536837d9901277638493ea537394d4b55f570
+  SKPhotoBrowser: c20c1da34d737b4e3e101feead6c8dd92ebf860a
   SkyFloatingLabelTextField: 703aa1420b697392b1e7dba25571180dde018477
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
   Socket.IO-Client-Swift: f22222913f29801e30ae0df712db663ec096edc2
@@ -84,8 +115,10 @@ SPEC CHECKSUMS:
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftLint: e14651157288e9e01d6e1a71db7014fb5744a8ea
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
+  SwipeCellKit: 76888d93d1843dc568fdf38fff21b15dbbcf6b28
+  Texture: 9d7e38965cf22ccd7cd9c249dd78b3f14e70ab6c
   Whisper: 169760fc4bab0abf24d5529f9276f95c25cf1025
 
-PODFILE CHECKSUM: fe91e5926cf762dc673476d67af7e08b148f3a36
+PODFILE CHECKSUM: 3dc04ec6e0249dd34705af8de6d6e1bc7d0b1aeb
 
 COCOAPODS: 1.3.1

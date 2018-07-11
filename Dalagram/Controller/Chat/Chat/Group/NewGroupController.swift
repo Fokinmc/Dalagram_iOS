@@ -74,7 +74,7 @@ class NewGroupController: UITableViewController {
         
         
         // MARK: UIBarButtonItem
-        let plusButton = UIBarButtonItem(title: "Далее", style: .plain, target: self, action: #selector(nextButtonAction))
+        let plusButton = UIBarButtonItem(title: chatType == .group ? "Далее" : "Пропустить", style: .plain, target: self, action: #selector(nextButtonAction))
         self.navigationItem.rightBarButtonItem = plusButton
     }
     
@@ -82,7 +82,7 @@ class NewGroupController: UITableViewController {
     
     @objc func nextButtonAction() {
         switch usersCollectionView.viewModel.selectedContacts.value.count {
-        case 0:
+        case 0 where chatType == .group:
             WhisperHelper.showErrorMurmur(title: "Добавьте контакт")
         case 1: // Single Chat
             if let userData = usersCollectionView.viewModel.selectedContacts.value.first {
