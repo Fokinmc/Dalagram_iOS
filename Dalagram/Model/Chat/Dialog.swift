@@ -6,13 +6,14 @@
 //  Copyright © 2018 BuginGroup. All rights reserved.
 //
 
-import Foundation
-import SwiftyJSON
-import RealmSwift
 /// id - json["user_id"] recipient user id
 /// updateDate - NSDate
 /// messageCount - Int
 /// dialogItem - Realm Object (refrence)
+
+import Foundation
+import SwiftyJSON
+import RealmSwift
 
 enum DialogType {
     case single

@@ -16,20 +16,20 @@ class ChatActionNode: ASDisplayNode {
     public init(name: String) {
         
         actionNameNode = ASTextNode()
-        actionNameNode.text = name
+        actionNameNode.style.alignSelf = .center
+        actionNameNode.textContainerInset = UIEdgeInsetsMake(5, 20, 5, 20)
+        actionNameNode.backgroundColor = UIColor.init(white: 0.1, alpha: 0.4)
+        actionNameNode.cornerRadius = 12
+        actionNameNode.clipsToBounds = true
+        actionNameNode.style.descender = 10
+        actionNameNode.attributedText = NSAttributedString(string: name, attributes: ChatCellNodeActionTextAttributes)
         
         super.init()
         addSubnode(actionNameNode)
     }
     
     override public func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
-        let textNodeVerticalOffset = CGFloat(6)
-    
-        let insetSpec = ASInsetLayoutSpec(insets: UIEdgeInsetsMake(
-            0,
-            8,
-            0,
-            8, child: actionNameNode)
+        let insetSpec = ASInsetLayoutSpec(insets: UIEdgeInsetsMake(8, 8, 8, 8), child: actionNameNode)
         return insetSpec
         //return ASStackLayoutSpec(direction: .vertical, spacing: 0, justifyContent: ASStackLayoutJustifyContent.start, alignItems: .start, children: [insetSpec])
     }

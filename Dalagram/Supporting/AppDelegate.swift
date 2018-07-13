@@ -55,7 +55,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate {
     
     func configureRootController(isLogged: Bool) {
-
         let vc = isLogged ? TabBarController.instantiate() : UINavigationController.init(rootViewController: SignInController.instantiate())
         window?.translatesAutoresizingMaskIntoConstraints = true
         window?.rootViewController = vc

@@ -19,7 +19,7 @@ class MessageInputBarView: UIView {
     var chatDetailVC: ChatController?  {
         didSet {
             sendButton.addTarget(chatDetailVC, action: #selector(ChatController.sendButtonPressed), for: .touchUpInside)
-            attachButton.addTarget(chatDetailVC, action: #selector(ChatController.sendButtonPressed), for: .touchUpInside)
+            attachButton.addTarget(chatDetailVC, action: #selector(ChatController.attachButtonPressed), for: .touchUpInside)
         }
     }
     
@@ -32,14 +32,18 @@ class MessageInputBarView: UIView {
         return button
     }()
     
-    lazy var inputTextField: UITextField = {
-        let field = UITextField()
-        field.placeholder = "Введите сообщение.."
-        field.backgroundColor = UIColor.white
-        field.borderStyle = .roundedRect
-        field.isSelected = false
-        field.addTarget(self, action: #selector(inputFieldAction), for: .allEditingEvents)
-        return field
+    lazy var inputTextField: UITextView = {
+        let textView = UITextView()
+        textView.text = "Введите сообщение.."
+        textView.textColor = UIColor.lightGray
+        textView.backgroundColor = UIColor.white
+        textView.isScrollEnabled = false
+        textView.font = UIFont.systemFont(ofSize: 16.0)
+        textView.layer.borderColor = UIColor(white: 0.8, alpha: 0.8).cgColor
+        textView.layer.borderWidth = 0.5
+        textView.layer.cornerRadius = 5.0
+        textView.delegate = self
+        return textView
     }()
     
     lazy var attachButton: UIButton = {
@@ -53,7 +57,7 @@ class MessageInputBarView: UIView {
             sendButton.setImage(sendButtonState == .audio ? #imageLiteral(resourceName: "icon_audio") : #imageLiteral(resourceName: "icon_send"), for: .normal)
         }
     }
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = UIColor(red: 245/255.0, green: 245/255.0, blue: 245/255.0, alpha: 0.8)
@@ -63,16 +67,6 @@ class MessageInputBarView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
-    }
-    
-    @objc func inputFieldAction() {
-        guard let inputText = inputTextField.text else { return }
-        if inputText.count > 0 {
-            sendButtonState = .text
-        } else {
-            sendButtonState = .audio
-        }
     }
     
     @objc func sendButtonDoubleTap() {
@@ -90,9 +84,10 @@ class MessageInputBarView: UIView {
         }
     }
     
+    let contentView = UIView()
+    
     func setupConstraints() {
         
-        let contentView = UIView()
         let bottomView = UIView()
         
         contentView.addSubview(sendButton)
@@ -102,6 +97,7 @@ class MessageInputBarView: UIView {
         addSubview(contentView)
         addSubview(bottomView)
         
+        // For iPhone X layout added empty bottomView
         bottomView.snp.makeConstraints { (make) in
             make.left.equalToSuperview()
             make.right.equalToSuperview()
@@ -117,36 +113,58 @@ class MessageInputBarView: UIView {
         contentView.snp.makeConstraints { (make) in
             make.left.equalToSuperview()
             make.right.equalToSuperview()
-            make.height.equalTo(48.0)
+            make.top.equalToSuperview()
             make.bottom.equalTo(bottomView.snp.top)
         }
         
-
         sendButton.snp.makeConstraints { (make) in
             make.right.equalTo(-8.0)
-            make.top.equalTo(3.0)
-            make.bottom.equalTo(bottomView.snp.top).offset(-3.0)
+            make.top.equalTo(contentView.snp.top).offset(8.0)
             make.width.equalTo(sendButton.snp.height).multipliedBy(1/1)
         }
         
         attachButton.snp.makeConstraints { (make) in
             make.left.equalTo(16.0)
-            make.centerY.equalTo(contentView)
+            make.top.equalTo(contentView.snp.top).offset(10)
             make.width.equalTo(attachButton.snp.height).multipliedBy(1/1)
         }
         
         inputTextField.snp.makeConstraints { (make) in
             make.right.equalTo(sendButton.snp.left).offset(-8.0)
-            make.top.equalTo(7.0)
+            make.top.equalTo(contentView.snp.top).offset(7.0)
             make.bottom.equalTo(bottomView.snp.top).offset(-7.0)
             make.left.equalTo(attachButton.snp.right).offset(16.0)
         }
+        //inputTextField.heightAnchor.constraint(equalToConstant: 35.0).isActive = true
         
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }
 
+extension MessageInputBarView: UITextViewDelegate {
+    
+    func textViewDidChange(_ textView: UITextView) {
+        let size = CGSize(width: inputTextField.frame.width, height: .infinity)
+        let estimatedSize = textView.sizeThatFits(size)
+        chatDetailVC?.changeInputBarViewFrame(height: estimatedSize.height + 14)
+    }
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.textColor == UIColor.lightGray {
+            textView.text = nil
+            textView.textColor = UIColor.black
+            sendButtonState = .text
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = "Введите сообщение.."
+            textView.textColor = UIColor.lightGray
+            sendButtonState = .audio
+        }
+    }
+}

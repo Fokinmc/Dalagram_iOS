@@ -16,12 +16,12 @@ class DialogsViewModel {
     let realm = try! Realm()
     
     init() {
-        self.dialogs = realm.objects(Dialog.self).sorted(byKeyPath: "updatedDate")
+        dialogs = realm.objects(Dialog.self).sorted(byKeyPath: "updatedDate")
     }
     
     // MARK: - Dialogs GET Request
     
-    func getUserDialogs(page: Int = 1, per_page: Int = 100, success: @escaping (() -> Void) = {}) {
+    func getUserDialogs(page: Int = 1, per_page: Int = 40, success: @escaping (() -> Void) = {}) {
         let parameters = ["token": User.getToken(), "page": page, "per_page": per_page] as [String : Any]
         NetworkManager.makeRequest(.getDialogs(parameters), success: { (json)  in
             print(json)
@@ -40,19 +40,29 @@ class DialogsViewModel {
         SocketIOManager.shared.socket.on("message") { [weak self] (dataArray, ack)  in
             print("socketMessageEvent \(dataArray)")
             let dict = dataArray[0] as! NSDictionary
-            if let text = dict.value(forKey: "chat_text") as? String, let dialog_id = dict.value(forKey: "dialog_id") as? String {
-                if let currentDialog = self?.dialogs?.filter(NSPredicate(format: "id = %@", dialog_id)).first {
-                    let realm = try! Realm()
-                    try! realm.write {
-                        currentDialog.dialogItem?.chat_text = text
-                        currentDialog.dialogItem?.chat_date = "Сейчас"
-                        currentDialog.updatedDate = Date()
-                        currentDialog.messagesCount = currentDialog.messagesCount + 1
+            if let text = dict.value(forKey: "chat_text") as? String,
+                let dialog_id = dict.value(forKey: "dialog_id") as? String,
+                let recipiend_id = dict.value(forKey: "recipient_user_id") as? Int,
+                let sender_user_id = dict.value(forKey: "sender_user_id") as? Int {
+                
+                print(recipiend_id, sender_user_id)
+                
+                if recipiend_id == User.currentUser()!.user_id || sender_user_id == User.currentUser()!.user_id {
+                    // Edit existing dialog
+                    if let currentDialog = self?.dialogs?.filter(NSPredicate(format: "id = %@", dialog_id)).first {
+                        let realm = try! Realm()
+                        try! realm.write {
+                            currentDialog.dialogItem?.chat_text = text
+                            currentDialog.dialogItem?.chat_date = "Сейчас"
+                            if sender_user_id != User.currentUser()!.user_id {
+                                currentDialog.messagesCount = currentDialog.messagesCount + 1
+                            }
+                        }
+                        onEvent()
+                    } else {
+                        // Dialog don't exist, need to pull from server
+                        self?.getUserDialogs()
                     }
-                    onEvent()
-                } else {
-                    /// Dialog don't exist, need to pull from server
-                    self?.getUserDialogs()
                 }
             }
         }
@@ -139,6 +149,7 @@ class DialogsViewModel {
     
     // MARK: - Search dialog by Message text and Contact name
     // CONTAINS[c] is case insensitive keyword
+    
     func searchDialog(by text: String, onReload: @escaping() -> Void?) {
         let searchResults = realm.objects(Dialog.self).filter("dialogItem.chat_text CONTAINS[c] '\(text)' OR dialogItem.chat_name CONTAINS[c] '\(text)'")
         if searchResults.count != 0 {

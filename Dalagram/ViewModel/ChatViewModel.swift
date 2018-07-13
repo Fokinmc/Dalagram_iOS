@@ -11,12 +11,15 @@ import RxSwift
 import RealmSwift
 import SwiftyJSON
 import SocketIO
+import Photos
+import SVProgressHUD
 
 class ChatViewModel {
     
     var messages: Results<DialogHistory>?
     var info: DialogInfo!
     var chatType: DialogType = .single
+    var selectedAsset: PHAsset?
     
     var dialogId: String = ""
     var socket: SocketIOClient!
@@ -27,9 +30,9 @@ class ChatViewModel {
         self.messages = realm.objects(DialogHistory.self).filter(NSPredicate(format: "id = %@", dialogId))
     }
     
-    // MARK: Get Detail of Chat
+    // MARK: API ENDPOINT Get Detail of Chat
     
-    func getDialogMessages(page: Int = 1, per_page: Int = 100, success: @escaping () -> Void) {
+    func getDialogMessages(page: Int = 1, per_page: Int = 40, success: @escaping () -> Void) {
         
         var parameters = ["token": User.getToken(), "page": page, "per_page": per_page] as [String : Any]
         
@@ -43,7 +46,6 @@ class ChatViewModel {
         }
     
         NetworkManager.makeRequest(.getDialogDetails(parameters), success: { [unowned self] (json)  in
-            print(json["data"].count, self.messages?.count)
             if json["data"].count != self.messages?.count {
                 for (_, subJson):(String, JSON) in json["data"] {
                     DialogHistory.initWith(json: subJson, dialog_id: self.dialogId)
@@ -53,7 +55,7 @@ class ChatViewModel {
         })
     }
     
-    // MARK: Get Detail Info of Chat
+    // MARK: API ENDPOINT Get Detail Info of Chat
     
     func getDialogDetails(success: @escaping (DialogDetail) -> Void) {
         switch chatType {
@@ -70,6 +72,50 @@ class ChatViewModel {
         }
     }
     
+    // MARK: API ENDPOINT: Upload chat file
+    
+    func uploadChatFile(success: @escaping () -> Void) {
+        if let asset = selectedAsset {
+            let selectedImage = getAssetThumbnail(asset: asset)
+            let newFiles = List<ChatFile>()
+            let file = ChatFile()
+            file.file_format = "image"
+            file.file_data = selectedImage
+            newFiles.append(file)
+            
+            let chat_id = -1
+            
+            DialogHistory.createFileMessage(dialog_id: dialogId, chat_id: chat_id, files: newFiles, sender_user_id: (User.currentUser()?.user_id)!)
+            
+            success()
+            NetworkManager.makeRequest(.uploadChatFile(selectedImage), success: { (json) in
+                print(json)
+                
+                file.file_url = json["file_full_url"].stringValue
+                newFiles.removeAll()
+                newFiles.append(file)
+
+                DialogHistory.createFileMessage(chat_id: chat_id, files: newFiles, sender_user_id: User.currentUser()!.user_id)
+                success()
+            })
+        }
+    }
+    
+    func getAssetThumbnail(asset: PHAsset) -> Data {
+        let options = PHImageRequestOptions()
+        var thumbnail = Data()
+        options.isSynchronous = true
+        options.version = .current
+        options.deliveryMode = .fastFormat
+     
+        PHImageManager.default().requestImageData(for: asset, options: options) { data, _, _, _ in
+            if let data = data {
+                thumbnail = data
+            }
+        }
+        return thumbnail
+    }
+    
     // MARK: - Socket Event: Message
     
     func socketMessageEvent(success: @escaping () -> Void) {
@@ -81,7 +127,8 @@ class ChatViewModel {
                 if sender_user_id != User.currentUser()?.user_id {
                    dialogID = "\(sender_user_id)U"
                 }
-                DialogHistory.initWith(dialog_id: dialogID, chat_text: text, sender_user_id: sender_user_id)
+                let name = dict.value(forKey: "sender_name") as? String ?? ""
+                DialogHistory.initWith(dialog_id: dialogID, chat_text: text, sender_user_id: sender_user_id, sender_name: name)
                 success()
             }
         }
@@ -91,7 +138,11 @@ class ChatViewModel {
     // MARK: - Socket Emit: Message
     
     func socketMessageEmit(text: String, senderId: Int, recipientId: Int, senderName: String) {
-        SocketIOManager.shared.socket.emit("message", ["chat_text": text, "sender_user_id": senderId, "dialog_id": dialogId])
+        SocketIOManager.shared.socket.emit("message", ["chat_text": text,
+                                                       "sender_user_id": senderId,
+                                                       "dialog_id": dialogId,
+                                                       "sender_name": senderName,
+                                                       "recipient_user_id": recipientId])
         sendMessageApi(chat_text: text)
     }
     
@@ -102,12 +153,12 @@ class ChatViewModel {
         
         var parameters = ["chat_text": chat_text] as [String: Any]
         switch chatType {
-        case .single:
-            parameters["recipient_user_id"] = info.user_id
-        case .group:
-            parameters["group_id"] = info.group_id
-        case .channel:
-            parameters["channel_id"] = info.channel_id
+            case .single:
+                parameters["recipient_user_id"] = info.user_id
+            case .group:
+                parameters["group_id"] = info.group_id
+            case .channel:
+                parameters["channel_id"] = info.channel_id
         }
         NetworkManager.makeRequest(.sendMessage(parameters), success: { (json) in
             print("makeRequest(.sendMessage", json)
@@ -117,7 +168,7 @@ class ChatViewModel {
     
     // MARK: Remove DialogHistory with chat_id 0
     
-    func removeDialogHistory() {
+    func removeEmptyDialogHistory() {
         let realm = try! Realm()
         for object in realm.objects(DialogHistory.self).filter("chat_id = 0") {
             try! realm.write {
@@ -125,5 +176,5 @@ class ChatViewModel {
             }
         }
     }
-    
+
 }

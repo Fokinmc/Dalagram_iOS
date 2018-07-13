@@ -11,11 +11,23 @@ import SwiftyJSON
 import RealmSwift
 import BouncyLayout
 import AsyncDisplayKit
+import ImagePicker
 
 class ChatController: UIViewController {
     
     // MARK: - UI Elements
-    lazy var layout = BouncyLayout(style: BouncyLayout.BounceStyle.subtle)
+    
+    lazy var bubleImageOut: UIImage = {
+        //let image = UIImage(named: "bubble_outgoing_tailless")!.stretchableImage(withLeftCapWidth: 15, topCapHeight: 14).withRenderingMode(.alwaysTemplate)
+        let image = UIImage(named: "BubbleOutgoing")!.resizableImage(withCapInsets: UIEdgeInsetsMake(17, 21, 17, 21), resizingMode: .stretch)
+        return image
+    }()
+    
+    lazy var bubleImageIn: UIImage = {
+        //let image = UIImage(named: "bubble_incoming_tailless")!.stretchableImage(withLeftCapWidth: 21, topCapHeight: 14).withRenderingMode(.alwaysTemplate)
+        let image = UIImage(named: "BubbleIncoming")!.resizableImage(withCapInsets: UIEdgeInsetsMake(17, 21, 17, 21), resizingMode: .stretch)
+        return image
+    }()
     
     lazy var titleView: UserNavigationTitleView = {
         let titleView = UserNavigationTitleView()
@@ -27,7 +39,7 @@ class ChatController: UIViewController {
     
     lazy var inputBarView: MessageInputBarView = {
         let height: CGFloat = calculateBottomSafeArea(48.0)
-        let view = MessageInputBarView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: height))
+        let view = MessageInputBarView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height:height))
         view.chatDetailVC = self
         return view
     }()
@@ -38,6 +50,24 @@ class ChatController: UIViewController {
         return view
     }()
     
+    lazy var imageVideoPicker: ImagePickerController = {
+        let imagePicker = ImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.dataSource = self
+        imagePicker.layoutConfiguration.showsCameraItem = true
+        imagePicker.captureSettings.cameraMode = .photoAndLivePhoto
+        imagePicker.layoutConfiguration.numberOfAssetItemsInRow = 4
+        imagePicker.captureSettings.savesCapturedPhotosToPhotoLibrary = false
+        return imagePicker
+    }()
+    
+    lazy var imagePickerInputView: UIView = {
+        let inputView = UIView(frame: CGRect(0, 0, view.frame.width, view.frame.height/2 - 80))
+        return inputView
+    }()
+    
+    lazy var layout = BouncyLayout(style: BouncyLayout.BounceStyle.subtle)
+    
     var collectionView: ASCollectionNode?
     
     override var inputAccessoryView: UIView? {
@@ -46,6 +76,7 @@ class ChatController: UIViewController {
             case .channel:
                 return viewModel.info.is_admin == 1 ? inputBarView : joinButtonView
             default:
+                inputBarView.heightAnchor.constraint(equalToConstant: calculateBottomSafeArea(48)).isActive = true
                 return inputBarView
             }
         }
@@ -55,18 +86,10 @@ class ChatController: UIViewController {
         return true
     }
     
-    deinit {
-        collectionView?.dataSource = nil
-        collectionView?.delegate = nil
-    }
-    
-    let bubleImageOut = UIImage(named: "BubbleOutgoing")!.stretchableImage(withLeftCapWidth: 15, topCapHeight: 14).withRenderingMode(.alwaysTemplate)
-    
-    let bubleImageIn = UIImage(named: "BubbleIncoming")!.stretchableImage(withLeftCapWidth: 21, topCapHeight: 14).withRenderingMode(.alwaysTemplate)
-    
     // MARK: Variables
     
     var notificationToken: NotificationToken? = nil
+    var keyboardHeighValue: CGFloat = 0.0
     var viewModel: ChatViewModel!
     
     // MARK: Initializer for Single Chat/Group/Channel
@@ -92,14 +115,14 @@ class ChatController: UIViewController {
             self?.collectionView?.reloadData()
             self?.scrollToLastItem()
         }
-
+    
         NotificationCenter.default.addObserver(self, selector: #selector(loadDialogDetails), name: AppManager.dialogDetailsNotification, object: nil)
-
+        NotificationCenter.default.addObserver(self, selector: #selector(loadMessages), name: AppManager.diloagHistoryNotification, object: nil)
     }
     
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        
+    deinit {
+        collectionView?.dataSource = nil
+        collectionView?.delegate = nil
     }
     
     override func viewDidLayoutSubviews() {
@@ -111,20 +134,18 @@ class ChatController: UIViewController {
     override func willMove(toParentViewController parent: UIViewController?) {
         if parent == nil {
             NotificationCenter.default.removeObserver(self, name: AppManager.dialogDetailsNotification, object: nil)
+            NotificationCenter.default.removeObserver(self, name: AppManager.diloagHistoryNotification, object: nil)
             NotificationCenter.default.removeObserver(self, name: Notification.Name.UIKeyboardWillShow, object: nil)
             NotificationCenter.default.removeObserver(self, name: Notification.Name.UIKeyboardWillHide, object: nil)
+            notificationToken?.invalidate()
             SocketIOManager.shared.socket.off("message")
-            viewModel.removeDialogHistory()
+            viewModel.removeEmptyDialogHistory()
         }
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
     }
     
     // MARK: Load Chat Details
     
-    func loadMessages() {
+    @objc func loadMessages() {
         viewModel.getDialogMessages(success: { [weak self] in
             guard let vc = self else { return }
             vc.collectionView?.reloadData()
@@ -158,11 +179,39 @@ class ChatController: UIViewController {
         guard let messageText = inputBarView.inputTextField.text, !messageText.isEmpty else {
             return
         }
+
         inputBarView.inputTextField.text = nil
+        inputBarView.inputTextField.insertText("")
+        
         if let currentUser = User.currentUser() {
-            self.collectionView?.insertItems(at: [IndexPath(item: (viewModel.messages?.count ?? 1) - 1, section: 0)])
-             viewModel.socketMessageEmit(text: messageText, senderId: currentUser.user_id, recipientId: viewModel.info.user_id, senderName: viewModel.info.user_name)
+            //self.collectionView?.insertItems(at: [IndexPath(item: (viewModel.messages?.count ?? 1) - 1, section: 0)])
+            viewModel.socketMessageEmit(text: messageText,
+                                         senderId: currentUser.user_id,
+                                         recipientId: viewModel.info.user_id,
+                                         senderName: currentUser.user_name)
         }
+    }
+    
+    // MARK: - Attach Button Pressed
+    
+    @objc func attachButtonPressed() {
+        PHPhotoLibrary.requestAuthorization({ [unowned self] (_) in
+            DispatchQueue.main.async {
+                self.imageVideoPicker.layoutConfiguration.scrollDirection = .vertical
+                self.imageVideoPicker.collectionView.allowsMultipleSelection = false
+                self.presentPickerModally(self.imageVideoPicker)
+            }
+        })
+    }
+    
+    // MARK: SEND IMAGE FUNCTION
+    
+    @objc func imagePickerPhotosSelected() {
+        dismissPresentedImagePicker()
+        viewModel.uploadChatFile (success: { [weak self] in
+            self?.collectionView?.reloadData()
+            self?.scrollToLastItem()
+        })
     }
     
     // MARK: - Join to Channel Action
@@ -184,6 +233,7 @@ class ChatController: UIViewController {
         case .single:
             let vc = UserProfileController.fromStoryboard()
             vc.contact = viewModel.info
+            vc.dialogId = viewModel.dialogId
             self.show(vc, sender: nil)
         case .group:
             let vc = EditGroupController.fromStoryboard()
@@ -222,9 +272,22 @@ extension ChatController : ASCollectionDataSource{
     
     func collectionNode(_ collectionNode: ASCollectionNode, nodeForItemAt indexPath: IndexPath) -> ASCellNode {
         let message = viewModel.messages![indexPath.row]
+        
+        var actionText = message.sender_name + " " + message.action_name
+        if message.recipient_user_id != 0 {
+            actionText += " \(message.recipient_name)"
+        }
+        
+        var nodeData = ASNodeCellData(text: message.chat_text, date: message.chat_date,
+                                      name: message.sender_name, kind: message.chat_kind, action_name: actionText)
+        
+        if message.file_list.count != 0 {
+            nodeData.chat_imageUrl = message.file_list[0].file_url
+            nodeData.chat_imageData = message.file_list[0].file_data
+        }
+        
         let isOut = message.sender_user_id != viewModel.info.user_id ? true : false
         let bubbleImg = message.sender_user_id != viewModel.info.user_id ? bubleImageOut : bubleImageIn
-        let nodeData = ASNodeCellData(text: message.chat_text, date: message.chat_date, name: message.sender_name, kind: message.chat_kind)
         let node = ChatBubleNodeCell(message: nodeData, isOutgoing: isOut, bubbleImage: bubbleImg)
         node.delegate = self
         return node
@@ -247,56 +310,6 @@ extension ChatController: ChatDelegate {
         print("openGallery click")
     }
 }
-
-//extension ChatController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-//
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return viewModel.messages?.count ?? 0
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let message = viewModel.messages![indexPath.row]
-//        if message.chat_kind == "action" && viewModel.chatType != .single {
-//            let cell: BubleActionCell = collectionView.dequeReusableCell(for: indexPath)
-//            cell.setupData(message)
-//            return cell
-//        } else {
-//            let textCell: BubbleTextCell = collectionView.dequeReusableCell(for: indexPath)
-//            textCell.setupData(message, chatType: viewModel.chatType, user_id: info.user_id)
-//            return textCell
-//        }
-//
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        var height: CGFloat = 80.0
-//        height = estimatedFrameForText(viewModel.messages![indexPath.row].chat_text).height + 20.0
-//        return CGSize(width: collectionView.frame.width - collectionView.frame.width.truncatingRemainder(dividingBy: 2), height: height)
-//    }
-//
-//    private func estimatedFrameForText(_ text: String) -> CGRect {
-//        let size = CGSize(width: 180, height: 1000)
-//        let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
-//        return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 16.0)], context: nil)
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        keyboardWillHide()
-//    }
-//
-//    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-//        collectionView.collectionViewLayout.invalidateLayout()
-//    }
-//
-//}
-//
-//extension ChatController: ChatLayoutDelegate {
-//    func collectionView(_ collectionView: UICollectionView,
-//                        heightForBubleAtIndexPath indexPath:IndexPath) -> CGFloat {
-//
-//        return estimatedFrameForText(viewModel.messages![indexPath.row].chat_text).height + 20.0
-//    }
-//}
 
 // MARK: - UIKeyboard Observers
 
@@ -325,6 +338,7 @@ extension ChatController {
             return
         }
         let bottomInset = keyboardFrameEnd.height - inputBarView.frame.height
+        keyboardHeighValue = keyboardFrameEnd.height
         self.collectionView?.contentInset.bottom = bottomInset + 8.0
         self.collectionView?.view.scrollIndicatorInsets.bottom = bottomInset - 8.0
         scrollToLastItem()
@@ -381,7 +395,7 @@ extension ChatController {
         self.collectionView?.dataSource = self
         self.collectionView?.view.keyboardDismissMode = .interactive
         self.collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8.0, right: 0)
-        
+        self.collectionView?.alwaysBounceVertical = true
         view.addSubnode(self.collectionView!)
         view.bringSubview(toFront: inputAccessoryView!)
         
@@ -394,10 +408,25 @@ extension ChatController {
             make.bottom.equalTo(-inputAccessoryView!.frame.height)
         }
         
-        if let collection = collectionView?.view{
+        if let collection = collectionView?.view {
             // Swift
             if #available(iOS 10, *) {
                 collection.isPrefetchingEnabled = false
+            }
+        }
+        
+        inputBarView.translatesAutoresizingMaskIntoConstraints = true
+    }
+    
+    func changeInputBarViewFrame(height: CGFloat) {
+        inputBarView.constraints.forEach { (make) in
+            if make.firstAttribute == .height {
+                make.constant = calculateBottomSafeArea(height)
+                if let collectionView = self.collectionView {
+                    if height > 80 {
+                        collectionView.contentInset.bottom = keyboardHeighValue
+                    }
+                }
             }
         }
     }

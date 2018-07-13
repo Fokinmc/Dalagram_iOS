@@ -17,7 +17,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
-	<string>1.0.5</string>
+	<string>1.0.6</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -25,10 +25,14 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Разрешите доступ к фотографиям чтобы устройства открыло галерею</string>
 	<key>NSContactsUsageDescription</key>
 	<string>Предоставьте доступ к контактам чтобы быстро начать диалог</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Разрешите доступ к микрофону чтобы записывать голосовое сообщение</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Предоставьте доступ к фотографиям чтобы загрузить аватар</string>
+	<string>Разрешите доступ к фотографиям чтобы устройства открыло галерею</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

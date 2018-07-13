@@ -28,9 +28,10 @@ class NetworkManager {
                 if response.statusCode >= 200 && response.statusCode <= 300 {
                     do {
                         var json = try JSON(data: response.data)
-                        //print(json)
+                        print(json)
                         if json["status"].boolValue {
                             success(json)
+                            SVProgressHUD.dismiss()
                         } else {
                             failure(json)
                             SVProgressHUD.dismiss()

@@ -17,7 +17,7 @@ class ChatNetworkImageNode: ASDisplayNode, ASNetworkImageNodeDelegate {
     let messageImageNode: ASNetworkImageNode
     private var activity : UIActivityIndicatorView
     
-    public init(img: String, text: NSAttributedString , isOutgoing: Bool) {
+    public init(imageUrl: String, imageData: Data, text: NSAttributedString , isOutgoing: Bool) {
         self.isOutgoing = isOutgoing
         messageImageNode = ASNetworkImageNode()
         messageImageNode.cornerRadius = 6
@@ -26,20 +26,29 @@ class ChatNetworkImageNode: ASDisplayNode, ASNetworkImageNodeDelegate {
         textNode = MessageCaptionNode()
         self.caption = text
         
-        activity = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        activity = UIActivityIndicatorView(activityIndicatorStyle: .white)
+        activity.hidesWhenStopped = true
         
         super.init()
     
         self.backgroundColor =  UIColor.clear
         messageImageNode.style.preferredSize = CGSize(width: 210, height: 150)
         
-        if let url = URL(string: img){
-            messageImageNode.url  = url
+        if !imageUrl.isEmpty {
+            // for uploaded image with url
+            messageImageNode.url = URL(string: imageUrl)
+            messageImageNode.delegate = self
+            messageImageNode.shouldRenderProgressImages = true
+        } else {
+            // offline uploaded image
+            print(imageData)
+            messageImageNode.image = UIImage.init(data: imageData)
+            activity.startAnimating()
             messageImageNode.delegate = self
             messageImageNode.shouldRenderProgressImages = true
         }
         
-        if(text.string != ""){
+        if text.string != "" {
             textNode.textContainerInset = UIEdgeInsetsMake(6, 6, 0, 8)
             textNode.attributedText = text
             textNode.backgroundColor = UIColor.clear
@@ -48,6 +57,9 @@ class ChatNetworkImageNode: ASDisplayNode, ASNetworkImageNodeDelegate {
         }
         
         addSubnode(messageImageNode)
+        
+        self.view.addSubview(activity)
+        activity.center = CGPoint(x: 105, y: 75)
     }
     
     public override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
@@ -71,8 +83,6 @@ class ChatNetworkImageNode: ASDisplayNode, ASNetworkImageNodeDelegate {
     //MARK:- Network delegates
     
     public func imageNodeDidStartFetchingData(_ imageNode: ASNetworkImageNode) {
-        self.view.addSubview(activity)
-        activity.center = CGPoint(x: 105, y: 75)
         activity.startAnimating()
     }
     

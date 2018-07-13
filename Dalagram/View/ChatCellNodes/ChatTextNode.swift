@@ -27,7 +27,7 @@ class ChatTextNode: ASDisplayNode, ASTextNodeDelegate {
         // Target delegate
         textNode.isUserInteractionEnabled = true
         textNode.delegate = self
-        let linkcolor = isOutgoing ? UIColor.white : UIColor.blue
+        let linkcolor = isOutgoing ? UIColor.blue : UIColor.blue
         textNode.addLinkDetection(attr.string, highLightColor: linkcolor)
         textNode.addUserMention(highLightColor: linkcolor)
     }
@@ -37,7 +37,7 @@ class ChatTextNode: ASDisplayNode, ASTextNodeDelegate {
         let insetSpec = ASInsetLayoutSpec(insets: UIEdgeInsetsMake(
             0,
             0 + (isOutgoing ? 0 : textNodeVerticalOffset),
-            0,
+            6,
             0 + (isOutgoing ? textNodeVerticalOffset : 0)), child: textNode)
         return insetSpec
         //return ASStackLayoutSpec(direction: .vertical, spacing: 0, justifyContent: ASStackLayoutJustifyContent.start, alignItems: .start, children: [insetSpec])

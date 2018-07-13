@@ -31,6 +31,8 @@ public enum Dalagram {
     case getDialogs([String: Any])
     case getDialogDetails([String: Any])
     case removeChat([String: Any])
+    case uploadChatFile(Any)
+    case blockUser([String: Any])
     
     // MARK: - Group
     case createGroup(name: String, users: [[String: Int]], image: Data?)
@@ -106,6 +108,10 @@ extension Dalagram: TargetType {
             return "/chat/detail"
         case .removeChat:
             return "/chat"
+        case .uploadChatFile:
+            return "/chat/file"
+        case .blockUser:
+            return "/chat/block"
             
         // MARK: - Group
         case .createGroup, .getGroups:
@@ -229,9 +235,21 @@ extension Dalagram: TargetType {
             
         case .getDialogs(let params), .getDialogDetails(let params):
             return .requestParameters(parameters: params, encoding: URLEncoding.default)
-        
+            
+        case .blockUser(let params):
+            return .requestCompositeParameters(bodyParameters: params, bodyEncoding: URLEncoding.httpBody,
+                                               urlParameters: ["token" : User.getToken()])
+            
         case .removeChat(let params):
             return .requestCompositeParameters(bodyParameters: params, bodyEncoding: URLEncoding.httpBody, urlParameters: ["token" : User.getToken()])
+            
+        case .uploadChatFile(let file):
+            if let image = file as? Data {
+                print(image)
+                let imgData = MultipartFormData(provider: .data(image), name: "file", fileName: "photo.jpg", mimeType: "image/jpeg")
+                return .uploadCompositeMultipart([imgData], urlParameters: ["token" : User.getToken()])
+            }
+            return .requestPlain
             
         // MARK: Group
         case .createGroup(let groupName, let usersParams, let imageData):

@@ -15,20 +15,23 @@ class DialogItem: Object {
     @objc dynamic var dialog_id: String     = ""
     @objc dynamic var chat_id: Int          = 0
     @objc dynamic var chat_kind: String     = ""
-    @objc dynamic var action_name: String   = ""
-    @objc dynamic var group_id: Int         = 0
-    @objc dynamic var channel_id: Int       = 0
-    @objc dynamic var is_mute: Int          = 0
-    @objc dynamic var user_id: Int          = 0
     @objc dynamic var chat_name: String     = ""
-    @objc dynamic var avatar: String        = ""
-    @objc dynamic var phone: String         = ""
     @objc dynamic var chat_text: String     = ""
     @objc dynamic var chat_date: String     = ""
+    
+    @objc dynamic var group_id: Int         = 0
+    @objc dynamic var channel_id: Int       = 0
+    @objc dynamic var user_id: Int          = 0
+     
+    @objc dynamic var action_name: String   = ""
+    @objc dynamic var avatar: String        = ""
+    @objc dynamic var phone: String         = ""
     @objc dynamic var contact_user_name: String = ""
-    @objc dynamic var is_own_last_message: Bool = false
+    
     @objc dynamic var is_admin: Int         = 0
     @objc dynamic var is_read: Int          = 0
+    @objc dynamic var is_mute: Int          = 0
+    @objc dynamic var is_own_last_message: Bool = false
     
     override static func primaryKey() -> String? {
         return "dialog_id"
