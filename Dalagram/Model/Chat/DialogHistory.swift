@@ -49,14 +49,7 @@ class DialogHistory: Object {
     
     static func createFileMessage(dialog_id: String = "", chat_id: Int, files: List<ChatFile>, sender_user_id: Int) {
         let realm = try! Realm()
-        if let existingItem = getCurrentObject(chat_id: chat_id) {
-            try! realm.write {
-                existingItem.chat_id = chat_id
-                existingItem.file_list = files
-                existingItem.sender_user_id = sender_user_id
-            }
-           
-        } else {
+      
             let item = DialogHistory()
             item.id = dialog_id
             item.chat_id = chat_id
@@ -65,14 +58,13 @@ class DialogHistory: Object {
             try! realm.write {
                 realm.add(item)
             }
-        }
+        
     }
     
     // Synscronize and update from server
     
     static func initWith(json: JSON, dialog_id: String) {
         let realm = try! Realm()
-        
         if let existingItem = getCurrentObject(chat_id: json["chat_id"].intValue) {
             // UPDATE
             try! realm.write {
@@ -83,6 +75,12 @@ class DialogHistory: Object {
                 
                 existingItem.sender_avatar          = json["sender"]["avatar"].stringValue
                 existingItem.sender_name            = json["sender"]["user_name"].string ?? json["sender"]["contact_user_name"].string ?? json["sender"]["phone"].stringValue
+                existingItem.sender_user_id = json["sender"]["user_id"].intValue
+                
+                existingItem.recipient_phone = json["recipient"]["phone"].stringValue
+                existingItem.recipient_user_id = json["recipient"]["user_id"].intValue
+                existingItem.recipient_avatar = json["recipient"]["avatar"].stringValue
+                existingItem.recipient_name = json["recipient"]["contact_user_name"].string ?? json["recipient"]["chat_name"].stringValue
             }
         } else {
             // CREATE
@@ -105,11 +103,12 @@ class DialogHistory: Object {
             item.recipient_user_id = json["recipient"]["user_id"].intValue
             item.recipient_avatar = json["recipient"]["avatar"].stringValue
             item.recipient_name = json["recipient"]["contact_user_name"].string ?? json["recipient"]["chat_name"].stringValue
-            
-            for (_, subJson):(String, JSON) in json["files_list"] {
+            print( json["file_list"].count)
+            for (_, subJson):(String, JSON) in json["file_list"] {
                 let file = ChatFile()
                 file.file_format = subJson["file_format"].stringValue
                 file.file_url = subJson["file_url"].stringValue
+                file.file_name = subJson["file_name"].stringValue
                 item.file_list.append(file)
             }
             

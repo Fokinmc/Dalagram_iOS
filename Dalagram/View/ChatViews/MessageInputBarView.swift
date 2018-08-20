@@ -9,11 +9,6 @@
 import Foundation
 import UIKit
 
-enum SendButtonState {
-    case audio
-    case text
-}
-
 class MessageInputBarView: UIView {
 
     var chatDetailVC: ChatController?  {
@@ -168,3 +163,4 @@ extension MessageInputBarView: UITextViewDelegate {
         }
     }
 }
+

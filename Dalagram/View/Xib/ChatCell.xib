@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -52,12 +52,6 @@
                         </constraints>
                         <state key="normal" image="icon_mark_double"/>
                     </button>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" text="Jared's been back from that island for a whole day and he didn't get any toilet..." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gtE-Ss-2rU">
-                        <rect key="frame" x="93" y="31" width="237" height="39"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                        <color key="textColor" red="0.54901960780000003" green="0.54901960780000003" blue="0.54901960780000003" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fYi-aH-qgr">
                         <rect key="frame" x="338" y="38.5" width="24" height="24"/>
                         <color key="backgroundColor" red="0.0" green="0.47843137254901957" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -82,6 +76,19 @@
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_mini_doc" translatesAutoresizingMaskIntoConstraints="NO" id="GIG-Jg-DDR">
+                        <rect key="frame" x="93" y="43" width="15" height="15"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="15" id="OeU-wC-5nT"/>
+                            <constraint firstAttribute="width" secondItem="GIG-Jg-DDR" secondAttribute="height" multiplier="1:1" id="hbh-ek-mZc"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" text="Jared's been back from that island for a whole day and he didn't get any toilet..." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gtE-Ss-2rU">
+                        <rect key="frame" x="112" y="31" width="218" height="39"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <color key="textColor" red="0.54901960780000003" green="0.54901960780000003" blue="0.54901960780000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <constraints>
@@ -96,15 +103,17 @@
                     <constraint firstItem="fYi-aH-qgr" firstAttribute="trailing" secondItem="G4v-w4-9uf" secondAttribute="trailing" id="Pjn-64-dLq"/>
                     <constraint firstAttribute="trailing" secondItem="G4v-w4-9uf" secondAttribute="trailing" constant="16" id="VhS-hS-cUI"/>
                     <constraint firstItem="vLv-pp-Dvl" firstAttribute="centerY" secondItem="HFF-FM-7vQ" secondAttribute="centerY" id="Xma-IL-w38"/>
+                    <constraint firstItem="gtE-Ss-2rU" firstAttribute="leading" secondItem="GIG-Jg-DDR" secondAttribute="trailing" constant="4" id="aF3-0k-cMR"/>
                     <constraint firstAttribute="bottomMargin" secondItem="gtE-Ss-2rU" secondAttribute="bottom" id="b4S-0i-Uq0"/>
                     <constraint firstItem="HFF-FM-7vQ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="cZV-me-puU"/>
                     <constraint firstItem="R4q-N3-8UG" firstAttribute="top" secondItem="HFF-FM-7vQ" secondAttribute="top" id="ctm-VH-Ikw"/>
+                    <constraint firstItem="GIG-Jg-DDR" firstAttribute="centerY" secondItem="gtE-Ss-2rU" secondAttribute="centerY" id="eUx-q0-NLl"/>
                     <constraint firstItem="gtE-Ss-2rU" firstAttribute="top" secondItem="R4q-N3-8UG" secondAttribute="bottom" id="fIy-2x-MvM"/>
                     <constraint firstItem="G4v-w4-9uf" firstAttribute="centerY" secondItem="R4q-N3-8UG" secondAttribute="centerY" id="hCw-ar-pjH"/>
                     <constraint firstItem="HFF-FM-7vQ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="n51-Cd-8bW"/>
                     <constraint firstItem="A1r-ea-elX" firstAttribute="centerY" secondItem="R4q-N3-8UG" secondAttribute="centerY" id="oIG-sJ-KSn"/>
-                    <constraint firstItem="gtE-Ss-2rU" firstAttribute="leading" secondItem="R4q-N3-8UG" secondAttribute="leading" id="oia-Ul-0Oh"/>
                     <constraint firstItem="vLv-pp-Dvl" firstAttribute="centerX" secondItem="HFF-FM-7vQ" secondAttribute="centerX" id="p3d-dt-dwl"/>
+                    <constraint firstItem="GIG-Jg-DDR" firstAttribute="leading" secondItem="R4q-N3-8UG" secondAttribute="leading" id="pUx-dO-AIp"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="displayP3"/>
@@ -113,6 +122,9 @@
             <connections>
                 <outlet property="countLabel" destination="fYi-aH-qgr" id="oDS-em-c1K"/>
                 <outlet property="dateLabel" destination="G4v-w4-9uf" id="WxL-mk-YGF"/>
+                <outlet property="fileIcon" destination="GIG-Jg-DDR" id="9Z6-Pu-jLx"/>
+                <outlet property="fileIconHeightConstraint" destination="OeU-wC-5nT" id="cJw-4l-G7p"/>
+                <outlet property="fileIconRightConstraint" destination="aF3-0k-cMR" id="ly9-NS-8uI"/>
                 <outlet property="iconMark" destination="6rJ-QP-YGf" id="9YT-Hb-oE8"/>
                 <outlet property="iconMute" destination="A1r-ea-elX" id="kje-KW-J8g"/>
                 <outlet property="messageLabel" destination="gtE-Ss-2rU" id="rPl-g0-Jfo"/>
@@ -125,6 +137,7 @@
     </objects>
     <resources>
         <image name="icon_mark_double" width="14" height="8"/>
+        <image name="icon_mini_doc" width="24" height="24"/>
         <image name="icon_mute" width="20" height="20"/>
         <image name="userpic" width="57" height="57"/>
     </resources>

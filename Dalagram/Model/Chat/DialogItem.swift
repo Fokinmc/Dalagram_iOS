@@ -33,6 +33,9 @@ class DialogItem: Object {
     @objc dynamic var is_mute: Int          = 0
     @objc dynamic var is_own_last_message: Bool = false
     
+    @objc dynamic var is_has_file: Int      = 0
+    @objc dynamic var file_format: String   = ""
+    
     override static func primaryKey() -> String? {
         return "dialog_id"
     }
@@ -74,10 +77,12 @@ class DialogItem: Object {
             item.is_admin    = json["is_admin"].intValue
             item.contact_user_name = json["contact_user_name"].stringValue
             item.is_own_last_message = json["is_own_last_message"].boolValue
+            if json["is_has_file"].intValue == 1 {
+                item.is_has_file = json["is_has_file"].intValue
+                item.file_format = json["file_list"][0]["file_format"].stringValue
+            }
             return item
         }
-        
-        
     }
     
     static func getCurrentDialog(_ id: String) -> DialogItem? {

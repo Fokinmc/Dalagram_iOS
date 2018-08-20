@@ -19,15 +19,17 @@ struct JSONContact {
     var avatar: String      = ""
     var user_status: String = ""
     var last_visit: String  = ""
+    var is_admin: Int       = 0
     
     init(json: JSON) {
-        self.user_id = json["user_id"].intValue
-        self.user_name = json["user_name"].stringValue
-        self.phone = json["phone"].stringValue
-        self.contact_name = json["contact_user_name"].stringValue
-        self.avatar = json["avatar"].stringValue
-        self.user_status = json["user_status"].stringValue
-        self.last_visit = json["last_visit"].stringValue
+        self.user_id        = json["user_id"].intValue
+        self.user_name      = json["user_name"].stringValue
+        self.phone          = json["phone"].stringValue
+        self.contact_name   = json["contact_user_name"].stringValue
+        self.avatar         = json["avatar"].stringValue
+        self.user_status    = json["user_status"].stringValue
+        self.last_visit     = json["last_visit"].stringValue
+        self.is_admin       = json["is_admin"].intValue
     }
 }
 
@@ -62,8 +64,8 @@ class Contact: Object {
             let contact = realm.object(ofType: Contact.self, forPrimaryKey: json["user_id"].intValue)
             try! realm.write {
                 contact?.avatar         = json["avatar"].stringValue
-                contact?.user_status     = json["user_status"].stringValue
-                contact?.last_visit      = json["last_visit"].stringValue
+                contact?.user_status    = json["user_status"].stringValue
+                contact?.last_visit     = json["last_visit"].stringValue
             }
         }
     }

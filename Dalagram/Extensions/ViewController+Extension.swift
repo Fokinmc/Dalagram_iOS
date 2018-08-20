@@ -8,6 +8,8 @@
 
 import Foundation
 import UIKit
+import SystemConfiguration
+import MediaPlayer
 
 extension UIViewController {
     
@@ -317,5 +319,31 @@ extension CGRect {
     
     init(_ x:CGFloat, _ y:CGFloat, _ w:CGFloat, _ h:CGFloat) {
         self.init(x:x, y:y, width:w, height:h)
+    }
+}
+
+extension AVAsset{
+    
+    var videoThumbnail:UIImage? {
+        
+        let assetImageGenerator = AVAssetImageGenerator(asset: self)
+        assetImageGenerator.appliesPreferredTrackTransform = true
+        
+        let time = CMTimeMake(1, 60)
+       
+        do {
+            let imageRef = try assetImageGenerator.copyCGImage(at: time, actualTime: nil)
+            let thumbNail = UIImage.init(cgImage: imageRef)
+            print("Video Thumbnail genertated successfuly")
+            return thumbNail
+            
+        } catch {
+            
+            print("error getting thumbnail video",error.localizedDescription)
+            return nil
+            
+            
+        }
+        
     }
 }

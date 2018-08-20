@@ -11,6 +11,10 @@ import SwipeCellKit
 
 class ChatCell: SwipeTableViewCell {
 
+    @IBOutlet weak var fileIconRightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var fileIconHeightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var fileIcon: UIImageView!
     @IBOutlet weak var prefixLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var countLabel: UILabel!
@@ -26,9 +30,17 @@ class ChatCell: SwipeTableViewCell {
         }
     }
     
+    var fileConstraints: (right: CGFloat, height: CGFloat) = (0.0, 0.0) {
+        didSet {
+            fileIconRightConstraint.constant = fileConstraints.right
+            fileIconHeightConstraint.constant = fileConstraints.height
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-    
+        fileConstraints = (right: 0.0, height: 0.0)
+        
         userImageView.layer.cornerRadius = userImageView.frame.width/2
         countLabel.layer.cornerRadius = countLabel.frame.width/2
         countLabel.clipsToBounds = true
@@ -66,6 +78,24 @@ class ChatCell: SwipeTableViewCell {
                 }
             } else {
                 prefix = ""
+            }
+       
+            if item.is_has_file == 1 {
+                fileConstraints = (right: 4.0, height: 15.0)
+                switch item.file_format {
+                case "file":
+                    fileIcon.image = UIImage(named: "icon_mini_doc")
+                    messageLabel.text = "Документ"
+                case "video":
+                    fileIcon.image = UIImage(named: "icon_mini_video")
+                    messageLabel.text = "Видеозапись"
+                case "image":
+                    fileIcon.image = UIImage(named: "icon_mini_photo")
+                    messageLabel.text = "Изображение"
+                default: break
+                }
+            } else {
+                fileConstraints = (right: 0.0, height: 0.0)
             }
             
             let gradientImage = item.group_id != 0 ? #imageLiteral(resourceName: "bg_gradient_0") : item.channel_id != 0 ? #imageLiteral(resourceName: "bg_gradient_3")  : #imageLiteral(resourceName: "bg_gradient_2")

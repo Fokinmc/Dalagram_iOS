@@ -56,6 +56,7 @@ class TabBarController : UITabBarController {
         tabBarItem1?.selectedImage = UIImage.init(named: "icon_contacts_ac")?.withRenderingMode(.alwaysOriginal)
         
         let tabBarItem2 = self.tabBar.items?[2]
+        tabBarItem2?.badgeValue = "new"
         tabBarItem2?.image = UIImage.init(named: "icon_news")?.withRenderingMode(.alwaysOriginal)
         tabBarItem2?.selectedImage = UIImage.init(named: "icon_news_ac")?.withRenderingMode(.alwaysOriginal)
         
@@ -66,7 +67,3 @@ class TabBarController : UITabBarController {
     }
     
 }
-
-
-
-

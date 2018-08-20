@@ -4,9 +4,8 @@
 target 'Dalagram' do
  
   use_frameworks!
-  pod 'SwiftLint'
+
   pod 'SwiftyJSON'
-  pod 'IQKeyboardManagerSwift'
   pod 'SnapKit'
   pod 'Kingfisher'
   pod 'ReachabilitySwift', '~> 3'
@@ -24,7 +23,10 @@ target 'Dalagram' do
   pod 'BouncyLayout'
   pod 'SwipeCellKit'
   pod 'SKPhotoBrowser'
-  pod 'Texture'
+  pod 'Texture', '~> 2.7'
+  pod 'Gallery'
+  # pod 'NMessenger', '1.0.80'
+  # pod 'NMessenger', :git => 'https://github.com/mbalex99/NMessenger', :branch => 'swift4'
   
   target 'DalagramTests' do
     inherit! :search_paths

@@ -28,10 +28,11 @@ public enum Dalagram {
     
     // MARK: - Chat
     case sendMessage([String: Any])
+    case sendFileMessage(params: [String: Any], files: [[String: String]])
     case getDialogs([String: Any])
     case getDialogDetails([String: Any])
     case removeChat([String: Any])
-    case uploadChatFile(Any)
+    case uploadChatFile(Any, format: String, fileExtension: String, fileName: String)
     case blockUser([String: Any])
     
     // MARK: - Group
@@ -75,7 +76,7 @@ public enum Dalagram {
 
 extension Dalagram: TargetType {
     
-    public var baseURL: URL { return URL(string: "http://dalagram.bugingroup.com/api")! }
+    public var baseURL: URL { return URL(string: "http://api.dalagram.com/api")! }
     
     public var path: String {
         
@@ -103,6 +104,8 @@ extension Dalagram: TargetType {
             
         // MARK: - Chat
         case .sendMessage, .getDialogs:
+            return "/chat"
+        case .sendFileMessage:
             return "/chat"
         case .getDialogDetails:
             return "/chat/detail"
@@ -223,7 +226,7 @@ extension Dalagram: TargetType {
         // MARK: - Contacts Params
             
         case .addContacts(let jsonParams):
-            return .requestCompositeParameters(bodyParameters:  ["contact_users" : jsonParams], bodyEncoding: JSONEncoding.default, urlParameters: ["token" : User.getToken()])
+            return .requestCompositeParameters(bodyParameters: ["contact_users" : jsonParams], bodyEncoding: JSONEncoding.default, urlParameters: ["token" : User.getToken()])
             
         case .getContacts():
             return .requestParameters(parameters: ["token": User.getToken()], encoding: URLEncoding.default)
@@ -232,6 +235,11 @@ extension Dalagram: TargetType {
         case .sendMessage(let params):
             return .requestCompositeParameters(bodyParameters: params, bodyEncoding: URLEncoding.httpBody,
                                                urlParameters: ["token" : User.getToken()])
+        
+        case .sendFileMessage(let params, let files):
+            var parameters = params
+            parameters["file_list"] = files
+            return .requestCompositeParameters(bodyParameters: parameters, bodyEncoding: JSONEncoding.default, urlParameters: ["token" : User.getToken()])
             
         case .getDialogs(let params), .getDialogDetails(let params):
             return .requestParameters(parameters: params, encoding: URLEncoding.default)
@@ -243,11 +251,25 @@ extension Dalagram: TargetType {
         case .removeChat(let params):
             return .requestCompositeParameters(bodyParameters: params, bodyEncoding: URLEncoding.httpBody, urlParameters: ["token" : User.getToken()])
             
-        case .uploadChatFile(let file):
-            if let image = file as? Data {
-                print(image)
-                let imgData = MultipartFormData(provider: .data(image), name: "file", fileName: "photo.jpg", mimeType: "image/jpeg")
-                return .uploadCompositeMultipart([imgData], urlParameters: ["token" : User.getToken()])
+        case .uploadChatFile(let file, let format, let fileExtension, let fileName):
+            switch format {
+            case "image":
+                if let image = file as? Data {
+                    let imgData = MultipartFormData(provider: .data(image), name: "file", fileName: "photo.jpg", mimeType: "jpeg")
+                    return .uploadCompositeMultipart([imgData], urlParameters: ["token" : User.getToken()])
+                }
+            case "document":
+                if let file = file as? Data {
+                    let imgData = MultipartFormData(provider: .data(file), name: "file", fileName: fileName, mimeType: fileExtension)
+                    return .uploadCompositeMultipart([imgData], urlParameters: ["token" : User.getToken()])
+                }
+            case "video":
+                if let video = file as? Data {
+                    let imgData = MultipartFormData(provider: .data(video), name: "file", fileName: "video.mp4", mimeType: "mp4")
+                    return .uploadCompositeMultipart([imgData], urlParameters: ["token" : User.getToken()])
+                }
+            default:
+                return .requestPlain
             }
             return .requestPlain
             
@@ -283,7 +305,7 @@ extension Dalagram: TargetType {
                 let imgData = MultipartFormData(provider: .data(image), name: "image", fileName: "photo.jpg", mimeType: "image/jpeg")
                 return .uploadCompositeMultipart([imgData], urlParameters: ["token" : User.getToken(),"channel_name": name, "channel_login": login, "channel_users": usersParams])
             } else {
-                return .requestCompositeParameters(bodyParameters: ["channel_name": name, "channel_login": login, "channel_users": usersParams], bodyEncoding: JSONEncoding.default, urlParameters: ["token" : User.getToken()])
+                return .requestCompositeParameters(bodyParameters: ["channel_name": name, "channel_login": login, "is_public": 1, "channel_users": usersParams], bodyEncoding: JSONEncoding.default, urlParameters: ["token" : User.getToken()])
             }
             
         case .uploadChannelPhoto(let channel_id, let imageData):

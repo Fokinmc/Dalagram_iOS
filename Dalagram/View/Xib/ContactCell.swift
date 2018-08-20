@@ -63,6 +63,11 @@ class ContactCell: UITableViewCell {
         firstName.text      = contactName
         statusLabel.text    = "Был(а) в сети \(data.last_visit)"
         lastName.text       = ""
+        
+        if data.is_admin == 1 {
+            statusLabel.text    = "Был(а) в сети \(data.last_visit) - Админ"
+        }
+        
         if data.avatar != "http://dalagram.bugingroup.com/media/default-user.jpg" {
             userCreds.isHidden = true
             avatarView.kf.setImage(with: URL(string: data.avatar), placeholder: #imageLiteral(resourceName: "bg_gradient_2"))

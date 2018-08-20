@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import IQKeyboardManagerSwift
+
 import DropDown
 import RealmSwift
 
@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        window?.layer.speed = 1.5
+        //window?.layer.speed = 1.5
         DropDown.startListeningToKeyboard()
         configureRootController(isLogged: User.isset())
         configureNavBar()
@@ -71,11 +71,11 @@ extension AppDelegate {
     
     
     func configureKeyboard() {
-        IQKeyboardManager.sharedManager().enable = true
-        IQKeyboardManager.sharedManager().shouldShowToolbarPlaceholder = false
-        IQKeyboardManager.sharedManager().toolbarDoneBarButtonItemText = "↓"
-        IQKeyboardManager.sharedManager().shouldResignOnTouchOutside = true
-        IQKeyboardManager.sharedManager().toolbarTintColor = UIColor.gray
+//        IQKeyboardManager.sharedManager().enable = true
+//        IQKeyboardManager.sharedManager().shouldShowToolbarPlaceholder = false
+//        IQKeyboardManager.sharedManager().toolbarDoneBarButtonItemText = "↓"
+//        IQKeyboardManager.sharedManager().shouldResignOnTouchOutside = true
+//        IQKeyboardManager.sharedManager().toolbarTintColor = UIColor.gray
     }
     
 }

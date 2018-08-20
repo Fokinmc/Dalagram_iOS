@@ -139,7 +139,7 @@ class UsersCell: BaseCollectionCell {
     let deleteIcon = UIImageView(image: #imageLiteral(resourceName: "icon_delete"))
     
     lazy var userImage: UIImageView = {
-        let img = UIImageView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.width ))
+        let img = UIImageView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.width ))
         img.image = UIImage(named: "userprofile")
         img.contentMode = .scaleAspectFill
         img.clipsToBounds = true

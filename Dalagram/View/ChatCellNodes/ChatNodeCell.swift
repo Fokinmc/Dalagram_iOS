@@ -36,7 +36,7 @@ struct ASNodeCellData {
     var action_name: String = ""
     var chat_imageData: Data = Data()
     
-    init(text: String, date: String, name: String, kind: String, action_name: String, image: String = "", video: String = "") {
+    init(text: String, date: String, name: String, kind: String, action_name: String = "", image: String = "", video: String = "") {
         self.chat_text = NSAttributedString(string: text ,attributes : ChatCellNodeContentTextAttributes)
         self.chat_date = date
         self.recipient_name = name

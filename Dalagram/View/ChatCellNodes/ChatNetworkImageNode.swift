@@ -41,9 +41,7 @@ class ChatNetworkImageNode: ASDisplayNode, ASNetworkImageNodeDelegate {
             messageImageNode.shouldRenderProgressImages = true
         } else {
             // offline uploaded image
-            print(imageData)
             messageImageNode.image = UIImage.init(data: imageData)
-            activity.startAnimating()
             messageImageNode.delegate = self
             messageImageNode.shouldRenderProgressImages = true
         }

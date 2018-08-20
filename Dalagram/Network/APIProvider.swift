@@ -21,10 +21,10 @@ class NetworkManager {
     static let provider = MoyaProvider<Dalagram>()
     
     static func makeRequest(_ target: Dalagram, success: @escaping Success = { _ in }, failure: @escaping Failure = { _ in }) -> Void {
-       
         provider.request(target) { (result) in
             switch result {
             case .success(let response):
+                print(response.statusCode)
                 if response.statusCode >= 200 && response.statusCode <= 300 {
                     do {
                         var json = try JSON(data: response.data)

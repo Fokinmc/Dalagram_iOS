@@ -16,5 +16,6 @@ class ChatFile: Object {
     @objc dynamic var file_url: String = ""
     @objc dynamic var file_data: Data = Data()
     @objc dynamic var file_format: String = ""
+    @objc dynamic var file_name: String = ""
 
 }

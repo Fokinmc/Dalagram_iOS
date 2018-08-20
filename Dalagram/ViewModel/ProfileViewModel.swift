@@ -17,6 +17,7 @@ struct ProfileViewModel {
     var avatar  = Variable<String>("")
     var status  = Variable<String>("")
     var email   = Variable<String>("")
+    var password: String = ""
     
     var isNeedToUpdate = Variable<Bool>(false)
     
@@ -30,15 +31,19 @@ struct ProfileViewModel {
             self.phone.value    = data["phone"].stringValue
             self.status.value   = data["user_status"].stringValue
             self.email.value    = data["email"].stringValue
-       
+            //self.password       = data["password"].stringValue
             onCompletion()
         })
     }
     
     func editProfile(_ onCompletion: @escaping () -> Void) {
-        let params = ["user_status" : status.value,
+        var params = ["user_status" : status.value,
                       "user_name"   : name.value,
                       "email"       : email.value]
+
+        if !password.isEmpty {
+            params["password"] = password
+        }
         
         NetworkManager.makeRequest(.editProfile(params), success: { (json) in
             WhisperHelper.showSuccessMurmur(title: json["message"].stringValue)

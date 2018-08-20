@@ -21,6 +21,7 @@ class ContactsViewModel {
     var selectedContacts = Variable<[Int: Contact]>([:])
     var selectedIndex = Variable<Int>(0)
     var selectedIndexArray: [Int] = []
+    var smsSelectedContacts: [Int: PhoneContact] = [:]
     
     // MARK: - Geting Contacts
     func getContacts(onSuccess: @escaping () -> Void) {

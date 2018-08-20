@@ -39,7 +39,15 @@ struct DialogInfo {
         self.group_id = dialog.group_id
         self.channel_id = dialog.channel_id
         self.is_admin = dialog.is_admin
-
+    }
+    
+    init(json: JSONContact) {
+        self.user_id        = json.user_id
+        self.user_name      = json.user_name
+        self.phone          = json.phone
+        self.avatar         = json.avatar
+        self.last_visit     = json.last_visit
+        self.is_admin       = json.user_id
     }
     
 }

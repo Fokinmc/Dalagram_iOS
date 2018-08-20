@@ -40,18 +40,21 @@ class DialogsViewModel {
         SocketIOManager.shared.socket.on("message") { [weak self] (dataArray, ack)  in
             print("socketMessageEvent \(dataArray)")
             let dict = dataArray[0] as! NSDictionary
-            if let text = dict.value(forKey: "chat_text") as? String,
+            if let text = dict.value(forKey: "chat_text") as? String ?? dict.value(forKey: "chat_image") as? String,
                 let dialog_id = dict.value(forKey: "dialog_id") as? String,
                 let recipiend_id = dict.value(forKey: "recipient_user_id") as? Int,
                 let sender_user_id = dict.value(forKey: "sender_user_id") as? Int {
                 
-                print(recipiend_id, sender_user_id)
+                print(recipiend_id, sender_user_id, User.currentUser()!.user_id, dialog_id)
                 
+                // Rooms are not available now, we should check for user_id of sender and recipient
                 if recipiend_id == User.currentUser()!.user_id || sender_user_id == User.currentUser()!.user_id {
                     // Edit existing dialog
-                    if let currentDialog = self?.dialogs?.filter(NSPredicate(format: "id = %@", dialog_id)).first {
+                    let commonDialogId = "\(sender_user_id)U"
+                    if let currentDialog = self?.dialogs?.filter(NSPredicate(format: "id = %@", commonDialogId)).first {
                         let realm = try! Realm()
                         try! realm.write {
+                            // Update current dialog parameters
                             currentDialog.dialogItem?.chat_text = text
                             currentDialog.dialogItem?.chat_date = "Сейчас"
                             if sender_user_id != User.currentUser()!.user_id {
@@ -60,7 +63,7 @@ class DialogsViewModel {
                         }
                         onEvent()
                     } else {
-                        // Dialog don't exist, need to pull from server
+                        // Dialog don't exist, need to pull from server and create it
                         self?.getUserDialogs()
                     }
                 }
@@ -133,7 +136,23 @@ class DialogsViewModel {
     
     // MARK: - Clear Dialog History
     
-    func clearDialog(by identifier: String) {
+    func clearDialog(by identifier: String, dialogItem: DialogItem) {
+        
+        /// Endpoing Parameters for signle/group/channel dialogs
+        var endpointParam: [String: Any] = ["is_delete_all": 1]
+        
+        if dialogItem.user_id != 0 {
+            endpointParam["partner_id"] = dialogItem.user_id
+        } else if dialogItem.group_id != 0 {
+            endpointParam["group_id"] = dialogItem.group_id
+        } else if dialogItem.channel_id != 0 {
+            endpointParam["channel_id"] = dialogItem.channel_id
+        }
+        
+        NetworkManager.makeRequest(.removeChat(endpointParam), success: { (json) in
+            WhisperHelper.showSuccessMurmur(title: json["message"].stringValue)
+        })
+        
         for object in realm.objects(DialogHistory.self)
             .filter(NSPredicate(format: "id = %@", identifier)) {
             try! realm.write {
