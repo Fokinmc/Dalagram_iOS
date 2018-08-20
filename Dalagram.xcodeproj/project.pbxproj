@@ -1365,9 +1365,9 @@
 		2B9F1E0E211F363500C8629C /* Secondary Modules */ = {
 			isa = PBXGroup;
 			children = (
-				2BA3ACD020EA30CF00B92D13 /* Single */,
-				2BA3ACCC20EA309400B92D13 /* Group */,
-				2BA3ACCD20EA309D00B92D13 /* Channel */,
+				2BA3ACD020EA30CF00B92D13 /* Single Chat */,
+				2BA3ACCC20EA309400B92D13 /* Group Chat */,
+				2BA3ACCD20EA309D00B92D13 /* Channel Chat */,
 			);
 			path = "Secondary Modules";
 			sourceTree = "<group>";
@@ -1396,7 +1396,7 @@
 			path = DocumentContent;
 			sourceTree = "<group>";
 		};
-		2BA3ACCC20EA309400B92D13 /* Group */ = {
+		2BA3ACCC20EA309400B92D13 /* Group Chat */ = {
 			isa = PBXGroup;
 			children = (
 				2B7FF06520C14EB000013D48 /* NewGroupController.swift */,
@@ -1404,25 +1404,25 @@
 				2BB8389120E679D000AD9B06 /* EditGroupController.swift */,
 				2B4574F720ECBA73008391B3 /* MediaColletionController.swift */,
 			);
-			path = Group;
+			path = "Group Chat";
 			sourceTree = "<group>";
 		};
-		2BA3ACCD20EA309D00B92D13 /* Channel */ = {
+		2BA3ACCD20EA309D00B92D13 /* Channel Chat */ = {
 			isa = PBXGroup;
 			children = (
 				2BB8388F20E679BC00AD9B06 /* CreateChannelController.swift */,
 				2BE3009020EDFF3D001D7E01 /* EditChannelController.swift */,
 			);
-			path = Channel;
+			path = "Channel Chat";
 			sourceTree = "<group>";
 		};
-		2BA3ACD020EA30CF00B92D13 /* Single */ = {
+		2BA3ACD020EA30CF00B92D13 /* Single Chat */ = {
 			isa = PBXGroup;
 			children = (
 				2B4574F920ECBEF9008391B3 /* ChatContactsController.swift */,
 				2B1D083B20CD357100B41AED /* UserProfileController.swift */,
 			);
-			path = Single;
+			path = "Single Chat";
 			sourceTree = "<group>";
 		};
 		2BC1593720B2BA5400514397 /* Cell */ = {

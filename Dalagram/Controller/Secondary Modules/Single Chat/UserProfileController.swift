@@ -9,17 +9,20 @@
 import UIKit
 import SKPhotoBrowser
 import RealmSwift
+import SwiftyJSON
 
 class UserProfileController: UITableViewController {
     
-    // MARK: - IBOutlets
     
+    // MARK: - IBOutlets
+    @IBOutlet weak var filesCountLabel: UILabel!
     @IBOutlet weak var mediaCollectionView: UICollectionView!
     @IBOutlet weak var userPhoneLabel: UILabel!
     @IBOutlet weak var userImageView: UIImageView!
     
     // MARK: - Variables
     var contact: DialogInfo!
+    var mediaFiles: [JSONChatFile] = []
     var dialogId: String = ""
     
     // MARK: - Life cycle
@@ -44,9 +47,22 @@ class UserProfileController: UITableViewController {
     // MARK: - Setup Data
     
     func setupData() {
+        
         userPhoneLabel.text = contact.phone
         userImageView.kf.setImage(with: URL(string: contact.avatar))
-
+        
+        NetworkManager.makeRequest(.getMediaFiles(["page" : 1, "partner_id": contact.user_id]), success: { [weak self] (json) in
+            guard let vc = self else { return }
+            for (_, subJson):(String, JSON) in json["data"] {
+                let format = subJson["file_format"].stringValue
+                if format == "image" || format == "video" {
+                    let file = JSONChatFile(json: subJson)
+                    vc.mediaFiles.append(file)
+                }
+            }
+            vc.filesCountLabel.text = "\(vc.mediaFiles.count)"
+            vc.mediaCollectionView.reloadData()
+        })
     }
     
     // MARK: - Clear Chat Request
@@ -104,7 +120,7 @@ extension UserProfileController {
             
         case 2: // Media files
             
-            let vc = MediaColletionController()
+            let vc = MediaColletionController(user_id: contact.user_id, files: mediaFiles)
             self.show(vc, sender: nil)
             
         case 3: // Clear Chat
@@ -112,7 +128,6 @@ extension UserProfileController {
             if dialogId.isEmpty {
                 return
             }
-            
             let alert = UIAlertController(title: "Вы действительно хотите очистить чат?", message: nil, preferredStyle: .actionSheet)
             alert.view.tintColor = UIColor.darkBlueNavColor
             let clearAction = UIAlertAction(title: "Очистить чат", style: .default, handler: { [unowned self] (act) in
@@ -146,13 +161,24 @@ extension UserProfileController {
 extension UserProfileController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return mediaFiles.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: MediaCell = collectionView.dequeReusableCell(for: indexPath)
-        cell.mediaImageView.image = #imageLiteral(resourceName: "bg_gradient_2")
+        cell.mediaImageView.kf.setImage(with: URL(string: mediaFiles[indexPath.row].file_url), placeholder: #imageLiteral(resourceName: "bg_gradient_0"))
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let cell = collectionView.cellForItem(at: indexPath) as? MediaCell {
+            if let userImage = cell.mediaImageView.image {
+                let photo = SKPhoto.photoWithImage(userImage)
+                let browser = SKPhotoBrowser(photos: [photo])
+                browser.initializePageIndex(0)
+                self.present(browser, animated: true, completion: nil)
+            }
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

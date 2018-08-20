@@ -34,6 +34,7 @@ public enum Dalagram {
     case removeChat([String: Any])
     case uploadChatFile(Any, format: String, fileExtension: String, fileName: String)
     case blockUser([String: Any])
+    case getMediaFiles([String: Any])
     
     // MARK: - Group
     case createGroup(name: String, users: [[String: Int]], image: Data?)
@@ -115,6 +116,8 @@ extension Dalagram: TargetType {
             return "/chat/file"
         case .blockUser:
             return "/chat/block"
+        case .getMediaFiles:
+            return "/chat/media"
             
         // MARK: - Group
         case .createGroup, .getGroups:
@@ -177,7 +180,7 @@ extension Dalagram: TargetType {
     public var method: Moya.Method {
         switch self {
         case .getProfile, .getContacts, .getDialogs, .getDialogDetails, .getGroups, .getGroupDetails,
-             .getGroupMembers, .getChannels, .getChannelDetails, .getChannelMembers, .getNews:
+             .getGroupMembers, .getMediaFiles, .getChannels, .getChannelDetails, .getChannelMembers, .getNews:
             return .get
         case .removePushToken, .removeGroupMember, .declineGroupAdmin, .removeChannelMember,
              .declineChannelAdmin, .removePhoto, .removeChat:
@@ -243,7 +246,12 @@ extension Dalagram: TargetType {
             
         case .getDialogs(let params), .getDialogDetails(let params):
             return .requestParameters(parameters: params, encoding: URLEncoding.default)
-            
+        
+        case .getMediaFiles(let params):
+            var parameters = params
+            parameters["token"] = User.getToken()
+            return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
+
         case .blockUser(let params):
             return .requestCompositeParameters(bodyParameters: params, bodyEncoding: URLEncoding.httpBody,
                                                urlParameters: ["token" : User.getToken()])
