@@ -110,7 +110,7 @@ extension ContactsController {
             if let contact = RealmManager.shared.getObjects(type: Contact.self) {
                 if let contactItem = contact[indexPath.row] as? Contact {
                     let contactInfo = DialogInfo(contact: contactItem)
-                    let vc = NNChatController(info: contactInfo, dialogId: String(contactItem.user_id) + "U")
+                    let vc = ChatController(info: contactInfo, dialogId: String(contactItem.user_id) + "U")
                     vc.hidesBottomBarWhenPushed = true
                     self.navigationController?.pushViewController(vc, animated: true)
                 }
