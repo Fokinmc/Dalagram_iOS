@@ -30,6 +30,19 @@ open class NMessengerBarView: InputBarView, UITextViewDelegate, GalleryControlle
     
     //MARK: IBOutlets
     
+    @IBOutlet weak var audioRecordingView: UIView!
+    
+    lazy var audioTimeLabel: UILabel = {
+        let label = UILabel()
+        label.text = "00:00"
+        label.font = UIFont.systemFont(ofSize: 15.0)
+        return label
+    }()
+    
+    var timer: Timer?
+    var seconds: Int = 0
+    var isAudioCancelled: Bool = false
+    
     //@IBOutlet for InputBarView
     @IBOutlet open weak var inputBarView: UIView!
     //@IBOutlet for send button
@@ -72,7 +85,7 @@ open class NMessengerBarView: InputBarView, UITextViewDelegate, GalleryControlle
     public required init() {
         super.init()
     }
-    
+
     /**
      Initialiser the view.
      - parameter controller: Must be NMessengerViewController. Sets controller for the view.
@@ -126,9 +139,129 @@ open class NMessengerBarView: InputBarView, UITextViewDelegate, GalleryControlle
         self.textInputAreaView.backgroundColor = UIColor.lightGrayColor
         
         self.replyAreaHeighConstraint.constant = 0.0
+    
+        configureAudioView()
 
     }
     
+    // MARK: - Configure Audio Recording View
+    
+    func configureAudioView() {
+        sendButtonState = .audio
+        
+        let swipeToCloseLabel: UILabel = UILabel()
+        swipeToCloseLabel.text = "Влево - отмена"
+        
+        audioRecordingView.backgroundColor = UIColor.lightGrayColor
+        audioRecordingView.addSubview(audioTimeLabel)
+        audioRecordingView.addSubview(swipeToCloseLabel)
+        
+        audioTimeLabel.snp.makeConstraints { (make) in
+            make.left.equalTo(16.0)
+            make.centerY.equalToSuperview()
+        }
+        
+        swipeToCloseLabel.snp.makeConstraints { (make) in
+            make.centerY.equalToSuperview()
+            make.centerX.equalToSuperview()
+        }
+        
+        let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(audioButonLongPress))
+        sendButton.addGestureRecognizer(longGesture)
+        
+        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(audioButtonSwipeAction))
+        swipeGesture.direction = .left
+        sendButton.addGestureRecognizer(swipeGesture)
+        
+        let doubleGesture = UITapGestureRecognizer(target: self, action: #selector(sendButonDoublePress))
+        doubleGesture.numberOfTapsRequired = 2
+        sendButton.addGestureRecognizer(doubleGesture)
+        
+    }
+    
+    func scheduleAudioTimer() {
+        seconds = 0
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTimerAction), userInfo: nil, repeats: true)
+        timer?.fire()
+    }
+    
+    // MARK: - Update Timer Action
+    
+    @objc func updateTimerAction() {
+        seconds = seconds + 1
+        let minute = seconds/60
+        let realSeconds = seconds % 60 == 0 ? 0 : seconds % 60
+        let prefixSec = realSeconds < 10 ? "0" : ""
+        audioTimeLabel.text = "\(minute):\(prefixSec)\(realSeconds)"
+        print(seconds)
+    }
+    
+    // MARK: - Send Button Touch Actions
+    
+    @objc func audioButonLongPress(_ gestureRecognizer: UILongPressGestureRecognizer) {
+        
+        if sendButtonState == .audio {
+            switch gestureRecognizer.state {
+                case .began:
+                    print("began recording")
+                    isAudioCancelled = false
+                    scheduleAudioTimer()
+                    self.audioRecordingView.alpha = 0
+                    self.audioRecordingView.isHidden = false
+                    UIView.animate(withDuration: 0.3) {
+                        self.audioRecordingView.alpha = 1
+                    }
+                
+                case .changed:
+                    //print("changed recording")
+                    let longPressView = gestureRecognizer.view
+                    let longPressPoint = gestureRecognizer.location(in: longPressView)
+                    print(longPressPoint)
+                    
+                    if longPressPoint.x < -20.0 {
+                        audioButtonSwipeAction()
+                    }
+                    break
+                case .ended:
+                    print("end recording")
+                    if !isAudioCancelled {
+                        hideAudioMessageView()
+                        print("send audio message")
+                    }
+                default:
+                    break
+            }
+        }
+    }
+    
+    @objc func audioButtonSwipeAction() {
+        print("swipped")
+        isAudioCancelled = true
+        hideAudioMessageView()
+    }
+    
+    func hideAudioMessageView() {
+        timer?.invalidate()
+        timer = nil
+        UIView.animate(withDuration: 0.3, animations: {
+            self.audioRecordingView.alpha = 0
+        }) { (completed) in
+            self.audioRecordingView.isHidden = completed
+        }
+    }
+    
+    @objc func sendButonDoublePress() {
+        switch sendButtonState {
+        case .audio:
+            sendButtonState = .text
+        case .text:
+            sendButtonState = .audio
+        }
+    }
+    
+   
+    
+    // MARK: - Close Reply Button Action
     @IBAction func closeReplyAreaAction(_ sender: UIButton) {
         changeReplyArea(with: "")
         isReplyMessage.value = false
@@ -234,17 +367,17 @@ open class NMessengerBarView: InputBarView, UITextViewDelegate, GalleryControlle
      */
     
     @IBAction open func sendButtonClicked(_ sender: AnyObject) {
-        if sendButtonState == .text {
-            textInputViewHeight.constant = textInputViewHeightConst
-            textInputAreaViewHeight.constant = textInputViewHeightConst + 10
-            if self.textInputView.text != ""
-            {
-                _ = self.controller.sendText(self.textInputView.text, date: Date().getStringTime(), isIncomingMessage: false)
-                self.textInputView.text = ""
-            }
-        } else {
-            // Audio here
-        }
+//        if sendButtonState == .text && self.textInputView.text != inputTextViewPlaceholder {
+//            textInputViewHeight.constant = textInputViewHeightConst
+//            textInputAreaViewHeight.constant = textInputViewHeightConst + 10
+//            if self.textInputView.text != ""
+//            {
+//                _ = self.controller.sendText(self.textInputView.text, date: Date().getStringTime(), isIncomingMessage: false)
+//                self.textInputView.text = ""
+//            }
+//        }
+        _ = self.controller.sendAudio("100", data: Data(), date: Date().getStringTime(), isIncomingMessage: false)
+        
     }
     
     /**
@@ -266,11 +399,26 @@ open class NMessengerBarView: InputBarView, UITextViewDelegate, GalleryControlle
             importMenu.modalPresentationStyle = .formSheet
             self.controller.present(importMenu, animated: true, completion: nil)
         }
+        let contactAction = UIAlertAction(title: "Контакты", style: .default) { _ in
+            let vc = AllContactsController()
+            let navController = UINavigationController(rootViewController: vc)
+            vc.completionBlock = { contactObj in
+                // contactObj is ContactFacade object as completion parameter
+                if let contact = contactObj.phoneContact {
+                    _ = self.controller.sendContact(imageUrl: "", name: contact.getFullName(), phone: contact.phone, date: Date().getStringTime(), userId: 0, isIncomingMessage: false)
+                }
+                else if let contact = contactObj.dalagramContact {
+                    _ = self.controller.sendContact(imageUrl: contact.avatar, name: contact.contact_name, phone: contact.user_name, date: Date().getStringTime(), userId: contact.user_id, isIncomingMessage: false)
+                }
+            }
+            self.controller.present(navController, animated: true, completion: nil)
+        }
         let cancelAction = UIAlertAction(title: "Отмена", style: .cancel, handler: nil)
         alert.addAction(mediaAction)
         alert.addAction(fileAction)
+        alert.addAction(contactAction)
         alert.addAction(cancelAction)
-        
+        alert.view.tintColor = UIColor.darkBlueNavColor
         self.controller.present(alert, animated: true, completion: nil)
        
     }
@@ -371,3 +519,4 @@ extension NMessengerBarView: UIDocumentMenuDelegate, UIDocumentPickerDelegate, U
     }
     
 }
+

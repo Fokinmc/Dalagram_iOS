@@ -14,7 +14,6 @@ import UIKit
 import AVFoundation
 import Photos
 import AsyncDisplayKit
-import ImagePicker
 
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     switch (lhs, rhs) {
@@ -255,6 +254,20 @@ open class NMessengerViewController: UIViewController, UITextViewDelegate, NMess
     }
     
     /**
+     Called when adding a text to the messenger. Override this function to add your message to the VC
+     */
+    open func sendAudio(_ duration: String, data: Data, date: String, isIncomingMessage: Bool) -> GeneralMessengerCell {
+        return self.postAudio(duration, data: data, date: date, isIncomingMessage: isIncomingMessage)
+    }
+    
+    /**
+     Called when adding a contact to the messenger. Override this function to add your message to the VC
+     */
+    open func sendContact(imageUrl: String, name: String, phone: String, date: String, userId: Int, isIncomingMessage: Bool) -> GeneralMessengerCell {
+        return self.postContact(imageUrl: imageUrl, name:name, phone: phone, date: date, userId: userId, isIncomingMessage: isIncomingMessage)
+    }
+    
+    /**
      Called  when adding an image to the messenger. Override this function to add your message to the VC
      */
     open func sendImage(_ image: UIImage, isIncomingMessage:Bool) -> GeneralMessengerCell {
@@ -374,11 +387,12 @@ open class NMessengerViewController: UIViewController, UITextViewDelegate, NMess
     //MARK: NMessengerViewController Helper methods
     
     /**
-     Creates a new text message
-     - parameter text: the text to add to the message
+     Adds a text message to the messenger
+     - parameter text: the text content to post
      - parameter isIncomingMessage: if message is incoming or outgoing
      - returns: the newly created message
      */
+    
     open func createTextMessage(_ text: String, date: String, isIncomingMessage:Bool) -> GeneralMessengerCell {
         let textContent = TextContentNode(id: 0, textMessageString: text, dateString: date, currentViewController: self, bubbleConfiguration: self.sharedBubbleConfiguration)
         let newMessage = MessageNode(content: textContent)
@@ -389,14 +403,53 @@ open class NMessengerViewController: UIViewController, UITextViewDelegate, NMess
         return newMessage
     }
     
+    fileprivate func postText(_ text: String, date: String, isIncomingMessage:Bool) -> GeneralMessengerCell {
+        let newMessage = createTextMessage(text, date: date, isIncomingMessage: isIncomingMessage)
+        self.addMessageToMessenger(newMessage)
+        return newMessage
+    }
+    
     /**
-     Adds a text message to the messenger
+     Adds a contact message to the messenger
      - parameter text: the text content to post
      - parameter isIncomingMessage: if message is incoming or outgoing
      - returns: the newly created message
      */
-    fileprivate func postText(_ text: String, date: String, isIncomingMessage:Bool) -> GeneralMessengerCell {
-        let newMessage = createTextMessage(text, date: date, isIncomingMessage: isIncomingMessage)
+    
+    open func createContactMessage(_ imageUrl: String, name: String, phone: String, date: String, userId: Int, isIncomingMessage:Bool) -> GeneralMessengerCell {
+        let contactContent = ContactContentNode(imageUrl: imageUrl, name: name, phone: phone, date: date, currentVC: self, bubbleConfiguration: self.sharedBubbleConfiguration, userId: userId)
+        let newMessage = MessageNode(content: contactContent)
+        newMessage.cellPadding = messagePadding
+        newMessage.currentViewController = self
+        newMessage.isIncomingMessage = isIncomingMessage
+        return newMessage
+    }
+    
+    fileprivate func postContact(imageUrl: String, name: String, phone: String, date: String, userId: Int, isIncomingMessage:Bool) -> GeneralMessengerCell {
+        let newMessage = createContactMessage(imageUrl, name: name, phone: phone, date: date, userId: userId, isIncomingMessage: isIncomingMessage)
+        self.addMessageToMessenger(newMessage)
+        return newMessage
+    }
+    
+    /**
+     Adds a Audio message to the messenger
+     - parameter text: the text content to post
+     - parameter isIncomingMessage: if message is incoming or outgoing
+     - returns: the newly created message
+     */
+    
+    open func createAudioMessage(duration: String, data: Data, date: String, isIncomingMessage:Bool) -> GeneralMessengerCell {
+        let audioContent = AudioContentNode(duration: duration, date: date, currentVC: self)
+        let newMessage = MessageNode(content: audioContent)
+        newMessage.cellPadding = messagePadding
+        newMessage.currentViewController = self
+        newMessage.isIncomingMessage = isIncomingMessage
+        
+        return newMessage
+    }
+    
+    fileprivate func postAudio(_ duration: String, data: Data, date: String, isIncomingMessage:Bool) -> GeneralMessengerCell {
+        let newMessage = createAudioMessage(duration: duration, data: data, date: date, isIncomingMessage: isIncomingMessage)
         self.addMessageToMessenger(newMessage)
         return newMessage
     }
@@ -416,13 +469,7 @@ open class NMessengerViewController: UIViewController, UITextViewDelegate, NMess
         
         return newMessage
     }
-    
-    /**
-     Adds an image message to the messenger
-     - parameter image: the image to be displayed
-     - parameter isIncomingMessage: if message is incoming or outgoing
-     - returns: the newly created message
-     */
+
     fileprivate func postImage(_ image: UIImage, isIncomingMessage:Bool) -> GeneralMessengerCell {
         let newMessage = self.createImageMessage(image, isIncomingMessage: isIncomingMessage)
         self.addMessageToMessenger(newMessage)
@@ -436,12 +483,6 @@ open class NMessengerViewController: UIViewController, UITextViewDelegate, NMess
      - returns: the newly created message
      */
     
-    fileprivate func postVideo(thumbImage: UIImage, videoUrl: URL, videoData: Data, isIncomingMessage: Bool) -> GeneralMessengerCell {
-        let newMessage = self.createVideoMessage(thumbImage, videoData: videoData, isIncomingMessage: isIncomingMessage)
-        self.addMessageToMessenger(newMessage)
-        return newMessage
-    }
-    
     open func createVideoMessage(_ image: UIImage, videoData: Data, isIncomingMessage:Bool) -> GeneralMessengerCell {
         let videoContent = VideoContentNode(image: image, videoUrl: URL(string: "")!, date: Date().getStringTime(), currentVC: self, bubbleConfiguration: self.sharedBubbleConfiguration)
         let newMessage = MessageNode(content: videoContent)
@@ -452,6 +493,11 @@ open class NMessengerViewController: UIViewController, UITextViewDelegate, NMess
         return newMessage
     }
     
+    fileprivate func postVideo(thumbImage: UIImage, videoUrl: URL, videoData: Data, isIncomingMessage: Bool) -> GeneralMessengerCell {
+        let newMessage = self.createVideoMessage(thumbImage, videoData: videoData, isIncomingMessage: isIncomingMessage)
+        self.addMessageToMessenger(newMessage)
+        return newMessage
+    }
     
     /**
      Creates a new image message
@@ -468,13 +514,7 @@ open class NMessengerViewController: UIViewController, UITextViewDelegate, NMess
         
         return newMessage
     }
-    
-    /**
-     Adds an image message to the messenger
-     - parameter url: the image url to be displayed
-     - parameter isIncomingMessage: if message is incoming or outgoing
-     - returns: the newly created message
-     */
+
     fileprivate func postNetworkImage(_ url: String, isIncomingMessage:Bool) -> GeneralMessengerCell {
         let newMessage = self.createNetworkImageMessage(url, isIncomingMessage: isIncomingMessage)
         self.addMessageToMessenger(newMessage)
@@ -488,6 +528,7 @@ open class NMessengerViewController: UIViewController, UITextViewDelegate, NMess
      - parameter isIncomingMessage: if message is incoming or outgoing
      - returns: the newly created message
      */
+    
     open func createCollectionViewMessage(_ views: [UIView], numberOfRows:CGFloat, isIncomingMessage:Bool) -> GeneralMessengerCell {
         let collectionViewContent = CollectionViewContentNode(withCustomViews: views, andNumberOfRows: numberOfRows, bubbleConfiguration: self.sharedBubbleConfiguration)
         let newMessage = MessageNode(content: collectionViewContent)
@@ -498,13 +539,6 @@ open class NMessengerViewController: UIViewController, UITextViewDelegate, NMess
         return newMessage
     }
     
-    /**
-     Adds a collection view message to the messenger
-     - parameter views: a [UIView] that are the view for the collection view
-     - parameter numberOfRows: CGFloat number of rows in the collection view
-     - parameter isIncomingMessage: if message is incoming or outgoing
-     - returns: the newly created message
-     */
     fileprivate func postCollectionView(_ views: [UIView], numberOfRows:CGFloat, isIncomingMessage:Bool) -> GeneralMessengerCell {
         let newMessage = self.createCollectionViewMessage(views, numberOfRows: numberOfRows, isIncomingMessage: isIncomingMessage)
         self.addMessageToMessenger(newMessage)
@@ -528,13 +562,6 @@ open class NMessengerViewController: UIViewController, UITextViewDelegate, NMess
         return newMessage
     }
     
-    /**
-     Adds a collection view message to the messenger
-     - parameter views: a [ASDisplayNode] that are the view for the collection view
-     - parameter numberOfRows: CGFloat number of rows in the collection view
-     - parameter isIncomingMessage: if message is incoming or outgoing
-     - returns: the newly created message
-     */
     fileprivate func postCollectionView(_ nodes: [ASDisplayNode], numberOfRows:CGFloat, isIncomingMessage:Bool) -> GeneralMessengerCell {
         let newMessage = self.createCollectionNodeMessage(nodes, numberOfRows: numberOfRows, isIncomingMessage: isIncomingMessage)
         self.addMessageToMessenger(newMessage)
@@ -558,12 +585,6 @@ open class NMessengerViewController: UIViewController, UITextViewDelegate, NMess
         return newMessage
     }
     
-    /**
-     Adds a custom content message to the messenger
-     - parameter view: a UIView that is the view for the message
-     - parameter isIncomingMessage: if message is incoming or outgoing
-     - returns: the newly created message
-     */
     fileprivate func postCustomContent(_ view: UIView, isIncomingMessage:Bool) -> GeneralMessengerCell {
         let newMessage = self.createCustomContentViewMessage(view, isIncomingMessage: isIncomingMessage)
         self.addMessageToMessenger(newMessage)
@@ -586,12 +607,6 @@ open class NMessengerViewController: UIViewController, UITextViewDelegate, NMess
         return newMessage
     }
     
-    /**
-     Adds a custom content message to the messenger
-     - parameter view: a ASDisplayNode that is the view for the message
-     - parameter isIncomingMessage: if message is incoming or outgoing
-     - returns: the newly created message
-     */
     fileprivate func postCustomContent(_ node: ASDisplayNode, isIncomingMessage:Bool) -> GeneralMessengerCell {
         let newMessage = self.createCustomContentNodeMessage(node, isIncomingMessage: isIncomingMessage)
         self.addMessageToMessenger(newMessage)
@@ -605,12 +620,7 @@ open class NMessengerViewController: UIViewController, UITextViewDelegate, NMess
      - parameter isIncomingMessage: if message is incoming or outgoing
      - returns: the newly created message
      */
-    fileprivate func postDocument(text: String, fileExtension: String, fileData: Data, isIncomingMessage:Bool) -> GeneralMessengerCell {
-        let newMessage = self.createDocumentNodeMessage(text, fileData: fileData, isIncomingMessage: isIncomingMessage)
-        self.addMessageToMessenger(newMessage)
-        return newMessage
-    }
-    
+   
     open func createDocumentNodeMessage(_ text: String, fileData: Data, isIncomingMessage:Bool) -> GeneralMessengerCell {
         let node = DocumentContentNode(text: text, date: Date().getStringTime(), currentVC: self, bubbleConfiguration: self.sharedBubbleConfiguration)
         let newMessage = MessageNode(content: node)
@@ -620,5 +630,12 @@ open class NMessengerViewController: UIViewController, UITextViewDelegate, NMess
         self.addMessageToMessenger(newMessage)
         return newMessage
     }
+    
+    fileprivate func postDocument(text: String, fileExtension: String, fileData: Data, isIncomingMessage:Bool) -> GeneralMessengerCell {
+        let newMessage = self.createDocumentNodeMessage(text, fileData: fileData, isIncomingMessage: isIncomingMessage)
+        self.addMessageToMessenger(newMessage)
+        return newMessage
+    }
+    
     
 }

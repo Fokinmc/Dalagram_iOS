@@ -10,7 +10,9 @@ import UIKit
 import AsyncDisplayKit
 import RealmSwift
 import RxSwift
+import AVFoundation
 
+//ChatController
 protocol UploadStatusDelegate {
     func uploadBegin()
     func uploadEnd()
@@ -38,7 +40,9 @@ class ChatController: NMessengerViewController {
     private(set) var lastMessageGroup: MessageGroup? = nil
     
     var viewModel: ChatViewModel?
-    var uploadStatusDelegate: UploadStatusDelegate?
+    
+    private var recordingSession: AVAudioSession!
+    private var audoRecorder: AVAudioRecorder!
     
     // MARK: - ViewModel & Controller Initializer
     
@@ -61,7 +65,6 @@ class ChatController: NMessengerViewController {
         socketOnlineEvent()
         inputBarViewEvents()
         automaticallyAdjustsScrollViewInsets = false
-        
     }
     
     override func willMove(toParentViewController parent: UIViewController?) {
@@ -183,6 +186,9 @@ class ChatController: NMessengerViewController {
     
     // MARK: - NMessenger Send Image Action
     
+    override func sendContact(imageUrl: String, name: String, phone: String, date: String, userId: Int, isIncomingMessage: Bool) -> GeneralMessengerCell {
+        return self.postContact(imageUrl: imageUrl, name: name, phone: phone, date: date, userId: userId, isIncomingMessage: isIncomingMessage)
+    }
     override func sendImage(_ image: UIImage, isIncomingMessage: Bool) -> GeneralMessengerCell {
         return self.postImage(image, isIncomingMessage: isIncomingMessage)
     }
@@ -273,6 +279,18 @@ class ChatController: NMessengerViewController {
         viewModel?.uploadChatFile(with: videoData, format: "video", fileExtension: videoExtension, success: {
             videoContent.uploadEnd()
         })
+        return newMessage
+    }
+    
+    private func postContact(imageUrl: String, name: String, phone: String, date: String, userId: Int, isIncomingMessage:Bool) -> GeneralMessengerCell {
+        let contactContent = ContactContentNode(imageUrl: imageUrl, name: name, phone: phone, date: date, currentVC: self, bubbleConfiguration: self.sharedBubbleConfiguration, userId: userId)
+        let newMessage = MessageNode(content: contactContent)
+        newMessage.cellPadding = messagePadding
+        newMessage.currentViewController = self
+        newMessage.isIncomingMessage = isIncomingMessage
+        self.addMessageToMessenger(newMessage)
+        
+        viewModel?.sendMessageApi(isContact: true, contactPhone: phone, contactName: name)
         return newMessage
     }
     

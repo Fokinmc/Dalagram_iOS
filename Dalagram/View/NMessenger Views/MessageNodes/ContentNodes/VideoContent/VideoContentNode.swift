@@ -12,11 +12,6 @@ import UIKit
 import AsyncDisplayKit
 import AVKit
 
-//MARK: ImageContentNode
-/**
- ImageContentNode for NMessenger. Extends ContentNode.
- Defines content that is an image.
- */
 open class VideoContentNode: ContentNode, UploadStatusDelegate {
     
     // MARK: Public Variables

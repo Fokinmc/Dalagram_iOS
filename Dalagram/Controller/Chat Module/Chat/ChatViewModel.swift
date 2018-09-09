@@ -135,9 +135,18 @@ class ChatViewModel {
                 } else if message.chat_kind == "message" {
                     // Messages for Chat, Group, Channel
                     let isIncomingMessage = message.sender_user_id != info.user_id ? false : true
-                    let textContent = TextContentNode(id: message.chat_id,textMessageString: message.chat_text, dateString: message.chat_date, currentViewController: chatVC, bubbleConfiguration: chatVC.sharedBubbleConfiguration)
+                    var textContent = TextContentNode(id: message.chat_id,textMessageString: message.chat_text, dateString: message.chat_date, currentViewController: chatVC, bubbleConfiguration: chatVC.sharedBubbleConfiguration)
+                    if chatType == .channel {
+                        textContent = TextContentNode(id: message.chat_id, textMessageString: message.chat_text, dateString: message.chat_date, currentViewController: chatVC, bubbleConfiguration: chatVC.sharedBubbleConfiguration, viewsCount: message.view_count)
+                    }
                     
-                    let messageNode = MessageNode(content: textContent)
+                    var messageNode = MessageNode(content: textContent)
+                    
+                    if message.is_contact == 1 {
+                        let contactContent = ContactContentNode(imageUrl: "", name: message.contact_name, phone: message.contact_phone, date: message.chat_date, currentVC: chatVC, bubbleConfiguration: chatVC.sharedBubbleConfiguration, userId: 0)
+                        messageNode = MessageNode(content: contactContent)
+                    }
+                    
                     messageNode.cellPadding = chatVC.messagePadding
                     messageNode.currentViewController = chatVC
                     lastRecievedChatId = message.chat_id
@@ -287,9 +296,6 @@ class ChatViewModel {
                 print("makeRequest(.sendFileMessage", json)
                 success()
             })
-            //DialogHistory.createFileMessage(dialog_id: self.dialogId, chat_id: 0, files: newFiles, sender_user_id: senderId)
-//            self.socketFilesEmit(text: "Отправлено изображение", files: json.stringValue, senderId: senderId, recipientId: recipientId)
-//            success()
         })
     }
     
@@ -355,7 +361,7 @@ class ChatViewModel {
     // MARK: - Send Message POST Request
     // In order to see dialogs and full history, need to send request for each message
     
-    func sendMessageApi(chat_text: String, files: String = "", success: @escaping ()->Void = {}) {
+    func sendMessageApi(chat_text: String = "", files: String = "", isContact: Bool = false, contactPhone: String = "", contactName: String = "", success: @escaping ()->Void = {}) {
         
         var parameters = ["chat_text": chat_text] as [String: Any]
         switch chatType {
@@ -367,6 +373,11 @@ class ChatViewModel {
                 parameters["channel_id"] = info.channel_id
         }
         
+        if isContact {
+            parameters["is_contact"] = 1
+            parameters["contact_name"] = contactPhone
+            parameters["contact_phone"] = contactName
+        }
         if isReplyMessage && replyMessageId != 0 {
             parameters["answer_chat_id"] = replyMessageId
         }

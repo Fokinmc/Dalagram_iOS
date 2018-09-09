@@ -13,6 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NMessengerBarView" customModule="Dalagram" customModuleProvider="target">
             <connections>
                 <outlet property="InputBarView" destination="iN0-l3-epB" id="cHc-9u-IsO"/>
+                <outlet property="audioRecordingView" destination="4zf-jA-HLz" id="8e1-cD-9uK"/>
                 <outlet property="replyAreaHeighConstraint" destination="q71-W9-0L5" id="eKa-LL-9Ac"/>
                 <outlet property="replyAreaLabel" destination="PV0-dO-4Bk" id="4fR-GC-QNd"/>
                 <outlet property="replyAreaView" destination="lDB-5l-70B" id="0FU-4b-4jE"/>
@@ -111,12 +112,19 @@
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </view>
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4zf-jA-HLz">
+                            <rect key="frame" x="0.0" y="0.0" width="549" height="90"/>
+                            <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803915" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstItem="lDB-5l-70B" firstAttribute="leading" secondItem="ZY8-eq-qAl" secondAttribute="leading" id="0xA-gf-3ia"/>
                         <constraint firstAttribute="trailing" secondItem="hAC-Kk-kOD" secondAttribute="trailing" constant="8" id="3Mv-Tv-6Ff"/>
+                        <constraint firstAttribute="bottom" secondItem="4zf-jA-HLz" secondAttribute="bottom" id="4T6-Ad-WvN"/>
                         <constraint firstItem="Pa9-7P-RgB" firstAttribute="leading" secondItem="Sm0-IA-kLJ" secondAttribute="leading" constant="5" id="7jj-nl-Iq5"/>
+                        <constraint firstItem="hAC-Kk-kOD" firstAttribute="leading" secondItem="4zf-jA-HLz" secondAttribute="trailing" constant="8" id="8KS-em-0wk"/>
+                        <constraint firstItem="4zf-jA-HLz" firstAttribute="top" secondItem="Sm0-IA-kLJ" secondAttribute="top" id="DzR-Ha-FKQ"/>
                         <constraint firstItem="lDB-5l-70B" firstAttribute="top" secondItem="Sm0-IA-kLJ" secondAttribute="top" constant="2" id="JY0-ta-1sa"/>
                         <constraint firstItem="YfN-Lj-gpH" firstAttribute="top" secondItem="lDB-5l-70B" secondAttribute="bottom" constant="8" id="LK5-3M-wa0"/>
                         <constraint firstItem="Pa9-7P-RgB" firstAttribute="top" secondItem="Sm0-IA-kLJ" secondAttribute="top" constant="5" id="LcR-QE-0cT"/>
@@ -126,6 +134,7 @@
                         <constraint firstAttribute="trailing" secondItem="lDB-5l-70B" secondAttribute="trailing" constant="8" id="Wvv-D2-zbN"/>
                         <constraint firstAttribute="bottom" secondItem="Pa9-7P-RgB" secondAttribute="bottom" constant="5" id="XJn-U3-o8q"/>
                         <constraint firstItem="hAC-Kk-kOD" firstAttribute="leading" secondItem="YfN-Lj-gpH" secondAttribute="trailing" constant="8" id="lQG-M2-86b"/>
+                        <constraint firstItem="4zf-jA-HLz" firstAttribute="leading" secondItem="Sm0-IA-kLJ" secondAttribute="leading" id="m24-ql-mQw"/>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="45" id="yKk-PO-qMv"/>
                         <constraint firstAttribute="bottom" secondItem="YfN-Lj-gpH" secondAttribute="bottom" constant="5" id="ybi-zW-tOW"/>
                     </constraints>

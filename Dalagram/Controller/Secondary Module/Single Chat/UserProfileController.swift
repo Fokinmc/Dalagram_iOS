@@ -13,7 +13,6 @@ import SwiftyJSON
 
 class UserProfileController: UITableViewController {
     
-    
     // MARK: - IBOutlets
     @IBOutlet weak var filesCountLabel: UILabel!
     @IBOutlet weak var mediaCollectionView: UICollectionView!

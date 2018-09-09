@@ -1,8 +1,8 @@
 //
-//  ContactsController.swift
+//  ViewController.swift
 //  Dalagram
 //
-//  Created by Toremurat on 19.05.18.
+//  Created by Toremurat on 31.08.2018.
 //  Copyright © 2018 BuginGroup. All rights reserved.
 //
 
@@ -10,31 +10,33 @@ import UIKit
 import Contacts
 import RealmSwift
 
-class ContactsController: UITableViewController {
+typealias AllContactsCompletion = (_ selectedContact: ContactFacade) -> Void
+
+class AllContactsController: UITableViewController {
 
     // MARK: - IBOutlets
     
     fileprivate var searchBar: UISearchBar = UISearchBar()
     
-    lazy var inviteFriendsView: InviteFriendsView = {
-        let view = InviteFriendsView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 55))
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(inviteFriendsPressed))
-        view.addGestureRecognizer(tapGesture)
-        return view
+    lazy var closeButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(title: "Закрыть", style: .plain, target: self, action: #selector(closeButtonAction))
+        button.tintColor = UIColor.white
+        return button
     }()
     
     // MARK: - Variables
     
     let viewModel = ContactsViewModel()
+    var completionBlock: AllContactsCompletion! = nil
     
-    // : isMainController resposible for reusing controller as contacts picker
-    
-    var isMainController: Bool = false
     
     // MARK: - Life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.title = "Выберите"
+        
         configureUI()
         setBlueNavBar()
         
@@ -61,24 +63,20 @@ class ContactsController: UITableViewController {
         searchBar.placeholder = " Поиск"
         searchBar.sizeToFit()
         
-        tableView.tableHeaderView = inviteFriendsView
+        tableView.tableHeaderView = searchBar
         tableView.tableFooterView = UIView()
         tableView.separatorColor = UIColor.groupTableViewBackground
         tableView.registerNib(ContactCell.self)
+        
+        self.navigationItem.leftBarButtonItem = closeButton
     }
     
-    // MARK: - Invite Friends Action
-    
-    @objc func inviteFriendsPressed() {
-        let vc = InviteController()
-        vc.viewModel = viewModel
-        self.present(UINavigationController(rootViewController: vc), animated: true, completion: nil)
+    @objc func closeButtonAction() {
+        self.dismissController()
     }
-    
-
 }
 
-extension ContactsController {
+extension AllContactsController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel.phoneContacts.count + 1
@@ -110,17 +108,19 @@ extension ContactsController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.section {
         case 0:
-            /// Need to pass dialogInfo and dialogId which is user_id + prefix "U" as User
             if let contact = RealmManager.shared.getObjects(type: Contact.self) {
-                if let contactItem = contact[indexPath.row] as? Contact {
-                    let contactInfo = DialogInfo(contact: contactItem)
-                    let vc = ChatController(info: contactInfo, dialogId: String(contactItem.user_id) + "U")
-                    vc.hidesBottomBarWhenPushed = true
-                    self.navigationController?.pushViewController(vc, animated: true)
+                if let contactObj = contact[indexPath.row] as? Contact {
+                    let systemContact = ContactFacade(dalagramContact: contactObj)
+                    completionBlock(systemContact)
+                    dismissController()
                 }
+                
             }
         default:
-            break
+            let contact = viewModel.phoneContacts[indexPath.section - 1].value[indexPath.row]
+            let phoneContact = ContactFacade(phoneContact: contact)
+            completionBlock(phoneContact)
+            dismissController()
         }
     }
     
@@ -132,7 +132,7 @@ extension ContactsController {
         let sectioView = view as! UITableViewHeaderFooterView
         sectioView.textLabel?.font = UIFont.systemFont(ofSize: 17.0, weight: UIFont.Weight.init(0))
     }
-
+    
     override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
         return index + 1
     }
@@ -144,5 +144,5 @@ extension ContactsController {
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return section != 0 ? viewModel.phoneContacts[section - 1].key : " "
     }
-    
+
 }

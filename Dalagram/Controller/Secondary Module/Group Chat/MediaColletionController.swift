@@ -62,6 +62,7 @@ class MediaColletionController: UIViewController {
     func setupData() {
         NetworkManager.makeRequest(.getMediaFiles(["partner_id" : partnerId]), success: { [weak self] (json) in
             guard let vc = self else { return }
+            vc.mediaFiles.removeAll()
             for (_, subJson):(String, JSON) in json["data"] {
                 let format = subJson["file_format"].stringValue
                 if format == "image" || format == "video" {

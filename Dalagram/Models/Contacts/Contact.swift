@@ -12,6 +12,7 @@ import SwiftyJSON
 import RealmSwift
 
 struct JSONContact {
+    
     var user_id: Int        = 0
     var user_name: String   = ""
     var phone: String       = ""

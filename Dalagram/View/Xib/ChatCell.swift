@@ -58,11 +58,14 @@ class ChatCell: SwipeTableViewCell {
             dateLabel.text      = item.chat_date
             messageLabel.text   = item.chat_text
             
+            // Read/Unread icon
             if item.is_read == 1 {
                 iconMark.setImage(#imageLiteral(resourceName: "icon_mark_green"), for: .normal)
             } else {
                 iconMark.setImage(#imageLiteral(resourceName: "icon_mark_double"), for: .normal)
             }
+            
+            // Action Message
             
             if item.group_id != 0 || item.channel_id != 0 {
                 userNameLabel.text = item.chat_name
@@ -71,6 +74,7 @@ class ChatCell: SwipeTableViewCell {
                 }
             }
             
+            // Avatar Fullname initials
             if item.avatar.isEmpty {
                 if let firstLetter = item.chat_name.first {
                     prefix = firstLetter.description.capitalized
@@ -80,6 +84,7 @@ class ChatCell: SwipeTableViewCell {
                 prefix = ""
             }
        
+            // File Message: Document, Video, Image
             if item.is_has_file == 1 {
                 fileConstraints = (right: 4.0, height: 15.0)
                 switch item.file_format {
@@ -96,8 +101,17 @@ class ChatCell: SwipeTableViewCell {
                 }
             } else {
                 fileConstraints = (right: 0.0, height: 0.0)
+                // Contact Message
+                if item.is_contact == 1 {
+                    fileIcon.image = UIImage(named: "icon_mini_contact")
+                    messageLabel.text = "Контакт"
+                    fileConstraints = (right: 4.0, height: 15.0)
+                } 
             }
             
+            
+            
+            // User Profile Gradient
             let gradientImage = item.group_id != 0 ? #imageLiteral(resourceName: "bg_gradient_0") : item.channel_id != 0 ? #imageLiteral(resourceName: "bg_gradient_3")  : #imageLiteral(resourceName: "bg_gradient_2")
             userImageView.kf.setImage(with: URL(string: item.avatar), placeholder: gradientImage)
         }

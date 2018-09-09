@@ -20,7 +20,7 @@ class DialogHistory: Object {
     @objc dynamic var chat_date: String     = ""
     
     @objc dynamic var action_name: String   = ""
-    
+    @objc dynamic var view_count: Int       = 0
     @objc dynamic var sender_phone: String  = ""
     @objc dynamic var sender_avatar: String = ""
     @objc dynamic var sender_user_id: Int   = 0
@@ -30,6 +30,10 @@ class DialogHistory: Object {
     @objc dynamic var recipient_avatar: String = ""
     @objc dynamic var recipient_user_id: Int   = 0
     @objc dynamic var recipient_name: String   = ""
+    
+    @objc dynamic var contact_name: String      = ""
+    @objc dynamic var contact_phone: String     = ""
+    @objc dynamic var is_contact: Int           = 0
     
     var file_list = List<ChatFile>()
     
@@ -74,12 +78,17 @@ class DialogHistory: Object {
                 existingItem.chat_date              = json["chat_date"].stringValue
                 
                 existingItem.sender_avatar          = json["sender"]["avatar"].stringValue
-                existingItem.sender_name            = json["sender"]["user_name"].string ?? json["sender"]["contact_user_name"].string ?? json["sender"]["phone"].stringValue
-                existingItem.sender_user_id = json["sender"]["user_id"].intValue
+                existingItem.sender_user_id         = json["sender"]["user_id"].intValue
+                existingItem.view_count             = json["view_count"].intValue
+                existingItem.recipient_phone        = json["recipient"]["phone"].stringValue
+                existingItem.recipient_user_id      = json["recipient"]["user_id"].intValue
+                existingItem.recipient_avatar       = json["recipient"]["avatar"].stringValue
                 
-                existingItem.recipient_phone = json["recipient"]["phone"].stringValue
-                existingItem.recipient_user_id = json["recipient"]["user_id"].intValue
-                existingItem.recipient_avatar = json["recipient"]["avatar"].stringValue
+                existingItem.is_contact             = json["is_contact"].intValue
+                existingItem.contact_name           = json["contact"]["contact_name"].stringValue
+                existingItem.contact_phone          = json["contact"]["contact_phone"].stringValue
+                
+                existingItem.sender_name = json["sender"]["user_name"].string ?? json["sender"]["contact_user_name"].string ?? json["sender"]["phone"].stringValue
                 existingItem.recipient_name = json["recipient"]["contact_user_name"].string ?? json["recipient"]["chat_name"].stringValue
             }
         } else {
@@ -93,17 +102,21 @@ class DialogHistory: Object {
             item.chat_date      = json["chat_date"].stringValue
             item.action_name    = json["action_name"].stringValue
             item.answer_chat_id = json["answer_chat_id"].intValue
-            
+            item.view_count     = json["view_count"].intValue
             item.sender_phone   = json["sender"]["phone"].stringValue
             item.sender_avatar  = json["sender"]["avatar"].stringValue
             item.sender_user_id = json["sender"]["user_id"].intValue
             item.sender_name    = json["sender"]["user_name"].string ?? json["sender"]["contact_user_name"].string ?? json["sender"]["phone"].stringValue
             
-            item.recipient_phone = json["recipient"]["phone"].stringValue
-            item.recipient_user_id = json["recipient"]["user_id"].intValue
-            item.recipient_avatar = json["recipient"]["avatar"].stringValue
-            item.recipient_name = json["recipient"]["contact_user_name"].string ?? json["recipient"]["chat_name"].stringValue
-            print( json["file_list"].count)
+            item.recipient_phone    = json["recipient"]["phone"].stringValue
+            item.recipient_user_id  = json["recipient"]["user_id"].intValue
+            item.recipient_avatar   = json["recipient"]["avatar"].stringValue
+            item.recipient_name     = json["recipient"]["contact_user_name"].string ?? json["recipient"]["chat_name"].stringValue
+            
+            item.is_contact         = json["is_contact"].intValue
+            item.contact_name       = json["contact"]["contact_name"].stringValue
+            item.contact_phone      = json["contact"]["contact_phone"].stringValue
+            
             for (_, subJson):(String, JSON) in json["file_list"] {
                 let file = ChatFile()
                 file.file_format = subJson["file_format"].stringValue

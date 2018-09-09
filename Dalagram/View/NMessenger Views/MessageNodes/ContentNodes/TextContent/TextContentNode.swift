@@ -85,6 +85,8 @@ open class TextContentNode: ContentNode, ASTextNodeDelegate {
     open fileprivate(set) var textMessageNode: ASTextNode = ASTextNode()
     open fileprivate(set) var dateMessageNode: ASTextNode = ASTextNode()
     open fileprivate(set) var sendIconNode: ASImageNode = ASImageNode()
+    open fileprivate(set) var viewsMessageNode: ASTextNode = ASTextNode()
+    open fileprivate(set) var viewsIconNode: ASImageNode = ASImageNode()
     
     /** Bool as mutex for handling attributed link long presses*/
     fileprivate var lockKey: Bool = false
@@ -97,10 +99,10 @@ open class TextContentNode: ContentNode, ASTextNodeDelegate {
      - parameter textMessageString: Must be String. Sets text for cell.
      Calls helper method to setup cell
      */
-    public init(id: Int, textMessageString: String, dateString: String, bubbleConfiguration: BubbleConfigurationProtocol? = nil) {
+    public init(id: Int, textMessageString: String, dateString: String, bubbleConfiguration: BubbleConfigurationProtocol? = nil, viewsCount: Int = 0) {
         
         super.init(bubbleConfiguration: bubbleConfiguration)
-        self.setupTextNode(textMessageString, dateString: dateString)
+        self.setupTextNode(textMessageString, dateString: dateString, viewsCount: viewsCount)
         self.message_id = id
     }
     /**
@@ -109,11 +111,11 @@ open class TextContentNode: ContentNode, ASTextNodeDelegate {
      - parameter currentViewController: Must be an UIViewController. Set current view controller holding the cell.
      Calls helper method to setup cell
      */
-    public init(id: Int, textMessageString: String, dateString: String, currentViewController: UIViewController, bubbleConfiguration: BubbleConfigurationProtocol? = nil)
+    public init(id: Int, textMessageString: String, dateString: String, currentViewController: UIViewController, bubbleConfiguration: BubbleConfigurationProtocol? = nil, viewsCount: Int = 0)
     {
         super.init(bubbleConfiguration: bubbleConfiguration)
         self.currentViewController = currentViewController
-        self.setupTextNode(textMessageString, dateString: dateString)
+        self.setupTextNode(textMessageString, dateString: dateString, viewsCount: viewsCount)
         self.message_id = id
         if let vc = currentViewController as? TextContentNodeOutput {
             self.ouput = vc
@@ -126,7 +128,7 @@ open class TextContentNode: ContentNode, ASTextNodeDelegate {
      Creates the text to be display in the cell. Finds links and phone number in the string and creates atrributed string.
       - parameter textMessageString: Must be String. Sets text for cell.
      */
-    fileprivate func setupTextNode(_ textMessageString: String, dateString: String)
+    fileprivate func setupTextNode(_ textMessageString: String, dateString: String, viewsCount: Int)
     {
         self.backgroundBubble = self.bubbleConfiguration.getBubble()
         textMessageNode.delegate = self
@@ -139,19 +141,18 @@ open class TextContentNode: ContentNode, ASTextNodeDelegate {
         let detector = try! NSDataDetector(types: types.rawValue)
         let matches = detector.matches(in: textMessageString, options: [], range: NSMakeRange(0, textMessageString.count))
         for match in matches {
-            if let url = match.url
-            {
+            if let url = match.url {
                 outputString.addAttribute(NSAttributedStringKey(rawValue: "LinkAttribute"), value: url, range: match.range)
                 outputString.addAttribute(NSAttributedStringKey.underlineStyle, value: NSUnderlineStyle.styleSingle.rawValue, range: match.range)
                 outputString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.blue, range: match.range)
             }
-            if let phoneNumber = match.phoneNumber
-            {
+            if let phoneNumber = match.phoneNumber  {
                 outputString.addAttribute(NSAttributedStringKey(rawValue: "PhoneNumberAttribute"), value: phoneNumber, range: match.range)
                 outputString.addAttribute(NSAttributedStringKey.underlineStyle, value: NSUnderlineStyle.styleSingle.rawValue, range: match.range)
                 outputString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.blue, range: match.range)
             }
         }
+        
         self.textMessageNode.attributedText = outputString
         self.textMessageNode.accessibilityIdentifier = "labelMessage"
         self.textMessageNode.isAccessibilityElement = true
@@ -165,11 +166,24 @@ open class TextContentNode: ContentNode, ASTextNodeDelegate {
         self.sendIconNode.image = UIImage(named: "icon_mark_double")
         self.addSubnode(sendIconNode)
         
-       
+        self.viewsMessageNode.attributedText = NSMutableAttributedString(string:  "\(viewsCount)", attributes: dateTextAttr)
+        self.viewsMessageNode.accessibilityIdentifier = "viewsMessage"
+        self.addSubnode(viewsMessageNode)
+        
+        self.viewsIconNode.image = UIImage(named: "icon_views")
+        self.addSubnode(viewsIconNode)
+        
+        // Show view icon only for channel chat
+        
+        if viewsCount == 0 {
+             self.viewsIconNode.isHidden = true
+             self.viewsMessageNode.isHidden = true
+        }
     }
     
     //MARK: Helper Methods
     /** Updates the attributed string to the correct incoming/outgoing settings and lays out the component again*/
+    
     fileprivate func updateAttributedText() {
         let tmpString = NSMutableAttributedString(attributedString: self.textMessageNode.attributedText!)
         tmpString.addAttributes([NSAttributedStringKey.foregroundColor: isIncomingMessage ? incomingTextColor : outgoingTextColor, NSAttributedStringKey.font: isIncomingMessage ? incomingTextFont : outgoingTextFont], range: NSMakeRange(0, tmpString.length))
@@ -188,6 +202,11 @@ open class TextContentNode: ContentNode, ASTextNodeDelegate {
         let width = constrainedSize.max.width - self.insets.left - self.insets.right
 
         var dateStack = ASStackLayoutSpec(direction: .horizontal, spacing: 3, justifyContent: .end, alignItems: .center, children: [dateMessageNode, sendIconNode])
+        
+        // Show views icon for channel
+        if !viewsIconNode.isHidden {
+            dateStack = ASStackLayoutSpec(direction: .horizontal, spacing: 6, justifyContent: .end, alignItems: .center, children: [viewsIconNode,viewsMessageNode, dateMessageNode, sendIconNode])
+        }
         
         if isIncomingMessage {
             dateStack = ASStackLayoutSpec(direction: .horizontal, spacing: 3, justifyContent: .end, alignItems: .center, children: [dateMessageNode])

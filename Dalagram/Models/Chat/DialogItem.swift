@@ -28,6 +28,7 @@ class DialogItem: Object {
     @objc dynamic var phone: String         = ""
     @objc dynamic var contact_user_name: String = ""
     
+    @objc dynamic var is_contact: Int       = 0
     @objc dynamic var is_admin: Int         = 0
     @objc dynamic var is_read: Int          = 0
     @objc dynamic var is_mute: Int          = 0
@@ -55,6 +56,7 @@ class DialogItem: Object {
                 existingItem.is_own_last_message = json["is_own_last_message"].boolValue
                 existingItem.is_read            = json["is_read"].intValue
                 existingItem.is_admin           = json["is_admin"].intValue
+                existingItem.is_contact         = json["is_contact"].intValue
             }
             return existingItem
         } else {
@@ -75,8 +77,13 @@ class DialogItem: Object {
             item.chat_date   = json["chat_date"].stringValue
             item.is_read     = json["is_read"].intValue
             item.is_admin    = json["is_admin"].intValue
+            item.is_contact  = json["is_contact"].intValue
+            
             item.contact_user_name = json["contact_user_name"].stringValue
             item.is_own_last_message = json["is_own_last_message"].boolValue
+            
+            
+            
             if json["is_has_file"].intValue == 1 {
                 item.is_has_file = json["is_has_file"].intValue
                 item.file_format = json["file_list"][0]["file_format"].stringValue
